@@ -10,7 +10,7 @@
   <title>IGG-Bench · Interactive GUI Grounding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -66,8 +66,49 @@
           <p>IGG keeps the goal precise—locate and click one target—while adding only the interaction required to make that target observable. Every click is verified online against the target element in the current UI state.</p>
         </div>
       </div>
-      <figure class="paper-figure" aria-labelledby="overview-caption">
-        <img src="assets/paper-overview.png" alt="IGG key capabilities, visibility constraint taxonomy, and human-model performance gap">
+      <figure class="paper-figure overview-figure" aria-labelledby="overview-caption">
+        <div class="figure-head">
+          <div><span class="figure-index">01</span><strong>Interactive grounding, at a glance</strong></div>
+          <span class="figure-note">Observe · Reveal · Ground</span>
+        </div>
+        <div class="overview-diagram">
+          <section class="capability-panel" aria-label="Key capabilities and action space">
+            <div class="mini-browser" aria-hidden="true">
+              <div class="mini-browser-bar"><i></i><i></i><i></i><span>current screenshot</span></div>
+              <div class="mini-browser-body">
+                <div class="ghost-lines"><i></i><i></i><i></i><i></i></div>
+                <span class="target target-off">target 1</span>
+                <span class="target target-on">target 2</span>
+                <span class="cursor-mark">↖</span>
+              </div>
+            </div>
+            <div class="capability-list">
+              <span><b>01</b>Observability</span><span><b>02</b>Disambiguation</span>
+              <span><b>03</b>State control</span><span><b>04</b>Temporal control</span>
+            </div>
+            <p class="diagram-label">Screenshot-only target revelation</p>
+            <div class="action-space" aria-label="Action space"><span>SCROLL</span><span>MOVE</span><span>CLICK</span><span>WAIT</span><span>DRAG</span></div>
+          </section>
+
+          <section class="constraint-panel" aria-label="Visibility constraint taxonomy">
+            <div class="static-grounding">Static GUI Grounding</div>
+            <div class="flow-connector"><span>+</span><b>reveal interaction</b></div>
+            <article class="constraint-block ct-one"><header><b>1</b><span>Viewport Constraint</span></header><p>Reveal by viewport movement</p><small>Scroll-based Exploration</small></article>
+            <article class="constraint-block ct-two"><header><b>2</b><span>Multi-State Constraint</span></header><p>Reveal by state-changing interaction</p><div><small>Visual Disambiguation</small><small>Hidden State Activation</small><small>Removable Occlusion</small></div></article>
+            <article class="constraint-block ct-three"><header><b>3</b><span>Temporal / Manipulation</span></header><p>Reveal over time or by manipulation</p><div><small>Delayed State Activation</small><small>Dynamic Target Interaction</small><small>Movable Occlusion</small></div></article>
+          </section>
+
+          <section class="gap-panel" aria-label="Grounding accuracy by constraint type">
+            <div class="chart-title"><strong>Human–model gap</strong><span>Grounding Accuracy (%)</span></div>
+            <div class="chart-legend"><span class="human-dot">Human</span><span class="gpt-dot">GPT-5.5</span><span class="qwen-dot">Qwen3-VL</span></div>
+            <div class="group-chart">
+              <div class="group-row"><span>Viewport</span><div><i class="human-bar" style="--v:90%"></i><i class="gpt-bar" style="--v:86.2%"></i><i class="qwen-bar" style="--v:15%"></i></div><b>90.0</b></div>
+              <div class="group-row"><span>Multi-State</span><div><i class="human-bar" style="--v:94.4%"></i><i class="gpt-bar" style="--v:89.4%"></i><i class="qwen-bar" style="--v:31.3%"></i></div><b>94.4</b></div>
+              <div class="group-row"><span>Temporal &amp;<br>Manipulation</span><div><i class="human-bar" style="--v:94.4%"></i><i class="gpt-bar" style="--v:60.1%"></i><i class="qwen-bar" style="--v:44.1%"></i></div><b>94.4</b></div>
+            </div>
+            <div class="scale" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
+          </section>
+        </div>
         <figcaption id="overview-caption"><strong>Figure 1.</strong> Four key capabilities and five atomic actions define three visibility constraint types.</figcaption>
       </figure>
     </section>
@@ -92,7 +133,7 @@
             <ul class="subtypes"><li><b>CT2-1</b><span>Visual Disambiguation</span></li><li><b>CT2-2</b><span>Hidden State Activation</span></li><li><b>CT2-3</b><span>Removable Occlusion</span></li></ul>
           </article>
           <article class="level-card">
-            <div class="level-top"><span>03</span><small>Temporal & Manipulation</small></div>
+            <div class="level-top"><span>03</span><small>Temporal &amp; Manipulation</small></div>
             <h3>Reveal over time or by manipulation</h3>
             <p>The target requires temporal control, tracking a dynamic state, or spatial manipulation.</p>
             <ul class="subtypes"><li><b>CT3-1</b><span>Delayed State Activation</span></li><li><b>CT3-2</b><span>Dynamic Target Interaction</span></li><li><b>CT3-3</b><span>Movable Occlusion</span></li></ul>
@@ -109,9 +150,52 @@
             <h2>601 tasks across 16 controlled mockups</h2>
             <p>Seven sub-types span off-screen targets, interface state changes, delayed and dynamic content, and movable occlusions. Every task is replayed to verify that its target is unique and reachable.</p>
           </div>
-          <div class="dataset-facts"><div><strong>27.8%</strong><span>Viewport</span></div><div><strong>40.9%</strong><span>Multi-State</span></div><div><strong>31.3%</strong><span>Temporal & Manipulation</span></div></div>
+          <div class="dataset-facts"><div><strong>27.8%</strong><span>Viewport</span></div><div><strong>40.9%</strong><span>Multi-State</span></div><div><strong>31.3%</strong><span>Temporal &amp; Manipulation</span></div></div>
         </div>
-        <figure class="distribution-figure"><img src="assets/paper-distribution.png" alt="Distribution of IGG tasks by constraint type and platform"><figcaption>Task distribution by type, subtype, and platform.</figcaption></figure>
+        <figure class="distribution-figure" aria-labelledby="distribution-caption">
+          <div class="figure-head"><div><span class="figure-index">02</span><strong>Task distribution</strong></div><span class="figure-note">601 verified tasks</span></div>
+          <div class="distribution-summary">
+            <div class="donut" role="img" aria-label="27.8 percent viewport, 40.9 percent multi-state, and 31.3 percent temporal and manipulation constraints"><div><strong>601</strong><span>tasks</span></div></div>
+            <div class="subtype-legend">
+              <span class="legend-section">Constraint sub-types</span>
+              <span class="legend-item"><i class="s1"></i><b>167</b> Scroll</span>
+              <span class="legend-item"><i class="s2"></i><b>89</b> Visual</span>
+              <span class="legend-item"><i class="s3"></i><b>104</b> Hidden</span>
+              <span class="legend-item"><i class="s4"></i><b>53</b> Removable</span>
+              <span class="legend-item"><i class="s5"></i><b>70</b> Delayed</span>
+              <span class="legend-item"><i class="s6"></i><b>58</b> Dynamic</span>
+              <span class="legend-item"><i class="s7"></i><b>60</b> Movable</span>
+            </div>
+          </div>
+          <div class="platform-chart" aria-label="Stacked task counts for each of 16 mock applications">
+            <div class="platform-chart-head"><strong>Tasks per platform</strong><span>0</span><span>25</span><span>50</span></div>
+            <div class="platform-group"><small>PRODUCTIVITY</small>
+              <div class="platform-row"><label>Spreadsheet</label><div><i class="s1" style="--n:14"></i><i class="s2" style="--n:4"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:3"></i><i class="s7" style="--n:6"></i></div><b>42</b></div>
+              <div class="platform-row"><label>Email Client</label><div><i class="s1" style="--n:6"></i><i class="s2" style="--n:5"></i><i class="s3" style="--n:4"></i><i class="s4" style="--n:5"></i><i class="s5" style="--n:13"></i><i class="s6" style="--n:3"></i><i class="s7" style="--n:6"></i></div><b>42</b></div>
+              <div class="platform-row"><label>Document Editor</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:2"></i><i class="s5" style="--n:4"></i><i class="s6" style="--n:5"></i><i class="s7" style="--n:5"></i></div><b>40</b></div>
+              <div class="platform-row"><label>Workspace Pages</label><div><i class="s1" style="--n:9"></i><i class="s2" style="--n:8"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:4"></i><i class="s5" style="--n:7"></i></div><b>35</b></div>
+              <div class="platform-row"><label>Planner</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:3"></i><i class="s6" style="--n:3"></i></div><b>33</b></div>
+            </div>
+            <div class="platform-group"><small>DEV &amp; DESIGN</small>
+              <div class="platform-row"><label>Design Canvas</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:12"></i><i class="s3" style="--n:5"></i><i class="s4" style="--n:4"></i><i class="s6" style="--n:5"></i><i class="s7" style="--n:9"></i></div><b>45</b></div>
+              <div class="platform-row"><label>Developer Hub</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:3"></i></div><b>35</b></div>
+              <div class="platform-row"><label>Code Editor</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:7"></i><i class="s5" style="--n:3"></i><i class="s7" style="--n:6"></i></div><b>32</b></div>
+            </div>
+            <div class="platform-group"><small>SOCIAL &amp; MEDIA</small>
+              <div class="platform-row"><label>Community Chat</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:8"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:4"></i><i class="s5" style="--n:4"></i><i class="s6" style="--n:10"></i><i class="s7" style="--n:5"></i></div><b>49</b></div>
+              <div class="platform-row"><label>Social Feed</label><div><i class="s1" style="--n:11"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:2"></i></div><b>34</b></div>
+              <div class="platform-row"><label>Music Player</label><div><i class="s1" style="--n:9"></i><i class="s2" style="--n:13"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:6"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:2"></i><i class="s7" style="--n:8"></i></div><b>50</b></div>
+              <div class="platform-row"><label>Streaming</label><div><i class="s1" style="--n:20"></i><i class="s2" style="--n:2"></i><i class="s3" style="--n:3"></i><i class="s5" style="--n:3"></i><i class="s6" style="--n:6"></i><i class="s7" style="--n:5"></i></div><b>39</b></div>
+              <div class="platform-row"><label>Video Platform</label><div><i class="s1" style="--n:11"></i><i class="s2" style="--n:1"></i><i class="s3" style="--n:10"></i><i class="s4" style="--n:2"></i><i class="s5" style="--n:6"></i><i class="s6" style="--n:4"></i></div><b>34</b></div>
+            </div>
+            <div class="platform-group"><small>LIFESTYLE</small>
+              <div class="platform-row"><label>News Portal</label><div><i class="s1" style="--n:9"></i><i class="s2" style="--n:2"></i><i class="s3" style="--n:6"></i><i class="s4" style="--n:5"></i><i class="s5" style="--n:1"></i><i class="s6" style="--n:8"></i></div><b>31</b></div>
+              <div class="platform-row"><label>E-commerce</label><div><i class="s1" style="--n:8"></i><i class="s3" style="--n:9"></i><i class="s4" style="--n:4"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:4"></i></div><b>30</b></div>
+              <div class="platform-row"><label>Maps</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:4"></i><i class="s4" style="--n:5"></i><i class="s5" style="--n:1"></i><i class="s7" style="--n:10"></i></div><b>30</b></div>
+            </div>
+          </div>
+          <figcaption id="distribution-caption">Task distribution by type, subtype, and platform.</figcaption>
+        </figure>
       </div>
       <div class="app-marquee" aria-label="Mock application names"><span>Chirp</span><span>Dayplan</span><span>Devhub</span><span>Devpad</span><span>Discord</span><span>Docs</span><span>Figma</span><span>Gridly</span><span>Mailo</span><span>Never</span><span>Pagely</span><span>Reelify</span><span>Shopping</span><span>Wavr</span><span>Wayfind</span><span>YouTube</span></div>
     </section>
@@ -124,7 +208,18 @@
           <p class="results-copy">Humans solve nearly all tasks, while the strongest open-source baseline reaches only 31.6% GA. Completing the reveal interactions before Qwen3-VL's final click raises its GA from 30.8% to 81.9%.</p>
           <div class="result-numbers"><div><strong>94.6%</strong><span>Human GA</span></div><div><strong>79.4%</strong><span>GPT-5.5 GA</span></div><div><strong>31.6%</strong><span>Best open-source GA</span></div><div><strong>+51.1</strong><span>Oracle-reveal gain</span></div></div>
         </div>
-        <figure class="result-figure"><img src="assets/paper-results.png" alt="Performance by IGG constraint subtype for humans and model baselines"><figcaption>Performance across the seven visibility constraint sub-types.</figcaption></figure>
+        <figure class="result-figure" aria-labelledby="results-caption">
+          <div class="figure-head"><div><span class="figure-index">03</span><strong>The interaction gap</strong></div><span class="figure-note">Grounding Accuracy</span></div>
+          <div class="scoreboard">
+            <div class="score-row human-score"><div><span>Human</span><strong>94.6%</strong></div><i><b style="--score:94.6%"></b></i></div>
+            <div class="score-row gpt-score"><div><span>GPT-5.5</span><strong>79.4%</strong></div><i><b style="--score:79.4%"></b></i></div>
+            <div class="score-row oss-score"><div><span>GUI-Owl 1.5 <small>best open source</small></span><strong>31.6%</strong></div><i><b style="--score:31.6%"></b></i></div>
+            <div class="score-row qwen-score"><div><span>Qwen3-VL</span><strong>30.8%</strong></div><i><b style="--score:30.8%"></b></i></div>
+          </div>
+          <div class="gap-callout"><span>Oracle reveal</span><strong>30.8% <i>→</i> 81.9%</strong><p>Completing the required reveal interactions unlocks a <b>+51.1 point</b> gain for Qwen3-VL.</p></div>
+          <div class="subtype-tags" aria-label="Evaluated constraint sub-types"><span>Scroll</span><span>Visual</span><span>Hidden</span><span>Removable</span><span>Delayed</span><span>Dynamic</span><span>Movable</span></div>
+          <figcaption id="results-caption">Performance across the seven visibility constraint sub-types.</figcaption>
+        </figure>
       </div>
     </section>
 
