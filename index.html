@@ -18,6 +18,7 @@
     <nav class="nav shell" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="IGG-Bench home"><span class="brand-mark">IGG</span><span>Bench</span></a>
       <div class="nav-links">
+        <a href="#demo">Demo</a>
         <a href="#overview">Overview</a>
         <a href="#taxonomy">Taxonomy</a>
         <a href="#benchmark">Benchmark</a>
@@ -29,8 +30,8 @@
   <main id="top">
     <section class="hero shell">
       <div class="eyebrow"><span></span> EMNLP 2026</div>
-      <h1><span>IGG:</span> A Benchmark for Interactive GUI Grounding under Visibility Constraints</h1>
-      <p class="authors"><strong>Kyeongseon Kim</strong><sup>1,*</sup> · <strong>Jiyeon Son</strong><sup>1,*</sup> · <strong>Tae-Hyun Oh</strong><sup>1</sup><br><span><sup>1</sup>KAIST · <sup>*</sup>Equal contribution</span></p>
+      <h1><span class="title-igg">IGG:</span> A Benchmark for Interactive GUI Grounding under Visibility Constraints</h1>
+      <p class="authors"><strong>Kyeongseon Kim</strong><sup>*</sup> · <strong>Jiyeon Son</strong><sup>*</sup> · <strong>Tae-Hyun Oh</strong><br><span><sup>*</sup>Equal contribution</span></p>
       <p class="hero-copy">Grounding should not stop when the target is hidden. IGG-Bench measures whether screenshot-only GUI agents can reveal a target through minimal interaction—and then click the right element.</p>
       <div class="actions" aria-label="Project resources">
         <span class="button muted" title="Paper link will be added after release">Paper · soon</span>
@@ -60,6 +61,17 @@
       </div>
     </section>
 
+    <section id="demo" class="section demo-section shell">
+      <div class="section-heading demo-heading">
+        <p class="kicker">Benchmark at a glance</p>
+        <h2>Grounding starts before the click.</h2>
+        <p>Watch how IGG turns visibility recovery into a controlled, measurable interaction loop.</p>
+      </div>
+      <div class="demo-frame">
+        <iframe src="assets/igg-benchmark-video.html" title="Animated overview of the IGG benchmark" loading="lazy" allow="autoplay" scrolling="no"></iframe>
+      </div>
+    </section>
+
     <section id="overview" class="section shell two-col">
       <div>
         <p class="kicker">The missing middle</p>
@@ -69,6 +81,11 @@
         <p>Static GUI grounding assumes the requested element is already visible. Real interfaces break that assumption: targets live below the fold, inside collapsed panels, behind overlays, or in states that have not appeared yet.</p>
         <p>IGG preserves grounding's precise objective—locating one target—while adding the minimum interaction required to make that target observable. Each click is checked online against the target element in the current UI state.</p>
       </div>
+    </section>
+
+    <section class="paper-figure shell" aria-labelledby="overview-figure-caption">
+      <img src="assets/paper-overview.png" alt="Overview of IGG key capabilities, visibility constraint taxonomy, and performance gap">
+      <p id="overview-figure-caption"><strong>Figure 1.</strong> IGG connects four key capabilities and a minimal action space to three visibility constraint types. Current VLM agents remain far below humans as constraints require state, time, and manipulation control.</p>
     </section>
 
     <section class="equation-band">
@@ -102,21 +119,21 @@
             <h3>Explore beyond the viewport</h3>
             <p>The target exists in the current UI state but lies outside the visible region.</p>
             <img src="assets/l1-shopping-scroll.png" alt="Shopping interface with an off-screen target">
-            <div class="chips"><span>vertical scroll</span><span>horizontal scroll</span><span>grid</span></div>
+            <ul class="subtypes"><li><b>CT1-1</b><span>Scroll-based Exploration</span></li></ul>
           </article>
           <article class="level-card">
             <div class="level-top"><span>02</span><small>Multi-state</small></div>
             <h3>Reveal a hidden interface state</h3>
             <p>The target becomes identifiable only after a hover, expansion, tab switch, or occlusion-clearing action.</p>
             <img src="assets/l2-discord-hover.png" alt="Discord-like interface with a hover-revealed control">
-            <div class="chips"><span>hover</span><span>expand</span><span>popup</span></div>
+            <ul class="subtypes"><li><b>CT2-1</b><span>Visual Disambiguation</span></li><li><b>CT2-2</b><span>Hidden State Activation</span></li><li><b>CT2-3</b><span>Removable Occlusion</span></li></ul>
           </article>
           <article class="level-card">
             <div class="level-top"><span>03</span><small>Temporal & advanced</small></div>
             <h3>Reason across time and motion</h3>
             <p>The target depends on an asynchronous event, automatic transition, or continuous drag.</p>
             <img src="assets/l3-figma-drag.png" alt="Figma-like interface requiring a drag interaction">
-            <div class="chips"><span>async wait</span><span>auto transition</span><span>drag</span></div>
+            <ul class="subtypes"><li><b>CT3-1</b><span>Delayed State Activation</span></li><li><b>CT3-2</b><span>Dynamic Target Interaction</span></li><li><b>CT3-3</b><span>Movable Occlusion</span></li></ul>
           </article>
         </div>
       </div>
@@ -144,6 +161,7 @@
           <p>Humans solve nearly all tasks, while strong open-source VLM agents remain near 30% grounding accuracy. When the required reveal interactions are completed for Qwen3-VL, accuracy jumps from 30.8% to 81.9%.</p>
         </div>
         <div class="result-chart" aria-label="Grounding accuracy comparison">
+          <img class="paper-results" src="assets/paper-results.png" alt="Radar charts comparing humans and evaluated model baselines across seven constraint sub-types">
           <div class="result-row human"><div><span>Human</span><strong>94.6%</strong></div><i style="--score:94.6%"></i></div>
           <div class="result-row"><div><span>GPT-5.5</span><strong>79.4%</strong></div><i style="--score:79.4%"></i></div>
           <div class="result-row"><div><span>GUI-Owl-1.5-8B</span><strong>31.6%</strong></div><i style="--score:31.6%"></i></div>
@@ -160,11 +178,18 @@
     </section>
 
     <section class="section shell app-section">
-      <div class="section-heading compact">
-        <p class="kicker">Broad interface coverage</p>
-        <h2>16 realistic mock applications</h2>
-        <p>Controlled replicas span communication, productivity, media, development, and commerce interfaces.</p>
+      <div class="dataset-layout">
+        <div>
+          <div class="section-heading compact">
+            <p class="kicker">Dataset distribution</p>
+            <h2>601 tasks across 16 mockups</h2>
+            <p>Seven constraint sub-types cover off-screen targets, interface state changes, delayed or dynamic content, and movable occlusions. Every task is replayed to verify that its target is unique and reachable.</p>
+          </div>
+          <div class="dataset-facts"><div><strong>27.8%</strong><span>Viewport</span></div><div><strong>40.9%</strong><span>Multi-State</span></div><div><strong>31.3%</strong><span>Temporal & Manipulation</span></div></div>
+        </div>
+        <figure class="distribution-figure"><img src="assets/paper-distribution.png" alt="Distribution of IGG tasks by constraint type and platform"><figcaption>Figure 3 from the paper: task distribution by constraint type, subtype, and platform.</figcaption></figure>
       </div>
+      <p class="app-label">Platforms</p>
       <div class="app-marquee" aria-label="Mock application names">
         <span>Chirp</span><span>Dayplan</span><span>Devhub</span><span>Devpad</span><span>Discord</span><span>Docs</span><span>Figma</span><span>Gridly</span><span>Mailo</span><span>Never</span><span>Pagely</span><span>Reelify</span><span>Shopping</span><span>Wavr</span><span>Wayfind</span><span>YouTube</span>
       </div>
