@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="IGG-Bench evaluates GUI grounding agents when targets must first be made visible through interaction.">
+  <meta property="og:title" content="IGG-Bench">
+  <meta property="og:description" content="A Benchmark for Interactive GUI Grounding under Visibility Constraints">
+  <meta property="og:type" content="website">
+  <title>IGG-Bench · Interactive GUI Grounding</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav-wrap">
+    <nav class="nav shell" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="IGG-Bench home"><span class="brand-mark">IGG</span><span>Bench</span></a>
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#taxonomy">Taxonomy</a>
+        <a href="#benchmark">Benchmark</a>
+        <a href="#citation">Citation</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero shell">
+      <div class="eyebrow"><span></span> EMNLP 2026</div>
+      <h1><span>IGG:</span> A Benchmark for Interactive GUI Grounding under Visibility Constraints</h1>
+      <p class="authors"><strong>Kyeongseon Kim</strong><sup>1</sup> · <strong>Jiyeon Son</strong><sup>1</sup> · <strong>Tae-Hyun Oh</strong><sup>1</sup><br><span><sup>1</sup>KAIST</span></p>
+      <p class="hero-copy">Grounding should not stop when the target is hidden. IGG-Bench measures whether screenshot-only GUI agents can reveal a target through minimal interaction—and then click the right element.</p>
+      <div class="actions" aria-label="Project resources">
+        <a class="button primary" href="https://github.com/fooooty/IGG-benchmark">Code <span aria-hidden="true">↗</span></a>
+        <span class="button muted" title="Paper link will be added after release">Paper · soon</span>
+        <span class="button muted" title="Dataset link will be added after release">Dataset · soon</span>
+      </div>
+
+      <div class="hero-visual" aria-label="From a hidden target to a grounded click">
+        <div class="visual-noise"></div>
+        <div class="browser-card browser-a">
+          <div class="browser-bar"><i></i><i></i><i></i><span>initial observation</span></div>
+          <img src="assets/l1-docs-initial.png" alt="A document interface before scrolling">
+          <span class="state-tag">Target hidden</span>
+        </div>
+        <div class="flow-step"><span>SCROLL</span><b>↓</b></div>
+        <div class="browser-card browser-b">
+          <div class="browser-bar"><i></i><i></i><i></i><span>updated observation</span></div>
+          <img src="assets/l1-docs-after-scroll.png" alt="The document interface after scrolling reveals the target">
+          <span class="state-tag success">Target visible</span>
+        </div>
+      </div>
+
+      <div class="stats" aria-label="Benchmark at a glance">
+        <div><strong>601</strong><span>tasks</span></div>
+        <div><strong>16</strong><span>mock applications</span></div>
+        <div><strong>5</strong><span>atomic actions</span></div>
+        <div><strong>7</strong><span>constraint sub-types</span></div>
+      </div>
+    </section>
+
+    <section id="overview" class="section shell two-col">
+      <div>
+        <p class="kicker">The missing middle</p>
+        <h2>Beyond static pixels.<br>Short of full navigation.</h2>
+      </div>
+      <div class="prose">
+        <p>Static GUI grounding assumes the requested element is already visible. Real interfaces break that assumption: targets live below the fold, inside collapsed panels, behind overlays, or in states that have not appeared yet.</p>
+        <p>IGG preserves grounding's precise objective—locating one target—while adding the minimum interaction required to make that target observable. Each click is checked online against the target element in the current UI state.</p>
+      </div>
+    </section>
+
+    <section class="equation-band">
+      <div class="shell equation"><span>Interactive GUI Grounding</span><b>=</b><span>Static Grounding</span><b>+</b><span>Visibility Constraint Handling</span></div>
+    </section>
+
+    <section id="taxonomy" class="section shell">
+      <div class="section-heading">
+        <p class="kicker">A controlled action space</p>
+        <h2>Five actions. One target.</h2>
+        <p>At every turn, an agent emits exactly one JSON action from a compact interaction contract.</p>
+      </div>
+      <div class="action-grid">
+        <article class="action-card"><span class="action-icon">↕</span><h3>Scroll</h3><code>{ "x", "y", "dy" }</code><p>Explore a specific scrollable region beyond the current viewport.</p></article>
+        <article class="action-card"><span class="action-icon">↗</span><h3>Move</h3><code>{ "x", "y" }</code><p>Reveal hover states, tooltips, and otherwise ambiguous controls.</p></article>
+        <article class="action-card"><span class="action-icon">↔</span><h3>Drag</h3><code>{ "startX" … "endY" }</code><p>Reposition an occluder or operate a continuous spatial control.</p></article>
+        <article class="action-card"><span class="action-icon">◷</span><h3>Wait</h3><code>{ "ms" }</code><p>Handle asynchronous updates and time-dependent visibility.</p></article>
+        <article class="action-card emphasis"><span class="action-icon">◎</span><h3>Click</h3><code>{ "x", "y" }</code><p>Ground the target. A correct click ends the task immediately.</p></article>
+      </div>
+    </section>
+
+    <section class="section dark" id="benchmark">
+      <div class="shell">
+        <div class="section-heading light">
+          <p class="kicker">Visibility constraints</p>
+          <h2>Three levels of interaction</h2>
+        </div>
+        <div class="level-grid">
+          <article class="level-card">
+            <div class="level-top"><span>01</span><small>Single-state</small></div>
+            <h3>Explore beyond the viewport</h3>
+            <p>The target exists in the current UI state but lies outside the visible region.</p>
+            <img src="assets/l1-shopping-scroll.png" alt="Shopping interface with an off-screen target">
+            <div class="chips"><span>vertical scroll</span><span>horizontal scroll</span><span>grid</span></div>
+          </article>
+          <article class="level-card">
+            <div class="level-top"><span>02</span><small>Multi-state</small></div>
+            <h3>Reveal a hidden interface state</h3>
+            <p>The target becomes identifiable only after a hover, expansion, tab switch, or occlusion-clearing action.</p>
+            <img src="assets/l2-discord-hover.png" alt="Discord-like interface with a hover-revealed control">
+            <div class="chips"><span>hover</span><span>expand</span><span>popup</span></div>
+          </article>
+          <article class="level-card">
+            <div class="level-top"><span>03</span><small>Temporal & advanced</small></div>
+            <h3>Reason across time and motion</h3>
+            <p>The target depends on an asynchronous event, automatic transition, or continuous drag.</p>
+            <img src="assets/l3-figma-drag.png" alt="Figma-like interface requiring a drag interaction">
+            <div class="chips"><span>async wait</span><span>auto transition</span><span>drag</span></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell pipeline-section">
+      <div class="section-heading">
+        <p class="kicker">Dynamic evaluation</p>
+        <h2>Observe, interact, verify.</h2>
+      </div>
+      <div class="pipeline">
+        <div><span>1</span><h3>Observe</h3><p>The agent receives an instruction, current screenshot, and interaction trace.</p></div>
+        <i>→</i>
+        <div><span>2</span><h3>Act</h3><p>One action changes the executable mock environment.</p></div>
+        <i>→</i>
+        <div><span>3</span><h3>Verify</h3><p>Every click is matched online against the target's stable element ID.</p></div>
+      </div>
+    </section>
+
+    <section class="section results-section">
+      <div class="shell results-layout">
+        <div class="section-heading">
+          <p class="kicker">Main benchmark results</p>
+          <h2>Visibility recovery remains the bottleneck.</h2>
+          <p>Humans solve nearly all tasks, while strong open-source VLM agents remain near 30% grounding accuracy. When the required reveal interactions are completed for Qwen3-VL, accuracy jumps from 30.8% to 81.9%.</p>
+        </div>
+        <div class="result-chart" aria-label="Grounding accuracy comparison">
+          <div class="result-row human"><div><span>Human</span><strong>94.6%</strong></div><i style="--score:94.6%"></i></div>
+          <div class="result-row"><div><span>GPT-5.5</span><strong>79.4%</strong></div><i style="--score:79.4%"></i></div>
+          <div class="result-row"><div><span>GUI-Owl-1.5-8B</span><strong>31.6%</strong></div><i style="--score:31.6%"></i></div>
+          <div class="result-row"><div><span>Qwen3-VL-8B</span><strong>30.8%</strong></div><i style="--score:30.8%"></i></div>
+          <div class="result-row"><div><span>Qwen2.5-VL-7B</span><strong>22.3%</strong></div><i style="--score:22.3%"></i></div>
+          <p>Grounding Accuracy (GA) on all 601 tasks · 8-action budget</p>
+        </div>
+      </div>
+      <div class="shell insight-grid">
+        <article><span>+51.1</span><h3>percentage points</h3><p>Qwen3-VL improves from 30.8% to 81.9% when visibility-recovery actions are completed before its final click.</p></article>
+        <article><span>1.7%</span><h3>GA on movable occlusion</h3><p>All evaluated open-source models struggle when a target must be recovered by spatial manipulation.</p></article>
+        <article><span>59.2%</span><h3>after SFT + GRPO</h3><p>Diagnostic training raises Qwen3-VL from 40.0% to 59.2% on the held-out 120-task validation split.</p></article>
+      </div>
+    </section>
+
+    <section class="section shell app-section">
+      <div class="section-heading compact">
+        <p class="kicker">Broad interface coverage</p>
+        <h2>16 realistic mock applications</h2>
+        <p>Controlled replicas span communication, productivity, media, development, and commerce interfaces.</p>
+      </div>
+      <div class="app-marquee" aria-label="Mock application names">
+        <span>Chirp</span><span>Dayplan</span><span>Devhub</span><span>Devpad</span><span>Discord</span><span>Docs</span><span>Figma</span><span>Gridly</span><span>Mailo</span><span>Never</span><span>Pagely</span><span>Reelify</span><span>Shopping</span><span>Wavr</span><span>Wayfind</span><span>YouTube</span>
+      </div>
+    </section>
+
+    <section id="citation" class="section citation-section">
+      <div class="shell citation-card">
+        <div><p class="kicker">Citation</p><h2>Build on IGG-Bench</h2><p>Please cite our EMNLP 2026 paper. The proceedings identifier will be added after publication.</p></div>
+        <div class="code-wrap"><pre><code>@inproceedings{iggbench2026,
+  author = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},
+  title = {IGG: A Benchmark for Interactive GUI Grounding
+           under Visibility Constraints},
+  booktitle = {EMNLP},
+  year = {2026}
+}</code></pre><button id="copy-citation" type="button">Copy</button></div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="shell"><p>IGG-Bench · EMNLP 2026</p><p>Interactive GUI Grounding under Visibility Constraints</p></div></footer>
+  <script src="script.js"></script>
+</body>
+</html>
