@@ -7,7 +7,7 @@
   <meta name="description" content="IGG is a benchmark in which a GUI agent must first make the target visible through interaction and then click it. 601 tasks, 16 environments, 7 visibility-constraint sub-types.">
   <meta property="og:title" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints">
   <meta property="og:description" content="601 tasks · 16 controllable GUI environments · 7 visibility-constraint sub-types. EMNLP 2026.">
-  <meta property="og:image" content="https://igg-bench.github.io/static/fig/overview.png">
+  <meta property="og:image" content="https://igg-bench.github.io/static/poster/radar.png">
   <meta property="og:type" content="website">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,21 +19,21 @@
 <header class="hero">
   <div class="container">
     <h1>
-      <span class="c1">I</span><span class="c2">G</span><span class="c3">G</span>: A Benchmark for
-      <span class="c1">I</span>nteractive <span class="c2">G</span>UI <span class="c3">G</span>rounding
+      <span class="c-vp">I</span><span class="c-ms">G</span><span class="c-tm">G</span>: A Benchmark for
+      <span class="c-vp">I</span>nteractive <span class="c-ms">G</span>UI <span class="c-tm">G</span>rounding
       under Visibility Constraints
     </h1>
-    <p class="venue">EMNLP 2026</p>
     <p class="authors">
       <span>Kyeongseon Kim<sup>*</sup></span>
       <span>Jiyeon Son<sup>*</sup></span>
       <span>Tae-Hyun Oh</span>
     </p>
-    <p class="affil">KAIST &nbsp;&middot;&nbsp; <sup>*</sup>Equal contribution</p>
+    <p class="affil">KAIST &nbsp;&middot;&nbsp; <sup>*</sup>equal contribution</p>
+    <p class="venue">EMNLP 2026 &middot; Budapest</p>
     <div class="links">
-      <a class="btn disabled" aria-disabled="true">Paper (coming soon)</a>
-      <a class="btn disabled" aria-disabled="true">Code (coming soon)</a>
-      <a class="btn disabled" aria-disabled="true">Dataset (coming soon)</a>
+      <a class="btn disabled" aria-disabled="true">Paper (soon)</a>
+      <a class="btn disabled" aria-disabled="true">Code (soon)</a>
+      <a class="btn disabled" aria-disabled="true">Dataset (soon)</a>
       <a class="btn" href="#bibtex">BibTeX</a>
     </div>
   </div>
@@ -41,16 +41,33 @@
 
 <main>
 
-<section class="container wide teaser">
-  <figure>
-    <img src="static/fig/examples.png" alt="Three IGG tasks, before (top) and after (bottom) the required interaction: scroll to reveal a document, hover to reveal a server name, wait for a Skip Ad button to activate." width="2000" height="891">
-    <figcaption>The target is often not visible when the instruction arrives. The agent has to scroll, hover, or wait before it can click it. Top: initial screen. Bottom: after the required interaction.</figcaption>
-  </figure>
+<section class="container wide intro">
+  <table class="compare">
+    <thead>
+      <tr><th></th><th>Static Grounding</th><th class="igg"><span class="c-vp">I</span><span class="c-ms">G</span><span class="c-tm">G</span></th></tr>
+    </thead>
+    <tbody>
+      <tr><th>Target</th><td>Visible</td><td>Hidden or inactive</td></tr>
+      <tr><th>Goal</th><td>Localize</td><td>Reveal &rarr; Localize</td></tr>
+      <tr><th>Actions</th>
+        <td><span class="act click">CLICK</span></td>
+        <td><span class="act scroll">SCROLL</span><span class="act move">MOVE</span><span class="act wait">WAIT</span><span class="act drag">DRAG</span><span class="act click">CLICK</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="takeaways">
+    <p class="lead">Agents can&rsquo;t find what they can&rsquo;t see.</p>
+    <ul>
+      <li>Current GUI agents struggle when targets are not yet visible.</li>
+      <li>The main bottleneck is executing the reveal interaction.</li>
+      <li>Fine-tuning on reveal trajectories teaches actions VLMs rarely try.</li>
+    </ul>
+  </div>
 </section>
 
 <section class="container">
   <h2>Abstract</h2>
-  <p class="abstract">
+  <p>
     GUI grounding benchmarks ask whether an agent can localize a target that is already visible in a static screenshot.
     Real interfaces often violate this assumption: a target may be off-screen, appear only after a state change or hover, remain occluded, or become actionable after a delay.
     This leaves the ability to recover target visibility unevaluated.
@@ -64,37 +81,97 @@
   </p>
 </section>
 
-<section class="container">
-  <h2>Benchmark</h2>
-  <p>
-    601 tasks in 16 controllable environments modeled on familiar apps, grouped into three constraint types and seven sub-types.
-    The agent sees only screenshots and a goal-only instruction, acts with <code>scroll</code>, <code>move</code>, <code>drag</code>, <code>wait</code>, and <code>click</code>, and succeeds on the first click that hits the target.
-  </p>
-</section>
-<section class="container fig-only">
-  <figure>
-    <img src="static/fig/overview.png" alt="Left: key capabilities needed to reveal a target, and the five-action space. Right: the three visibility constraint types and their seven sub-types." width="1800" height="904" loading="lazy">
-  </figure>
-</section>
-
-<section class="container">
-  <h2>Results</h2>
-  <div class="result-row">
-    <figure>
-      <img src="static/fig/radar_subtype.png" alt="Radar chart of grounding accuracy by sub-type for Human (94.6%), GPT-5.5 (79.4%), and Qwen3-VL (30.8%)." width="1268" height="950" loading="lazy">
-    </figure>
-    <div>
-      <h3>A large human&ndash;model gap</h3>
-      <p>Humans solve 94.6% of tasks. GPT-5.5 reaches 79.4%, and no open model gets past a third. Dynamic targets and movable occlusion stay hard even for GPT-5.5.</p>
+<section class="container wide">
+  <h2>Make it visible, then click</h2>
+  <p class="sub">Seven sub-types in three constraint types, each shown before and after the reveal action.</p>
+  <div class="types">
+    <div class="type vp">
+      <h3>Viewport Constraint</h3>
+      <figure class="task">
+        <h4>Scroll-based Exploration</h4><p>Off-screen</p>
+        <img src="static/poster/scr.jpg" alt="E-commerce: scroll down to reveal the Cart button." width="1200" height="332" loading="lazy">
+      </figure>
+      <figure class="caps">
+        <h4>Key capabilities</h4>
+        <img src="static/poster/caps.png" alt="Four capabilities the agent needs: observability (bring target into view), state control (open or clear the UI), disambiguation (show cues on hover), manipulation (drag blockers aside), and temporal control (wait for the right state)." width="1200" height="1050" loading="lazy">
+      </figure>
+    </div>
+    <div class="type ms">
+      <h3>Multi-State Constraint</h3>
+      <figure class="task">
+        <h4>Visual Disambiguation</h4><p>Label on hover</p>
+        <img src="static/poster/vis.jpg" alt="Community Chat: hover a server icon to see its name, Creator Dock." width="1200" height="335" loading="lazy">
+      </figure>
+      <figure class="task">
+        <h4>Hidden State Activation</h4><p>In a closed menu</p>
+        <img src="static/poster/hid.jpg" alt="Document Editor: click the menu to reveal Rename." width="1200" height="335" loading="lazy">
+      </figure>
+      <figure class="task">
+        <h4>Removable Occlusion</h4><p>Behind a popup</p>
+        <img src="static/poster/rem.jpg" alt="Maps: dismiss a location popup to reveal the Moss &amp; Maple pin." width="1200" height="335" loading="lazy">
+      </figure>
+    </div>
+    <div class="type tm">
+      <h3>Temporal &amp; Manipulation Constraint</h3>
+      <figure class="task">
+        <h4>Delayed State Activation</h4><p>Activated after a delay</p>
+        <img src="static/poster/del.jpg" alt="Video Platform: wait until the Skip Ad button becomes active." width="1200" height="334" loading="lazy">
+      </figure>
+      <figure class="task">
+        <h4>Dynamic Target Interaction</h4><p>In a rotating banner</p>
+        <img src="static/poster/dyn.jpg" alt="News Portal: wait for the rotating banner to show the Pre-Order Now slide." width="1200" height="334" loading="lazy">
+      </figure>
+      <figure class="task">
+        <h4>Movable Occlusion</h4><p>Behind draggable elements</p>
+        <img src="static/poster/mov.jpg" alt="Design Canvas: drag sticky notes aside to reveal the QA Checklist." width="1200" height="334" loading="lazy">
+      </figure>
     </div>
   </div>
-  <div class="result-row wide-fig">
-    <figure>
-      <img src="static/fig/bottleneck.png" alt="(a) Qwen3-VL accuracy: full task 30.8, interaction specified 33.9, reveal performed 81.9. (b) Before and after SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1690" height="529" loading="lazy">
-    </figure>
+</section>
+
+<section class="container wide">
+  <div class="two">
     <div>
-      <h3>The bottleneck is the reveal, and it is learnable</h3>
-      <p>Naming the needed interaction barely helps (30.8 &rarr; 33.9). Performing it for the model jumps to 81.9. SFT followed by online GRPO adds 17&ndash;19 points across three 8B models.</p>
+      <h2>Environments &amp; tasks</h2>
+      <p class="sub">16 controllable web-app environments, 601 tasks, 7 sub-types.</p>
+      <div class="env">
+        <table class="cats">
+          <thead><tr><th>Category</th><th>Apps</th></tr></thead>
+          <tbody>
+            <tr><td>Productivity</td><td>5</td></tr>
+            <tr><td>Dev &amp; Design</td><td>3</td></tr>
+            <tr><td>Media</td><td>3</td></tr>
+            <tr><td>Lifestyle</td><td>3</td></tr>
+            <tr><td>Social</td><td>2</td></tr>
+            <tr class="total"><td>Total</td><td>16</td></tr>
+          </tbody>
+        </table>
+        <img class="donut" src="static/poster/donut.png" alt="Task distribution: Viewport 167 tasks; Multi-State 89 visual disambiguation, 104 hidden state activation, 53 removable occlusion; Temporal &amp; Manipulation 70 delayed, 58 dynamic, 60 movable occlusion." width="1400" height="1400" loading="lazy">
+      </div>
+    </div>
+    <div>
+      <h2>What do VLMs struggle with?</h2>
+      <p class="sub">Task accuracy by sub-type (&le;8 actions per task).</p>
+      <img src="static/poster/radar.png" alt="Radar chart of accuracy by sub-type for Human, GPT-5.5, Qwen3-VL, GPT-5.4-mini, Qwen2.5-VL, and GUI-Owl-1.5." width="1400" height="705" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<section class="container wide">
+  <div class="two">
+    <div>
+      <h2>VLMs struggle with hidden targets</h2>
+      <h4 class="claim">Most failures occur before the target becomes visible</h4>
+      <img src="static/poster/bars.png" alt="Qwen3-VL accuracy: unassisted 30.8, reveal action specified 33.9, target revealed 81.9; GPT-5.5 unassisted 79.4." width="1400" height="322" loading="lazy">
+      <h4 class="claim">Base VLMs mostly click, as if the target were visible</h4>
+      <img src="static/poster/share.png" alt="Action share: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1400" height="435" loading="lazy">
+    </div>
+    <div>
+      <h2>Reveal interactions are learnable</h2>
+      <h4 class="claim">Training improves task accuracy across all three VLMs</h4>
+      <img src="static/poster/learn1.png" alt="Base to SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL 3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1400" height="231" loading="lazy">
+      <h4 class="claim">Training improves most sub-types and enables <span class="drag-txt">DRAG</span></h4>
+      <img src="static/poster/learn2.png" alt="Per-sub-type gains for Qwen3-VL; Movable Occlusion goes from 0.0 to 62.5." width="1400" height="440" loading="lazy">
     </div>
   </div>
 </section>
