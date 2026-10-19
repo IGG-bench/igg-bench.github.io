@@ -8,11 +8,18 @@ const el = (tag, cls, html) => {
   return n;
 };
 
-const axis = () => {
+const axis = (title) => {
   const a = el('div', 'axis');
-  a.append(el('span'), el('div', 'ticks', '<span>0</span><span>50</span><span>100</span>'), el('span'));
-  return a;
+  a.append(el('span'), el('div', 'ticks', '<span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>'), el('span'));
+  if (title) {
+    const t = el('div', 'axis-title');
+    t.append(el('span'), el('span', '', title), el('span'));
+    return [a, t];
+  }
+  return [a];
 };
+
+const at = (node, v) => { node.style.left = `${v}%`; return node; };
 
 // ---------- tooltip ----------
 const tip = el('div', 'tip');
@@ -29,40 +36,45 @@ document.addEventListener('pointerover', (e) => {
 
 // ---------- 1. human-model gap (dot plot) ----------
 const gap = [
-  ['Viewport', [['Scroll-based Exploration', 93.3, 86.2, 15.0]]],
-  ['Multi-State', [
+  ['Viewport', 'vp', [['Scroll-based Exploration', 93.3, 86.2, 15.0]]],
+  ['Multi-State', 'ms', [
     ['Visual Disambiguation', 100.0, 86.5, 22.5],
     ['Hidden State Activation', 95.6, 87.5, 26.0],
     ['Removable Occlusion', 88.9, 98.1, 56.6],
   ]],
-  ['Temporal & Manipulation', [
+  ['Temporal & Manipulation', 'tm', [
     ['Delayed State Activation', 97.8, 95.7, 95.7],
     ['Dynamic Target Interaction', 97.8, 37.9, 25.9],
     ['Movable Occlusion', 88.9, 40.0, 1.7],
   ]],
 ];
 const gapEl = document.getElementById('gap');
-for (const [group, rows] of gap) {
-  gapEl.append(el('div', 'group', group));
-  for (const [name, h, g, q] of rows) {
+for (const [group, key, rows] of gap) {
+  const g = el('div', `group ${key}`);
+  g.append(el('span'), el('span', '', group), el('span'));
+  gapEl.append(g);
+  for (const [name, h, gp, q] of rows) {
     const row = el('div', 'row');
     const track = el('div', 'track');
-    const lo = Math.min(h, g, q), hi = Math.max(h, g, q);
-    const span = el('i', 'span');
-    span.style.left = `${lo}%`;
+    const lo = Math.min(h, gp, q), hi = Math.max(h, gp, q);
+    const span = at(el('i', 'span'), lo);
     span.style.width = `${hi - lo}%`;
     track.append(span);
-    for (const [cls, label, v] of [['human', 'Human', h], ['gpt', 'GPT-5.5', g], ['qwen', 'Qwen3-VL', q]]) {
-      const d = el('i', `mk ${cls}`);
-      d.style.left = `${v}%`;
+    for (const [cls, label, v] of [['human', 'Human', h], ['gpt', 'GPT-5.5', gp], ['qwen', 'Qwen3-VL', q]]) {
+      const d = at(el('i', `mk ${cls}`), v);
       d.dataset.tip = `<b>${name}</b><br>${label}: ${v.toFixed(1)}%`;
       track.append(d);
     }
+    // Qwen3-VL value printed next to its dot: it is the number the text is about.
+    const qv = at(el('span', 'dot-val'), q);
+    qv.textContent = q.toFixed(1);
+    if (q > 85) qv.classList.add('left');
+    track.append(qv);
     row.append(el('span', 'label', name), track, el('span'));
     gapEl.append(row);
   }
 }
-gapEl.append(axis());
+gapEl.append(...axis('Grounding accuracy (%)'));
 
 // ---------- 2. interventions (bars + GPT-5.5 reference) ----------
 const intervene = [
@@ -77,25 +89,23 @@ for (const [name, v] of intervene) {
   const bar = el('i', 'bar qwen');
   bar.style.width = `${v}%`;
   bar.dataset.tip = `<b>Qwen3-VL, ${name.toLowerCase()}</b><br>${v.toFixed(1)}% GA`;
-  const ref = el('i', 'ref');
-  ref.style.left = '79.4%';
-  track.append(bar, ref);
-  row.append(el('span', 'label', name), track, el('span', 'val', v.toFixed(1)));
+  const val = at(el('span', 'bar-val', v.toFixed(1)), v);
+  if (v > 70) val.classList.add('inside');
+  track.append(bar, at(el('i', 'ref'), 79.4), val);
+  row.append(el('span', 'label', name), track, el('span'));
   intEl.append(row);
 }
 const refRow = el('div', 'row ref-label');
 const refTrack = el('div', 'track');
-const refText = el('span', 'ref-text', 'GPT-5.5, full task: 79.4');
-refText.style.left = '79.4%';
-refTrack.append(refText);
+refTrack.append(at(el('span', 'ref-text', 'GPT-5.5 on the full task: 79.4'), 79.4));
 refRow.append(el('span'), refTrack, el('span'));
-intEl.append(refRow, axis());
+intEl.append(refRow, ...axis('Qwen3-VL grounding accuracy (%)'));
 
 // ---------- 3. omitted reveal actions in failed runs ----------
 const omit = [
-  ['DRAG needed', 59, 59],
-  ['SCROLL needed', 207, 247],
-  ['MOVE needed', 71, 96],
+  ['Needs DRAG', 59, 59],
+  ['Needs SCROLL', 207, 247],
+  ['Needs MOVE', 71, 96],
 ];
 const omitEl = document.getElementById('omit');
 for (const [name, k, n] of omit) {
@@ -105,11 +115,11 @@ for (const [name, k, n] of omit) {
   const bar = el('i', 'bar neutral');
   bar.style.width = `${v}%`;
   bar.dataset.tip = `<b>${name}</b><br>action never tried in ${k} of ${n} failed runs`;
-  track.append(bar);
+  track.append(bar, at(el('span', 'bar-val inside', `${v.toFixed(0)}%`), v));
   row.append(el('span', 'label', name), track, el('span', 'val', `${k}/${n}`));
   omitEl.append(row);
 }
-omitEl.append(axis());
+omitEl.append(...axis('Failed runs that never try the needed action (%)'));
 
 // ---------- 4. training (dumbbell) ----------
 const train = [
@@ -121,17 +131,16 @@ const trainEl = document.getElementById('train');
 for (const [name, a, b] of train) {
   const row = el('div', 'row');
   const track = el('div', 'track');
-  const line = el('i', 'span gain');
-  line.style.left = `${a}%`;
+  const line = at(el('i', 'span gain'), a);
   line.style.width = `${b - a}%`;
-  const d0 = el('i', 'mk base');
-  d0.style.left = `${a}%`;
+  const d0 = at(el('i', 'mk base'), a);
   d0.dataset.tip = `<b>${name}</b><br>Base: ${a.toFixed(1)}%`;
-  const d1 = el('i', 'mk trained');
-  d1.style.left = `${b}%`;
+  const d1 = at(el('i', 'mk trained'), b);
   d1.dataset.tip = `<b>${name}</b><br>SFT + GRPO: ${b.toFixed(1)}%`;
-  track.append(line, d0, d1);
-  row.append(el('span', 'label', name), track, el('span', 'val', `+${(b - a).toFixed(1)}`));
+  track.append(line, d0, d1,
+    at(el('span', 'dot-val left muted-val', a.toFixed(1)), a),
+    at(el('span', 'dot-val strong', b.toFixed(1)), b));
+  row.append(el('span', 'label', name), track, el('span', 'val gain-val', `+${(b - a).toFixed(1)}`));
   trainEl.append(row);
 }
-trainEl.append(axis());
+trainEl.append(...axis('Grounding accuracy on 120 held-out tasks (%)'));
