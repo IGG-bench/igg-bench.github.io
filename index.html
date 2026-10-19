@@ -3,246 +3,262 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="IGG-Bench evaluates GUI grounding agents when targets must first be made visible through interaction.">
-  <meta property="og:title" content="IGG-Bench">
-  <meta property="og:description" content="A Benchmark for Interactive GUI Grounding under Visibility Constraints">
+  <title>IGG: Interactive GUI Grounding under Visibility Constraints</title>
+  <meta name="description" content="IGG is a benchmark in which a GUI agent must first make the target visible through interaction and then click it. 601 tasks, 16 environments, 7 visibility-constraint sub-types.">
+  <meta property="og:title" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints">
+  <meta property="og:description" content="601 tasks · 16 controllable GUI environments · 7 visibility-constraint sub-types. EMNLP 2026.">
+  <meta property="og:image" content="https://igg-bench.github.io/static/fig/overview.png">
   <meta property="og:type" content="website">
-  <title>IGG-Bench · Interactive GUI Grounding</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="nav-wrap">
-    <nav class="nav shell" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="IGG-Bench home"><span class="brand-mark">IGG</span><span>Bench</span></a>
-      <div class="nav-links">
-        <a href="#demo">Demo</a>
-        <a href="#overview">Overview</a>
-        <a href="#taxonomy">Taxonomy</a>
-        <a href="#results">Results</a>
-        <a href="#citation">Citation</a>
-      </div>
-    </nav>
-  </header>
 
-  <main id="top">
-    <section class="hero shell">
-      <div class="venue-lockup" aria-label="EMNLP 2026">
-        <span class="venue-rule" aria-hidden="true"></span>
-        <span class="venue-name">EMNLP</span>
-        <span class="venue-year">2026</span>
-        <span class="venue-rule venue-rule-end" aria-hidden="true"></span>
-      </div>
-      <h1><span class="title-igg"><i>I</i><i>G</i><i>G</i><em>:</em></span> A Benchmark for Interactive GUI Grounding under Visibility Constraints</h1>
-      <p class="authors"><strong>Kyeongseon Kim</strong><sup>*</sup> · <strong>Jiyeon Son</strong><sup>*</sup> · <strong>Tae-Hyun Oh</strong><br><span class="affiliation">KAIST</span><br><span><sup>*</sup>Equal contribution</span></p>
-      <p class="hero-copy">IGG evaluates whether screenshot-only GUI agents can recover a target's visibility through minimal interaction—and then ground the correct element.</p>
-      <div class="actions" aria-label="Project resources">
-        <span class="button muted" title="Paper link will be added after release">Paper · soon</span>
-        <span class="button muted" title="Dataset link will be added after release">Dataset · soon</span>
-      </div>
-      <div class="stats" aria-label="Benchmark at a glance">
-        <div><strong>601</strong><span>tasks</span></div>
-        <div><strong>16</strong><span>mock applications</span></div>
-        <div><strong>5</strong><span>atomic actions</span></div>
-        <div><strong>7</strong><span>constraint sub-types</span></div>
-      </div>
-    </section>
+<header class="hero">
+  <div class="container">
+    <h1>
+      <span class="c1">I</span><span class="c2">G</span><span class="c3">G</span>: A Benchmark for
+      <span class="c1">I</span>nteractive <span class="c2">G</span>UI <span class="c3">G</span>rounding
+      under Visibility Constraints
+    </h1>
+    <p class="venue">EMNLP 2026</p>
+    <p class="authors">
+      <span>Kyeongseon Kim<sup>*</sup></span>
+      <span>Jiyeon Son<sup>*</sup></span>
+      <span>Tae-Hyun Oh</span>
+    </p>
+    <p class="affil">KAIST &nbsp;&middot;&nbsp; <sup>*</sup>Equal contribution</p>
+    <div class="links">
+      <a class="btn disabled" aria-disabled="true">Paper (coming soon)</a>
+      <a class="btn disabled" aria-disabled="true">Code (coming soon)</a>
+      <a class="btn disabled" aria-disabled="true">Dataset (coming soon)</a>
+      <a class="btn" href="#bibtex">BibTeX</a>
+    </div>
+  </div>
+</header>
 
-    <section id="demo" class="section demo-section shell">
-      <div class="section-heading demo-heading">
-        <p class="kicker">Benchmark at a glance</p>
-        <h2>Grounding starts before the click.</h2>
-      </div>
-      <div class="demo-frame">
-        <iframe src="assets/igg-benchmark-video.html" title="Animated overview of the IGG benchmark" loading="lazy" allow="autoplay" scrolling="no"></iframe>
-      </div>
-    </section>
+<main>
 
-    <section id="overview" class="section shell overview-section">
-      <div class="two-col overview-copy">
-        <div>
-          <p class="kicker">The missing middle</p>
-          <h2>Beyond static pixels.<br>Short of full navigation.</h2>
-        </div>
-        <div class="prose">
-          <p>Static GUI grounding assumes the requested element is already visible. Real interfaces violate that assumption: targets may be off-screen, visually ambiguous, hidden by state, occluded, delayed, or moving.</p>
-          <p>IGG keeps the goal precise—locate and click one target—while adding only the interaction required to make that target observable. Every click is verified online against the target element in the current UI state.</p>
-        </div>
-      </div>
-      <figure class="paper-figure overview-figure" aria-labelledby="overview-caption">
-        <div class="figure-head">
-          <div><span class="figure-index">01</span><strong>Interactive grounding, at a glance</strong></div>
-          <span class="figure-note">Observe · Reveal · Ground</span>
-        </div>
-        <div class="overview-diagram">
-          <section class="capability-panel" aria-label="Key capabilities and action space">
-            <div class="mini-browser" aria-hidden="true">
-              <div class="mini-browser-bar"><i></i><i></i><i></i><span>current screenshot</span></div>
-              <div class="mini-browser-body">
-                <div class="ghost-lines"><i></i><i></i><i></i><i></i></div>
-                <span class="target target-off">target 1</span>
-                <span class="target target-on">target 2</span>
-                <span class="cursor-mark">↖</span>
-              </div>
-            </div>
-            <div class="capability-list">
-              <span><b>01</b>Observability</span><span><b>02</b>Disambiguation</span>
-              <span><b>03</b>State control</span><span><b>04</b>Temporal control</span>
-            </div>
-            <p class="diagram-label">Screenshot-only target revelation</p>
-            <div class="action-space" aria-label="Action space"><span>SCROLL</span><span>MOVE</span><span>CLICK</span><span>WAIT</span><span>DRAG</span></div>
-          </section>
+<section class="container wide">
+  <figure>
+    <img src="static/fig/overview.png" alt="Overview of IGG: key capabilities and action space (left), three visibility constraint types (center), and human vs. model grounding accuracy (right)." width="2400" height="827">
+    <figcaption>
+      <b>Overview of Interactive GUI Grounding (IGG).</b>
+      <b>Left:</b> representative visibility constraints require observability, disambiguation, state control, or temporal control before the target can be clicked.
+      <b>Center:</b> these capabilities and a compact action space define the <i>Viewport</i>, <i>Multi-State</i>, and <i>Temporal/Manipulation</i> constraints.
+      <b>Right:</b> human solvability exceeds model grounding accuracy on all three constraint types.
+    </figcaption>
+  </figure>
+</section>
 
-          <section class="constraint-panel" aria-label="Visibility constraint taxonomy">
-            <div class="static-grounding">Static GUI Grounding</div>
-            <div class="flow-connector"><span>+</span><b>reveal interaction</b></div>
-            <article class="constraint-block ct-one"><header><b>1</b><span>Viewport Constraint</span></header><p>Reveal by viewport movement</p><small>Scroll-based Exploration</small></article>
-            <article class="constraint-block ct-two"><header><b>2</b><span>Multi-State Constraint</span></header><p>Reveal by state-changing interaction</p><div><small>Visual Disambiguation</small><small>Hidden State Activation</small><small>Removable Occlusion</small></div></article>
-            <article class="constraint-block ct-three"><header><b>3</b><span>Temporal / Manipulation</span></header><p>Reveal over time or by manipulation</p><div><small>Delayed State Activation</small><small>Dynamic Target Interaction</small><small>Movable Occlusion</small></div></article>
-          </section>
+<section class="container">
+  <h2>Abstract</h2>
+  <p class="abstract">
+    GUI grounding benchmarks ask whether an agent can localize a target that is already visible in a static screenshot.
+    Real interfaces often violate this assumption: a target may be off-screen, appear only after a state change or hover, remain occluded, or become actionable after a delay.
+    This leaves the ability to recover target visibility unevaluated.
+    To measure this reveal step, we introduce <b><i>Interactive GUI Grounding (IGG)</i></b>, a benchmark in which an agent must first make the target visible through interaction and then click it.
+    IGG contains 601 tasks across 16 controllable GUI environments and seven visibility-constraint sub-types, with a compact action space of scrolling, moving, dragging, waiting, and clicking.
+    In our human study, participants achieve 94.6% accuracy, while GPT-5.5 reaches 79.4% and the strongest evaluated open-source VLM reaches only 31.6%.
+    To identify the source of this gap, we conduct two controlled interventions.
+    Telling Qwen3-VL which interaction to perform raises its accuracy only from 30.8% to 33.9%, whereas performing the interaction for the model raises it to 81.9%.
+    The bottleneck is executing the reveal interaction, not recognizing the target once it is exposed.
+    We further show that this capability is learnable, demonstrating that visibility recovery can be strengthened consistently across model families.
+  </p>
+</section>
 
-          <section class="gap-panel" aria-label="Grounding accuracy by constraint type">
-            <div class="chart-title"><strong>Human–model gap</strong><span>Grounding Accuracy (%)</span></div>
-            <div class="chart-legend"><span class="human-dot">Human</span><span class="gpt-dot">GPT-5.5</span><span class="qwen-dot">Qwen3-VL</span></div>
-            <div class="group-chart">
-              <div class="group-row"><span>Viewport</span><div><i class="human-bar" style="--v:90%"></i><i class="gpt-bar" style="--v:86.2%"></i><i class="qwen-bar" style="--v:15%"></i></div><b>90.0</b></div>
-              <div class="group-row"><span>Multi-State</span><div><i class="human-bar" style="--v:94.4%"></i><i class="gpt-bar" style="--v:89.4%"></i><i class="qwen-bar" style="--v:31.3%"></i></div><b>94.4</b></div>
-              <div class="group-row"><span>Temporal &amp;<br>Manipulation</span><div><i class="human-bar" style="--v:94.4%"></i><i class="gpt-bar" style="--v:60.1%"></i><i class="qwen-bar" style="--v:44.1%"></i></div><b>94.4</b></div>
-            </div>
-            <div class="scale" aria-hidden="true"><span>0</span><span>50</span><span>100</span></div>
-          </section>
-        </div>
-        <figcaption id="overview-caption"><strong>Figure 1.</strong> Four key capabilities and five atomic actions define three visibility constraint types.</figcaption>
-      </figure>
-    </section>
+<section class="container">
+  <h2>Task examples</h2>
+  <p>
+    In every IGG task the target is <i>not</i> visible or not actionable in the first screenshot.
+    The instruction names only the target, never the procedure, so the agent has to work out which interaction exposes it.
+    An episode succeeds on the first click whose element ID matches the target.
+  </p>
+</section>
+<section class="container wide">
+  <figure>
+    <img src="static/fig/figure2_cropped.png" alt="Three example tasks: scroll to reveal a document in Document Editor, hover to reveal a server name in Community Chat, and wait for a Skip Ad button to activate in Video Platform." width="2000" height="1100" loading="lazy">
+    <figcaption>Examples of the three constraint types: viewport (scroll to reveal), multi-state (hover to disambiguate), and temporal (wait for activation).</figcaption>
+  </figure>
+</section>
 
-    <section id="taxonomy" class="section dark taxonomy-section">
-      <div class="shell">
-        <div class="taxonomy-heading">
-          <div><p class="kicker">Controlled interaction</p><h2>Three types.<br>Seven constraints.</h2></div>
-          <div class="action-strip" aria-label="Minimal action space"><span>SCROLL</span><span>MOVE</span><span>DRAG</span><span>WAIT</span><span class="target-action">CLICK</span></div>
-        </div>
-        <div class="level-grid concise-levels">
-          <article class="level-card">
-            <div class="level-top"><span>01</span><small>Viewport Constraint</small></div>
-            <h3>Reveal by viewport movement</h3>
-            <p>The target is hidden by the current viewport but remains reachable in the same UI state.</p>
-            <ul class="subtypes"><li><b>CT1-1</b><span>Scroll-based Exploration</span></li></ul>
-          </article>
-          <article class="level-card">
-            <div class="level-top"><span>02</span><small>Multi-State Constraint</small></div>
-            <h3>Reveal by state change</h3>
-            <p>The target or the cue needed to identify it appears only after an interface interaction.</p>
-            <ul class="subtypes"><li><b>CT2-1</b><span>Visual Disambiguation</span></li><li><b>CT2-2</b><span>Hidden State Activation</span></li><li><b>CT2-3</b><span>Removable Occlusion</span></li></ul>
-          </article>
-          <article class="level-card">
-            <div class="level-top"><span>03</span><small>Temporal &amp; Manipulation</small></div>
-            <h3>Reveal over time or by manipulation</h3>
-            <p>The target requires temporal control, tracking a dynamic state, or spatial manipulation.</p>
-            <ul class="subtypes"><li><b>CT3-1</b><span>Delayed State Activation</span></li><li><b>CT3-2</b><span>Dynamic Target Interaction</span></li><li><b>CT3-3</b><span>Movable Occlusion</span></li></ul>
-          </article>
-        </div>
-      </div>
-    </section>
+<section class="container">
+  <h2>The benchmark</h2>
+  <div class="split">
+    <div>
+      <p>
+        IGG has <b>601 tasks</b> across <b>16 controllable GUI environments</b> modeled on familiar applications.
+        Each environment starts from a deterministic state and gives every element a stable ID, so every click can be checked against the target at click time.
+      </p>
+      <p>Tasks fall into seven sub-types under three constraint types:</p>
+      <ul class="taxonomy">
+        <li><span class="tag t1">CT1</span> <b>Viewport</b>: scroll-based exploration</li>
+        <li><span class="tag t2">CT2</span> <b>Multi-State</b>: visual disambiguation, hidden state activation, removable occlusion</li>
+        <li><span class="tag t3">CT3</span> <b>Temporal / Manipulation</b>: delayed state activation, dynamic target interaction, movable occlusion</li>
+      </ul>
+      <p>The agent sees only screenshots, the instruction, and its own action history. The DOM, accessibility tree, and ground-truth trajectory stay hidden. It acts with five actions:</p>
+      <table class="plain actions">
+        <tbody>
+          <tr><td><code>SCROLL(dir, Δpx)</code></td><td>reveal off-screen regions</td></tr>
+          <tr><td><code>MOVE(x, y)</code></td><td>trigger hover states or disambiguating cues</td></tr>
+          <tr><td><code>DRAG(x₁, y₁, x₂, y₂)</code></td><td>move an element out of the way</td></tr>
+          <tr><td><code>WAIT(Δt)</code></td><td>let delayed or asynchronous UI settle</td></tr>
+          <tr><td><code>CLICK(x, y)</code></td><td>grounding is evaluated here</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <figure class="side">
+      <img src="static/fig/distribution_v5.png" alt="Task distribution: (a) share of each constraint type and sub-type, (b) number of tasks per platform by sub-type." width="1587" height="2935" loading="lazy">
+      <figcaption>Task distribution by constraint type and sub-type (a), and per platform (b).</figcaption>
+    </figure>
+  </div>
+</section>
 
-    <section id="benchmark" class="section shell dataset-section">
-      <div class="dataset-layout">
-        <div>
-          <div class="section-heading compact">
-            <p class="kicker">Dataset</p>
-            <h2>601 tasks across 16 controlled mockups</h2>
-            <p>Seven sub-types span off-screen targets, interface state changes, delayed and dynamic content, and movable occlusions. Every task is replayed to verify that its target is unique and reachable.</p>
-          </div>
-          <div class="dataset-facts"><div><strong>27.8%</strong><span>Viewport</span></div><div><strong>40.9%</strong><span>Multi-State</span></div><div><strong>31.3%</strong><span>Temporal &amp; Manipulation</span></div></div>
-        </div>
-        <figure class="distribution-figure" aria-labelledby="distribution-caption">
-          <div class="figure-head"><div><span class="figure-index">02</span><strong>Task distribution</strong></div><span class="figure-note">601 verified tasks</span></div>
-          <div class="distribution-summary">
-            <div class="donut" role="img" aria-label="27.8 percent viewport, 40.9 percent multi-state, and 31.3 percent temporal and manipulation constraints"><div><strong>601</strong><span>tasks</span></div></div>
-            <div class="subtype-legend">
-              <span class="legend-section">Constraint sub-types</span>
-              <span class="legend-item"><i class="s1"></i><b>167</b> Scroll</span>
-              <span class="legend-item"><i class="s2"></i><b>89</b> Visual</span>
-              <span class="legend-item"><i class="s3"></i><b>104</b> Hidden</span>
-              <span class="legend-item"><i class="s4"></i><b>53</b> Removable</span>
-              <span class="legend-item"><i class="s5"></i><b>70</b> Delayed</span>
-              <span class="legend-item"><i class="s6"></i><b>58</b> Dynamic</span>
-              <span class="legend-item"><i class="s7"></i><b>60</b> Movable</span>
-            </div>
-          </div>
-          <div class="platform-chart" aria-label="Stacked task counts for each of 16 mock applications">
-            <div class="platform-chart-head"><strong>Tasks per platform</strong><span>0</span><span>25</span><span>50</span></div>
-            <div class="platform-group"><small>PRODUCTIVITY</small>
-              <div class="platform-row"><label>Spreadsheet</label><div><i class="s1" style="--n:14"></i><i class="s2" style="--n:4"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:3"></i><i class="s7" style="--n:6"></i></div><b>42</b></div>
-              <div class="platform-row"><label>Email Client</label><div><i class="s1" style="--n:6"></i><i class="s2" style="--n:5"></i><i class="s3" style="--n:4"></i><i class="s4" style="--n:5"></i><i class="s5" style="--n:13"></i><i class="s6" style="--n:3"></i><i class="s7" style="--n:6"></i></div><b>42</b></div>
-              <div class="platform-row"><label>Document Editor</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:2"></i><i class="s5" style="--n:4"></i><i class="s6" style="--n:5"></i><i class="s7" style="--n:5"></i></div><b>40</b></div>
-              <div class="platform-row"><label>Workspace Pages</label><div><i class="s1" style="--n:9"></i><i class="s2" style="--n:8"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:4"></i><i class="s5" style="--n:7"></i></div><b>35</b></div>
-              <div class="platform-row"><label>Planner</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:3"></i><i class="s6" style="--n:3"></i></div><b>33</b></div>
-            </div>
-            <div class="platform-group"><small>DEV &amp; DESIGN</small>
-              <div class="platform-row"><label>Design Canvas</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:12"></i><i class="s3" style="--n:5"></i><i class="s4" style="--n:4"></i><i class="s6" style="--n:5"></i><i class="s7" style="--n:9"></i></div><b>45</b></div>
-              <div class="platform-row"><label>Developer Hub</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:3"></i></div><b>35</b></div>
-              <div class="platform-row"><label>Code Editor</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:7"></i><i class="s5" style="--n:3"></i><i class="s7" style="--n:6"></i></div><b>32</b></div>
-            </div>
-            <div class="platform-group"><small>SOCIAL &amp; MEDIA</small>
-              <div class="platform-row"><label>Community Chat</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:8"></i><i class="s3" style="--n:8"></i><i class="s4" style="--n:4"></i><i class="s5" style="--n:4"></i><i class="s6" style="--n:10"></i><i class="s7" style="--n:5"></i></div><b>49</b></div>
-              <div class="platform-row"><label>Social Feed</label><div><i class="s1" style="--n:11"></i><i class="s2" style="--n:6"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:3"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:2"></i></div><b>34</b></div>
-              <div class="platform-row"><label>Music Player</label><div><i class="s1" style="--n:9"></i><i class="s2" style="--n:13"></i><i class="s3" style="--n:7"></i><i class="s4" style="--n:6"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:2"></i><i class="s7" style="--n:8"></i></div><b>50</b></div>
-              <div class="platform-row"><label>Streaming</label><div><i class="s1" style="--n:20"></i><i class="s2" style="--n:2"></i><i class="s3" style="--n:3"></i><i class="s5" style="--n:3"></i><i class="s6" style="--n:6"></i><i class="s7" style="--n:5"></i></div><b>39</b></div>
-              <div class="platform-row"><label>Video Platform</label><div><i class="s1" style="--n:11"></i><i class="s2" style="--n:1"></i><i class="s3" style="--n:10"></i><i class="s4" style="--n:2"></i><i class="s5" style="--n:6"></i><i class="s6" style="--n:4"></i></div><b>34</b></div>
-            </div>
-            <div class="platform-group"><small>LIFESTYLE</small>
-              <div class="platform-row"><label>News Portal</label><div><i class="s1" style="--n:9"></i><i class="s2" style="--n:2"></i><i class="s3" style="--n:6"></i><i class="s4" style="--n:5"></i><i class="s5" style="--n:1"></i><i class="s6" style="--n:8"></i></div><b>31</b></div>
-              <div class="platform-row"><label>E-commerce</label><div><i class="s1" style="--n:8"></i><i class="s3" style="--n:9"></i><i class="s4" style="--n:4"></i><i class="s5" style="--n:5"></i><i class="s6" style="--n:4"></i></div><b>30</b></div>
-              <div class="platform-row"><label>Maps</label><div><i class="s1" style="--n:10"></i><i class="s2" style="--n:4"></i><i class="s4" style="--n:5"></i><i class="s5" style="--n:1"></i><i class="s7" style="--n:10"></i></div><b>30</b></div>
-            </div>
-          </div>
-          <figcaption id="distribution-caption">Task distribution by type, subtype, and platform.</figcaption>
-        </figure>
-      </div>
-      <div class="app-marquee" aria-label="Mock application names"><span>Chirp</span><span>Dayplan</span><span>Devhub</span><span>Devpad</span><span>Discord</span><span>Docs</span><span>Figma</span><span>Gridly</span><span>Mailo</span><span>Never</span><span>Pagely</span><span>Reelify</span><span>Shopping</span><span>Wavr</span><span>Wayfind</span><span>YouTube</span></div>
-    </section>
+<section class="container">
+  <h3>Environments</h3>
+  <p class="muted">Screenshots of the mockup environments. Each one is modeled on a familiar application (shown in parentheses).</p>
+  <div class="gallery">
+    <figure><img src="static/env/docs-editor.jpg" alt="" loading="lazy"><figcaption>Document Editor <span>(Google Docs)</span></figcaption></figure>
+    <figure><img src="static/env/gridly-sheet.jpg" alt="" loading="lazy"><figcaption>Spreadsheet <span>(Google Sheets)</span></figcaption></figure>
+    <figure><img src="static/env/mailo-inbox.jpg" alt="" loading="lazy"><figcaption>Email Client <span>(Gmail)</span></figcaption></figure>
+    <figure><img src="static/env/pagely-page.jpg" alt="" loading="lazy"><figcaption>Workspace Pages <span>(Notion)</span></figcaption></figure>
+    <figure><img src="static/env/dayplan-calendar.jpg" alt="" loading="lazy"><figcaption>Planner <span>(Google Calendar)</span></figcaption></figure>
+    <figure><img src="static/env/figma-canvas.jpg" alt="" loading="lazy"><figcaption>Design Canvas <span>(Figma)</span></figcaption></figure>
+    <figure><img src="static/env/devhub-repo.jpg" alt="" loading="lazy"><figcaption>Developer Hub <span>(GitHub)</span></figcaption></figure>
+    <figure><img src="static/env/devpad-editor.jpg" alt="" loading="lazy"><figcaption>Code Editor <span>(VS Code Web)</span></figcaption></figure>
+    <figure><img src="static/env/discord-server.jpg" alt="" loading="lazy"><figcaption>Community Chat <span>(Discord)</span></figcaption></figure>
+    <figure><img src="static/env/chirp-feed.jpg" alt="" loading="lazy"><figcaption>Social Feed <span>(Twitter/X)</span></figcaption></figure>
+    <figure><img src="static/env/wavr-album.jpg" alt="" loading="lazy"><figcaption>Music Player <span>(Spotify)</span></figcaption></figure>
+    <figure><img src="static/env/reelify-browse.jpg" alt="" loading="lazy"><figcaption>Streaming Service <span>(Netflix)</span></figcaption></figure>
+    <figure><img src="static/env/youtube-watch.jpg" alt="" loading="lazy"><figcaption>Video Platform <span>(YouTube)</span></figcaption></figure>
+    <figure><img src="static/env/never-home.jpg" alt="" loading="lazy"><figcaption>News Portal <span>(Google)</span></figcaption></figure>
+    <figure><img src="static/env/shopping-home.jpg" alt="" loading="lazy"><figcaption>E-commerce <span>(Walmart)</span></figcaption></figure>
+    <figure><img src="static/env/wayfind-map.jpg" alt="" loading="lazy"><figcaption>Maps <span>(Google Maps)</span></figcaption></figure>
+  </div>
+</section>
 
-    <section id="results" class="section results-section">
-      <div class="shell results-layout concise-results">
-        <div>
-          <p class="kicker">Main results</p>
-          <h2>Visibility recovery is the bottleneck.</h2>
-          <p class="results-copy">Humans solve nearly all tasks, while the strongest open-source baseline reaches only 31.6% GA. Completing the reveal interactions before Qwen3-VL's final click raises its GA from 30.8% to 81.9%.</p>
-          <div class="result-numbers"><div><strong>94.6%</strong><span>Human GA</span></div><div><strong>79.4%</strong><span>GPT-5.5 GA</span></div><div><strong>31.6%</strong><span>Best open-source GA</span></div><div><strong>+51.1</strong><span>Oracle-reveal gain</span></div></div>
-        </div>
-        <figure class="result-figure" aria-labelledby="results-caption">
-          <div class="figure-head"><div><span class="figure-index">03</span><strong>The interaction gap</strong></div><span class="figure-note">Grounding Accuracy</span></div>
-          <div class="scoreboard">
-            <div class="score-row human-score"><div><span>Human</span><strong>94.6%</strong></div><i><b style="--score:94.6%"></b></i></div>
-            <div class="score-row gpt-score"><div><span>GPT-5.5</span><strong>79.4%</strong></div><i><b style="--score:79.4%"></b></i></div>
-            <div class="score-row oss-score"><div><span>GUI-Owl 1.5 <small>best open source</small></span><strong>31.6%</strong></div><i><b style="--score:31.6%"></b></i></div>
-            <div class="score-row qwen-score"><div><span>Qwen3-VL</span><strong>30.8%</strong></div><i><b style="--score:30.8%"></b></i></div>
-          </div>
-          <div class="gap-callout"><span>Oracle reveal</span><strong>30.8% <i>→</i> 81.9%</strong><p>Completing the required reveal interactions unlocks a <b>+51.1 point</b> gain for Qwen3-VL.</p></div>
-          <div class="subtype-tags" aria-label="Evaluated constraint sub-types"><span>Scroll</span><span>Visual</span><span>Hidden</span><span>Removable</span><span>Delayed</span><span>Dynamic</span><span>Movable</span></div>
-          <figcaption id="results-caption">Performance across the seven visibility constraint sub-types.</figcaption>
-        </figure>
-      </div>
-    </section>
+<section class="container">
+  <h2>Results</h2>
+  <p>
+    Grounding accuracy (GA, %) on the full 601-task benchmark, with an eight-action budget and greedy decoding.
+    Human numbers come from a separate solvability study (21 tasks, 15 participants, 315 trials).
+  </p>
+  <div class="table-wrap">
+    <table class="results">
+      <thead>
+        <tr><th>Constraint</th><th>Human<sup>†</sup></th><th>Qwen2.5-VL-7B</th><th>Qwen3-VL-8B</th><th>GUI-Owl-1.5-8B</th><th>GPT-5.5</th></tr>
+      </thead>
+      <tbody>
+        <tr class="group"><td>CT1 · Viewport</td><td>93.3</td><td>10.8</td><td>15.0</td><td>15.0</td><td><b>86.2</b></td></tr>
+        <tr class="group"><td>CT2 · Multi-State</td><td>94.8</td><td>14.6</td><td>31.3</td><td>31.3</td><td><b>89.4</b></td></tr>
+        <tr class="sub"><td>Visual Disambiguation</td><td>100.0</td><td>18.0</td><td>22.5</td><td>27.0</td><td><b>86.5</b></td></tr>
+        <tr class="sub"><td>Hidden State Activation</td><td>95.6</td><td>9.6</td><td>26.0</td><td>23.1</td><td><b>87.5</b></td></tr>
+        <tr class="sub"><td>Removable Occlusion</td><td>88.9</td><td>18.9</td><td>56.6</td><td>54.7</td><td><b>98.1</b></td></tr>
+        <tr class="group"><td>CT3 · Temporal / Manipulation</td><td>94.8</td><td>42.6</td><td>44.1</td><td>46.8</td><td><b>60.1</b></td></tr>
+        <tr class="sub"><td>Delayed State Activation</td><td>97.8</td><td>85.7</td><td><b>95.7</b></td><td>94.3</td><td><b>95.7</b></td></tr>
+        <tr class="sub"><td>Dynamic Target Interaction</td><td>97.8</td><td>32.8</td><td>25.9</td><td>36.2</td><td><b>37.9</b></td></tr>
+        <tr class="sub"><td>Movable Occlusion</td><td>88.9</td><td>1.7</td><td>1.7</td><td>1.7</td><td><b>40.0</b></td></tr>
+        <tr class="total"><td>Overall</td><td>94.6</td><td>22.3</td><td>30.8</td><td>31.6</td><td><b>79.4</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="note"><sup>†</sup>Human study on a 21-task suite; bold marks the best model.</p>
 
-    <section id="citation" class="section citation-section">
-      <div class="shell citation-card">
-        <div><p class="kicker">Citation</p><h2>Build on IGG-Bench</h2><p>Please cite our EMNLP 2026 paper. The proceedings identifier will be added after publication.</p></div>
-        <div class="code-wrap"><pre><code>@inproceedings{iggbench2026,
-  author = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},
-  title = {IGG: A Benchmark for Interactive GUI Grounding
-           under Visibility Constraints},
-  booktitle = {EMNLP},
-  year = {2026}
-}</code></pre><button id="copy-citation" type="button">Copy</button></div>
-      </div>
-    </section>
-  </main>
+  <div class="pair">
+    <figure>
+      <img src="static/fig/paper_fig_radar_v2_recommended.png" alt="Radar chart of GA per sub-type for humans, GPT-5.5, and open-source VLMs." width="1366" height="1044" loading="lazy">
+      <figcaption>Humans, GPT-5.5, and open-source VLMs.</figcaption>
+    </figure>
+    <figure>
+      <img src="static/fig/paper_fig_radar_v1_all_models.png" alt="Radar chart of GA per sub-type for additional model baselines." width="1410" height="1155" loading="lazy">
+      <figcaption>Additional model baselines.</figcaption>
+    </figure>
+  </div>
+</section>
 
-  <footer><div class="shell"><p>IGG-Bench · EMNLP 2026</p><p>KAIST</p></div></footer>
-  <script src="script.js"></script>
+<section class="container">
+  <h2>Where does it fail?</h2>
+  <p>
+    We split an episode into four stages: selecting a reveal action, executing it with the right location or parameters, recognizing the target, and localizing the final click.
+    We then intervene at two of them.
+    Telling the model <i>which</i> interaction is needed barely helps.
+    Performing the interaction <i>for</i> the model recovers most of the gap.
+  </p>
+  <div class="table-wrap">
+    <table class="results narrow">
+      <thead><tr><th>Condition</th><th>Qwen3-VL</th><th>GPT-5.4 Mini (Low)</th></tr></thead>
+      <tbody>
+        <tr><td>Full task</td><td>30.8</td><td>72.4</td></tr>
+        <tr><td>Interaction specified</td><td>33.9</td><td>–</td></tr>
+        <tr><td>Reveal performed</td><td><b>81.9</b></td><td><b>90.4</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>
+    So most errors happen in choosing where and how to perform the reveal, before target recognition is even tested.
+    Target-agnostic heuristics show the same split: fixed scrolling, hovering, and waiting reveal 68.8%, 61.4%, and 87.1% of their matched tasks, while popup dismissal and occluder dragging reach only 17.6% and 16.9%.
+  </p>
+</section>
+
+<section class="container">
+  <h2>Visibility recovery is learnable</h2>
+  <p>
+    Base VLMs never emit <code>DRAG</code> on the held-out tasks, so RL alone has nothing to reinforce.
+    We first run frequency-balanced SFT on human-verified trajectories to bring rare reveal actions into the policy's support, then apply online GRPO with browser-executed rewards.
+    On the 120-task held-out split this raises Qwen3-VL from 40.0% to 59.2% GA, and the same recipe gives similar gains on two other architectures.
+  </p>
+  <div class="pair">
+    <figure>
+      <img src="static/fig/paper_fig_radar_training_progression.png" alt="Radar chart of per-sub-type GA for baseline, SFT, and SFT+GRPO." width="1366" height="1058" loading="lazy">
+      <figcaption>Per-sub-type gains from baseline to SFT and SFT+GRPO.</figcaption>
+    </figure>
+    <figure>
+      <img src="static/fig/paper_main_fig_action_share_training.png" alt="Bar chart of action share for baselines, SFT, and SFT+GRPO." width="2110" height="1096" loading="lazy">
+      <figcaption>Action-prior shift across baselines, SFT, and SFT+GRPO.</figcaption>
+    </figure>
+  </div>
+  <div class="table-wrap">
+    <table class="results narrow">
+      <thead><tr><th>Model (120-task val)</th><th>Base</th><th>SFT+GRPO</th></tr></thead>
+      <tbody>
+        <tr><td>Qwen3-VL-8B</td><td>40.0</td><td><b>59.2</b></td></tr>
+        <tr><td>InternVL3.5-8B</td><td>28.3</td><td><b>47.5</b></td></tr>
+        <tr><td>GUI-Owl-1.5-8B</td><td>35.0</td><td><b>52.5</b></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="container" id="bibtex">
+  <h2>BibTeX</h2>
+  <div class="bib">
+    <button type="button" id="copy">Copy</button>
+<pre><code>@inproceedings{kim2026igg,
+  title     = {{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints},
+  author    = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},
+  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
+  year      = {2026}
+}</code></pre>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <p>Contact: <a href="mailto:ella94.ai@gmail.com">ella94.ai@gmail.com</a></p>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('copy').addEventListener('click', async (e) => {
+    const text = document.querySelector('.bib code').textContent;
+    try { await navigator.clipboard.writeText(text); e.target.textContent = 'Copied'; }
+    catch { e.target.textContent = 'Select & copy'; }
+    setTimeout(() => { e.target.textContent = 'Copy'; }, 1500);
+  });
+</script>
 </body>
 </html>
