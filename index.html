@@ -36,6 +36,7 @@
       <a class="btn disabled" aria-disabled="true">Dataset (coming soon)</a>
       <a class="btn" href="#bibtex">BibTeX</a>
     </div>
+    <p class="tldr">Real interfaces hide things. IGG tests whether a GUI agent can first make a hidden target visible, by scrolling, hovering, waiting, or dragging, and then click it.</p>
   </div>
 </header>
 
@@ -79,32 +80,34 @@
 
 <section class="container">
   <h2>Results</h2>
-  <div class="result-row">
-    <figure>
-      <img src="static/fig/radar_subtype.png" alt="Radar chart of grounding accuracy by sub-type for Human (94.6%), GPT-5.5 (79.4%), and Qwen3-VL (30.8%)." width="1268" height="950" loading="lazy">
-    </figure>
-    <div>
-      <h3>A large human&ndash;model gap</h3>
-      <p>Humans solve 94.6% of tasks. GPT-5.5 reaches 79.4%, and no open model gets past a third. Dynamic targets and movable occlusion stay hard even for GPT-5.5.</p>
+
+  <div class="block">
+    <h3>A large human&ndash;model gap</h3>
+    <p class="muted">Grounding accuracy (%) by sub-type on the 601-task benchmark. Humans are scored in a separate solvability study.</p>
+    <div class="legend">
+      <span><i class="mk human"></i>Human <b>94.6</b></span>
+      <span><i class="mk gpt"></i>GPT-5.5 <b>79.4</b></span>
+      <span><i class="mk qwen"></i>Qwen3-VL-8B <b>30.8</b></span>
     </div>
+    <div class="chart dots" id="gap"></div>
   </div>
-  <div class="result-row wide-fig">
-    <figure>
-      <img src="static/fig/bottleneck.png" alt="(a) Qwen3-VL accuracy: full task 30.8, interaction specified 33.9, reveal performed 81.9. (b) Before and after SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1690" height="529" loading="lazy">
-    </figure>
-    <div>
-      <h3>The bottleneck is the reveal</h3>
-      <p>Naming the needed interaction barely helps (30.8 &rarr; 33.9). Performing it for the model jumps to 81.9. SFT followed by online GRPO adds 17&ndash;19 points across three 8B models.</p>
-    </div>
+
+  <div class="block">
+    <h3>The bottleneck is the reveal</h3>
+    <p class="muted">Telling Qwen3-VL which interaction to use barely helps. Doing the interaction for it nearly triples accuracy.</p>
+    <div class="chart bars" id="intervene"></div>
+    <p class="muted small-gap">Share of failed Qwen3-VL runs (%) that never try the action the task needs.</p>
+    <div class="chart bars" id="omit"></div>
   </div>
-  <div class="result-row wide-fig">
-    <figure>
-      <img src="static/fig/action_share.png" alt="Action share: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1400" height="435" loading="lazy">
-    </figure>
-    <div>
-      <h3>Base models never drag</h3>
-      <p>Base VLMs mostly click, as if the target were already visible, and none of them ever emits <code>DRAG</code>. Training brings the missing reveal actions into the policy.</p>
+
+  <div class="block">
+    <h3>Visibility recovery is learnable</h3>
+    <p class="muted">Frequency-balanced SFT followed by online GRPO, on 120 held-out tasks.</p>
+    <div class="legend">
+      <span><i class="mk base"></i>Base</span>
+      <span><i class="mk trained"></i>SFT + GRPO</span>
     </div>
+    <div class="chart dumbbell" id="train"></div>
   </div>
 </section>
 
@@ -132,5 +135,6 @@
     setTimeout(() => { e.target.textContent = 'Copy'; }, 1500);
   });
 </script>
+<script src="charts.js"></script>
 </body>
 </html>

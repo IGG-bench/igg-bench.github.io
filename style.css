@@ -152,20 +152,113 @@ main { padding-bottom: 80px; }
 
 /* ---------- results rows ---------- */
 .teaser { margin-top: 24px; }
-.result-row {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: 32px;
-  align-items: center;
-  margin-bottom: 40px;
-}
-.result-row h3 { margin-bottom: 8px; }
-.result-row p { color: var(--muted); }
+.tldr { max-width: 720px; margin: 22px auto 0; font-size: 1.12rem; color: var(--text); }
 @media (max-width: 760px) {
-  .result-row { grid-template-columns: 1fr; gap: 12px; }
-}
+  }
 .fig-only { margin-top: 24px; }
-.result-row.wide-fig { grid-template-columns: 1.6fr 1fr; }
-@media (max-width: 760px) {
-  .result-row.wide-fig { grid-template-columns: 1fr; }
+
+/* ---------- result charts (charts.js) ---------- */
+:root {
+  --gpt: #2c5aa0;
+  --qwen: #d9642b;
+  --human: #6b7280;
+  --grid: #e3e7ec;
+}
+.block { margin-bottom: 52px; }
+.block h3 { font-size: 1.15rem; margin-bottom: 4px; }
+.block > p.muted { margin-bottom: 14px; }
+.small-gap { margin-top: 26px; }
+
+.legend { display: flex; flex-wrap: wrap; gap: 6px 20px; font-size: 0.9rem; margin-bottom: 10px; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend b { font-weight: 600; }
+.legend .mk { position: static; transform: none; }
+
+.chart { font-size: 0.9rem; }
+.chart .row, .chart .axis {
+  display: grid;
+  grid-template-columns: 200px 1fr 56px;
+  gap: 14px;
+  align-items: center;
+}
+.chart .row { min-height: 30px; }
+.chart .label { text-align: right; color: var(--text); line-height: 1.3; }
+.chart .val { color: var(--muted); font-variant-numeric: tabular-nums; }
+.chart .group {
+  margin: 12px 0 2px 214px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.chart .group:first-child { margin-top: 0; }
+
+.track {
+  position: relative;
+  height: 22px;
+  background:
+    linear-gradient(var(--grid), var(--grid)) 0 0 / 1px 100% no-repeat,
+    linear-gradient(var(--grid), var(--grid)) 50% 0 / 1px 100% no-repeat,
+    linear-gradient(var(--grid), var(--grid)) 100% 0 / 1px 100% no-repeat;
+}
+.axis .ticks { position: relative; height: 18px; font-size: 0.75rem; color: var(--muted); }
+.axis .ticks span { position: absolute; transform: translateX(-50%); }
+.axis .ticks span:nth-child(1) { left: 0; }
+.axis .ticks span:nth-child(2) { left: 50%; }
+.axis .ticks span:nth-child(3) { left: 100%; }
+
+.mk {
+  position: absolute;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  box-shadow: 0 0 0 2px #fff;
+  cursor: default;
+}
+.mk.gpt { background: var(--gpt); }
+.mk.qwen { background: var(--qwen); }
+.mk.human { background: #fff; border: 2px solid var(--human); border-radius: 2px; width: 11px; height: 11px; transform: translate(-50%, -50%) rotate(45deg); }
+.legend .mk.human { transform: rotate(45deg); }
+.mk.base { background: #fff; border: 2px solid var(--gpt); }
+.mk.trained { background: var(--gpt); }
+.span { position: absolute; top: 50%; height: 2px; background: #cdd3da; transform: translateY(-50%); }
+.span.gain { background: var(--gpt); opacity: 0.45; }
+
+.bar {
+  position: absolute;
+  left: 0;
+  top: 4px;
+  bottom: 4px;
+  border-radius: 0 4px 4px 0;
+}
+.bar.qwen { background: var(--qwen); }
+.bar.neutral { background: #8a94a1; }
+.ref { position: absolute; top: -4px; bottom: -4px; border-left: 2px dashed var(--gpt); }
+.row.ref-label { min-height: 18px; }
+.ref-label .track { background: none; height: 18px; }
+.ref-text { position: absolute; transform: translateX(-50%); white-space: nowrap; font-size: 0.78rem; color: var(--gpt); }
+
+.tip {
+  position: absolute;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.12s;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 0 4px 14px rgba(15, 30, 50, 0.12);
+  padding: 6px 10px;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 600px) {
+  .chart .row, .chart .axis { grid-template-columns: 112px 1fr 44px; gap: 8px; }
+  .chart .group { margin-left: 120px; }
+  .chart { font-size: 0.8rem; }
 }
