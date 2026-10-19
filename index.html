@@ -41,15 +41,10 @@
 
 <main>
 
-<section class="container wide">
+<section class="container wide teaser">
   <figure>
-    <img src="static/fig/overview.png" alt="Overview of IGG: key capabilities and action space (left), three visibility constraint types (center), and human vs. model grounding accuracy (right)." width="2400" height="827">
-    <figcaption>
-      <b>Overview of Interactive GUI Grounding (IGG).</b>
-      <b>Left:</b> representative visibility constraints require observability, disambiguation, state control, or temporal control before the target can be clicked.
-      <b>Center:</b> these capabilities and a compact action space define the <i>Viewport</i>, <i>Multi-State</i>, and <i>Temporal/Manipulation</i> constraints.
-      <b>Right:</b> human solvability exceeds model grounding accuracy on all three constraint types.
-    </figcaption>
+    <img src="static/fig/examples.png" alt="Three IGG tasks, before (top) and after (bottom) the required interaction: scroll to reveal a document, hover to reveal a server name, wait for a Skip Ad button to activate." width="2000" height="891">
+    <figcaption>The target is often not visible when the instruction arrives. The agent has to scroll, hover, or wait before it can click it. Top: initial screen. Bottom: after the required interaction.</figcaption>
   </figure>
 </section>
 
@@ -70,164 +65,37 @@
 </section>
 
 <section class="container">
-  <h2>Task examples</h2>
+  <h2>Benchmark</h2>
   <p>
-    In every IGG task the target is <i>not</i> visible or not actionable in the first screenshot.
-    The instruction names only the target, never the procedure, so the agent has to work out which interaction exposes it.
-    An episode succeeds on the first click whose element ID matches the target.
+    601 tasks in 16 controllable environments modeled on familiar apps, grouped into three constraint types and seven sub-types.
+    The agent sees only screenshots and a goal-only instruction, acts with <code>scroll</code>, <code>move</code>, <code>drag</code>, <code>wait</code>, and <code>click</code>, and succeeds on the first click that hits the target.
   </p>
 </section>
-<section class="container wide">
+<section class="container fig-only">
   <figure>
-    <img src="static/fig/figure2_cropped.png" alt="Three example tasks: scroll to reveal a document in Document Editor, hover to reveal a server name in Community Chat, and wait for a Skip Ad button to activate in Video Platform." width="2000" height="1100" loading="lazy">
-    <figcaption>Examples of the three constraint types: viewport (scroll to reveal), multi-state (hover to disambiguate), and temporal (wait for activation).</figcaption>
+    <img src="static/fig/overview.png" alt="Left: key capabilities needed to reveal a target, and the five-action space. Right: the three visibility constraint types and their seven sub-types." width="1800" height="904" loading="lazy">
   </figure>
 </section>
 
 <section class="container">
-  <h2>The benchmark</h2>
-  <div class="split">
-    <div>
-      <p>
-        IGG has <b>601 tasks</b> across <b>16 controllable GUI environments</b> modeled on familiar applications.
-        Each environment starts from a deterministic state and gives every element a stable ID, so every click can be checked against the target at click time.
-      </p>
-      <p>Tasks fall into seven sub-types under three constraint types:</p>
-      <ul class="taxonomy">
-        <li><span class="tag t1">CT1</span> <b>Viewport</b>: scroll-based exploration</li>
-        <li><span class="tag t2">CT2</span> <b>Multi-State</b>: visual disambiguation, hidden state activation, removable occlusion</li>
-        <li><span class="tag t3">CT3</span> <b>Temporal / Manipulation</b>: delayed state activation, dynamic target interaction, movable occlusion</li>
-      </ul>
-      <p>The agent sees only screenshots, the instruction, and its own action history. The DOM, accessibility tree, and ground-truth trajectory stay hidden. It acts with five actions:</p>
-      <table class="plain actions">
-        <tbody>
-          <tr><td><code>SCROLL(dir, Δpx)</code></td><td>reveal off-screen regions</td></tr>
-          <tr><td><code>MOVE(x, y)</code></td><td>trigger hover states or disambiguating cues</td></tr>
-          <tr><td><code>DRAG(x₁, y₁, x₂, y₂)</code></td><td>move an element out of the way</td></tr>
-          <tr><td><code>WAIT(Δt)</code></td><td>let delayed or asynchronous UI settle</td></tr>
-          <tr><td><code>CLICK(x, y)</code></td><td>grounding is evaluated here</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <figure class="side">
-      <img src="static/fig/distribution_v5.png" alt="Task distribution: (a) share of each constraint type and sub-type, (b) number of tasks per platform by sub-type." width="1587" height="2935" loading="lazy">
-      <figcaption>Task distribution by constraint type and sub-type (a), and per platform (b).</figcaption>
-    </figure>
-  </div>
-</section>
-
-<section class="container">
-  <h3>Environments</h3>
-  <p class="muted">Screenshots of the mockup environments. Each one is modeled on a familiar application (shown in parentheses).</p>
-  <div class="gallery">
-    <figure><img src="static/env/docs-editor.jpg" alt="" loading="lazy"><figcaption>Document Editor <span>(Google Docs)</span></figcaption></figure>
-    <figure><img src="static/env/gridly-sheet.jpg" alt="" loading="lazy"><figcaption>Spreadsheet <span>(Google Sheets)</span></figcaption></figure>
-    <figure><img src="static/env/mailo-inbox.jpg" alt="" loading="lazy"><figcaption>Email Client <span>(Gmail)</span></figcaption></figure>
-    <figure><img src="static/env/pagely-page.jpg" alt="" loading="lazy"><figcaption>Workspace Pages <span>(Notion)</span></figcaption></figure>
-    <figure><img src="static/env/dayplan-calendar.jpg" alt="" loading="lazy"><figcaption>Planner <span>(Google Calendar)</span></figcaption></figure>
-    <figure><img src="static/env/figma-canvas.jpg" alt="" loading="lazy"><figcaption>Design Canvas <span>(Figma)</span></figcaption></figure>
-    <figure><img src="static/env/devhub-repo.jpg" alt="" loading="lazy"><figcaption>Developer Hub <span>(GitHub)</span></figcaption></figure>
-    <figure><img src="static/env/devpad-editor.jpg" alt="" loading="lazy"><figcaption>Code Editor <span>(VS Code Web)</span></figcaption></figure>
-    <figure><img src="static/env/discord-server.jpg" alt="" loading="lazy"><figcaption>Community Chat <span>(Discord)</span></figcaption></figure>
-    <figure><img src="static/env/chirp-feed.jpg" alt="" loading="lazy"><figcaption>Social Feed <span>(Twitter/X)</span></figcaption></figure>
-    <figure><img src="static/env/wavr-album.jpg" alt="" loading="lazy"><figcaption>Music Player <span>(Spotify)</span></figcaption></figure>
-    <figure><img src="static/env/reelify-browse.jpg" alt="" loading="lazy"><figcaption>Streaming Service <span>(Netflix)</span></figcaption></figure>
-    <figure><img src="static/env/youtube-watch.jpg" alt="" loading="lazy"><figcaption>Video Platform <span>(YouTube)</span></figcaption></figure>
-    <figure><img src="static/env/never-home.jpg" alt="" loading="lazy"><figcaption>News Portal <span>(Google)</span></figcaption></figure>
-    <figure><img src="static/env/shopping-home.jpg" alt="" loading="lazy"><figcaption>E-commerce <span>(Walmart)</span></figcaption></figure>
-    <figure><img src="static/env/wayfind-map.jpg" alt="" loading="lazy"><figcaption>Maps <span>(Google Maps)</span></figcaption></figure>
-  </div>
-</section>
-
-<section class="container">
   <h2>Results</h2>
-  <p>
-    Grounding accuracy (GA, %) on the full 601-task benchmark, with an eight-action budget and greedy decoding.
-    Human numbers come from a separate solvability study (21 tasks, 15 participants, 315 trials).
-  </p>
-  <div class="table-wrap">
-    <table class="results">
-      <thead>
-        <tr><th>Constraint</th><th>Human<sup>†</sup></th><th>Qwen2.5-VL-7B</th><th>Qwen3-VL-8B</th><th>GUI-Owl-1.5-8B</th><th>GPT-5.5</th></tr>
-      </thead>
-      <tbody>
-        <tr class="group"><td>CT1 · Viewport</td><td>93.3</td><td>10.8</td><td>15.0</td><td>15.0</td><td><b>86.2</b></td></tr>
-        <tr class="group"><td>CT2 · Multi-State</td><td>94.8</td><td>14.6</td><td>31.3</td><td>31.3</td><td><b>89.4</b></td></tr>
-        <tr class="sub"><td>Visual Disambiguation</td><td>100.0</td><td>18.0</td><td>22.5</td><td>27.0</td><td><b>86.5</b></td></tr>
-        <tr class="sub"><td>Hidden State Activation</td><td>95.6</td><td>9.6</td><td>26.0</td><td>23.1</td><td><b>87.5</b></td></tr>
-        <tr class="sub"><td>Removable Occlusion</td><td>88.9</td><td>18.9</td><td>56.6</td><td>54.7</td><td><b>98.1</b></td></tr>
-        <tr class="group"><td>CT3 · Temporal / Manipulation</td><td>94.8</td><td>42.6</td><td>44.1</td><td>46.8</td><td><b>60.1</b></td></tr>
-        <tr class="sub"><td>Delayed State Activation</td><td>97.8</td><td>85.7</td><td><b>95.7</b></td><td>94.3</td><td><b>95.7</b></td></tr>
-        <tr class="sub"><td>Dynamic Target Interaction</td><td>97.8</td><td>32.8</td><td>25.9</td><td>36.2</td><td><b>37.9</b></td></tr>
-        <tr class="sub"><td>Movable Occlusion</td><td>88.9</td><td>1.7</td><td>1.7</td><td>1.7</td><td><b>40.0</b></td></tr>
-        <tr class="total"><td>Overall</td><td>94.6</td><td>22.3</td><td>30.8</td><td>31.6</td><td><b>79.4</b></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p class="note"><sup>†</sup>Human study on a 21-task suite; bold marks the best model.</p>
-
-  <div class="pair">
+  <div class="result-row">
     <figure>
-      <img src="static/fig/paper_fig_radar_v2_recommended.png" alt="Radar chart of GA per sub-type for humans, GPT-5.5, and open-source VLMs." width="1366" height="1044" loading="lazy">
-      <figcaption>Humans, GPT-5.5, and open-source VLMs.</figcaption>
+      <img src="static/fig/radar_subtype.png" alt="Radar chart of grounding accuracy by sub-type for Human (94.6%), GPT-5.5 (79.4%), and Qwen3-VL (30.8%)." width="1268" height="950" loading="lazy">
     </figure>
-    <figure>
-      <img src="static/fig/paper_fig_radar_v1_all_models.png" alt="Radar chart of GA per sub-type for additional model baselines." width="1410" height="1155" loading="lazy">
-      <figcaption>Additional model baselines.</figcaption>
-    </figure>
+    <div>
+      <h3>A large human&ndash;model gap</h3>
+      <p>Humans solve 94.6% of tasks. GPT-5.5 reaches 79.4%, and no open model gets past a third. Dynamic targets and movable occlusion stay hard even for GPT-5.5.</p>
+    </div>
   </div>
-</section>
-
-<section class="container">
-  <h2>Where does it fail?</h2>
-  <p>
-    We split an episode into four stages: selecting a reveal action, executing it with the right location or parameters, recognizing the target, and localizing the final click.
-    We then intervene at two of them.
-    Telling the model <i>which</i> interaction is needed barely helps.
-    Performing the interaction <i>for</i> the model recovers most of the gap.
-  </p>
-  <div class="table-wrap">
-    <table class="results narrow">
-      <thead><tr><th>Condition</th><th>Qwen3-VL</th><th>GPT-5.4 Mini (Low)</th></tr></thead>
-      <tbody>
-        <tr><td>Full task</td><td>30.8</td><td>72.4</td></tr>
-        <tr><td>Interaction specified</td><td>33.9</td><td>–</td></tr>
-        <tr><td>Reveal performed</td><td><b>81.9</b></td><td><b>90.4</b></td></tr>
-      </tbody>
-    </table>
-  </div>
-  <p>
-    So most errors happen in choosing where and how to perform the reveal, before target recognition is even tested.
-    Target-agnostic heuristics show the same split: fixed scrolling, hovering, and waiting reveal 68.8%, 61.4%, and 87.1% of their matched tasks, while popup dismissal and occluder dragging reach only 17.6% and 16.9%.
-  </p>
-</section>
-
-<section class="container">
-  <h2>Visibility recovery is learnable</h2>
-  <p>
-    Base VLMs never emit <code>DRAG</code> on the held-out tasks, so RL alone has nothing to reinforce.
-    We first run frequency-balanced SFT on human-verified trajectories to bring rare reveal actions into the policy's support, then apply online GRPO with browser-executed rewards.
-    On the 120-task held-out split this raises Qwen3-VL from 40.0% to 59.2% GA, and the same recipe gives similar gains on two other architectures.
-  </p>
-  <div class="pair">
+  <div class="result-row wide-fig">
     <figure>
-      <img src="static/fig/paper_fig_radar_training_progression.png" alt="Radar chart of per-sub-type GA for baseline, SFT, and SFT+GRPO." width="1366" height="1058" loading="lazy">
-      <figcaption>Per-sub-type gains from baseline to SFT and SFT+GRPO.</figcaption>
+      <img src="static/fig/bottleneck.png" alt="(a) Qwen3-VL accuracy: full task 30.8, interaction specified 33.9, reveal performed 81.9. (b) Before and after SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1690" height="529" loading="lazy">
     </figure>
-    <figure>
-      <img src="static/fig/paper_main_fig_action_share_training.png" alt="Bar chart of action share for baselines, SFT, and SFT+GRPO." width="2110" height="1096" loading="lazy">
-      <figcaption>Action-prior shift across baselines, SFT, and SFT+GRPO.</figcaption>
-    </figure>
-  </div>
-  <div class="table-wrap">
-    <table class="results narrow">
-      <thead><tr><th>Model (120-task val)</th><th>Base</th><th>SFT+GRPO</th></tr></thead>
-      <tbody>
-        <tr><td>Qwen3-VL-8B</td><td>40.0</td><td><b>59.2</b></td></tr>
-        <tr><td>InternVL3.5-8B</td><td>28.3</td><td><b>47.5</b></td></tr>
-        <tr><td>GUI-Owl-1.5-8B</td><td>35.0</td><td><b>52.5</b></td></tr>
-      </tbody>
-    </table>
+    <div>
+      <h3>The bottleneck is the reveal, and it is learnable</h3>
+      <p>Naming the needed interaction barely helps (30.8 &rarr; 33.9). Performing it for the model jumps to 81.9. SFT followed by online GRPO adds 17&ndash;19 points across three 8B models.</p>
+    </div>
   </div>
 </section>
 
