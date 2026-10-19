@@ -3,4 +3,4 @@
 Project page for **IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints** (EMNLP 2026), served at <https://igg-bench.github.io>.
 
 Plain static HTML: `index.html`, `style.css`, and images in `static/`.
-Images in `static/poster/` are cropped from the EMNLP 2026 poster PDF (rendered at 200 dpi).
+Figures in `static/fig/` come from the EMNLP and Humantech papers and the EMNLP poster.
