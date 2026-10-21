@@ -120,24 +120,37 @@
       <figcaption>Grounding accuracy (%) by sub-type.</figcaption>
     </figure>
 
-    <h3>The bottleneck is the reveal, and it is learnable</h3>
+    <h3>The bottleneck is the reveal</h3>
     <p>
-      Telling Qwen3-VL which interaction is required barely helps (30.8 &rarr; 33.9), while performing the interaction for it raises accuracy to 81.9.
-      SFT followed by online GRPO improves three 8B models by 17&ndash;19 points.
+      Telling Qwen3-VL which interaction is required barely helps (30.8 &rarr; 33.9).
+      Performing the interaction for it raises accuracy to 81.9, above GPT-5.5 on the full task.
+      Once the target is visible, an 8B model can find it; the hard part is making it visible.
+    </p>
+    <figure class="table-fig">
+      <img src="static/fig/res_bars.png" alt="Qwen3-VL accuracy: unassisted 30.8, reveal action specified 33.9, target revealed 81.9. GPT-5.5 unassisted: 79.4." width="1600" height="362" loading="lazy">
+      <figcaption>Qwen3-VL accuracy (%) on the full benchmark: unassisted, told which reveal action to use, and with the target already revealed.</figcaption>
+    </figure>
+    <p class="after-fig">
+      Base models mostly click, as if the target were already visible.
+      On the 120 held-out tasks, none of them ever emits a drag.
     </p>
     <figure class="mid">
-      <img src="static/fig/bottleneck.png" alt="(a) Qwen3-VL: full task 30.8, interaction specified 33.9, reveal performed 81.9. (b) SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1690" height="529" loading="lazy">
-      <figcaption>(a) Interventions on Qwen3-VL. (b) Accuracy before and after training, on 120 held-out tasks.</figcaption>
+      <img src="static/fig/res_share.png" alt="Action share on held-out tasks: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1600" height="493" loading="lazy">
+      <figcaption>Share of each action on the 120 held-out tasks: ground-truth trajectories, base models, and Qwen3-VL after training.</figcaption>
     </figure>
 
-    <h3>Training teaches the missing drag</h3>
+    <h3>Reveal interactions are learnable</h3>
     <p>
-      On the 120 held-out tasks, Qwen2.5-VL, Qwen3-VL, and GUI-Owl-1.5 never emit a drag; they mostly click, as if the target were already visible.
-      After frequency-balanced SFT, Qwen3-VL drags on 7 of the 8 tasks that require it, and GRPO raises its success on those tasks from 4 to 5.
+      Frequency-balanced SFT followed by online GRPO improves all three 8B models by 17&ndash;19 points on the held-out tasks.
+      For Qwen3-VL, the largest gain is on movable occlusion (0.0 &rarr; 62.5), where the trained model learns to drag.
     </p>
     <figure class="mid">
-      <img src="static/fig/action_share.png" alt="Action share: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1400" height="435" loading="lazy">
-      <figcaption>Share of each action on the 120 held-out tasks, for the ground-truth trajectories, base models, and Qwen3-VL after training.</figcaption>
+      <img src="static/fig/res_learn1.png" alt="Base to SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL 3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1600" height="275" loading="lazy">
+      <figcaption>Accuracy (%) before and after training, on 120 held-out tasks.</figcaption>
+    </figure>
+    <figure class="mid">
+      <img src="static/fig/res_learn2.png" alt="Qwen3-VL per sub-type before and after training; movable occlusion goes from 0.0 to 62.5." width="1600" height="510" loading="lazy">
+      <figcaption>Qwen3-VL accuracy (%) by sub-type, before and after training.</figcaption>
     </figure>
   </section>
 
