@@ -124,14 +124,14 @@
       <figcaption>(a) Interventions on Qwen3-VL. (b) Accuracy before and after training, on 120 held-out tasks.</figcaption>
     </figure>
 
-    <h3>Base models never drag</h3>
+    <h3>Training teaches the missing drag</h3>
     <p>
-      Base VLMs mostly click, as if the target were already visible, and none of them emits a drag.
-      Training brings the missing reveal actions into the policy.
+      On the 120 held-out tasks, Qwen2.5-VL, Qwen3-VL, and GUI-Owl-1.5 never emit a drag; they mostly click, as if the target were already visible.
+      After frequency-balanced SFT, Qwen3-VL drags on 7 of the 8 tasks that require it, and GRPO raises its success on those tasks from 4 to 5.
     </p>
     <figure class="mid">
       <img src="static/fig/action_share.png" alt="Action share: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1400" height="435" loading="lazy">
-      <figcaption>Share of each action in the trajectories of base and trained models.</figcaption>
+      <figcaption>Share of each action on the 120 held-out tasks, for the ground-truth trajectories, base models, and Qwen3-VL after training.</figcaption>
     </figure>
   </section>
 
