@@ -36,7 +36,7 @@
 
 <main>
 
-  <figure class="teaser">
+  <figure class="teaser wide">
     <img src="static/fig/examples.png" alt="Three IGG tasks, before (top) and after (bottom) the reveal interaction: scroll to find a document, hover to reveal a server name, wait for the Skip Ad button." width="2400" height="1111">
     <figcaption>In IGG, the target is not visible when the instruction arrives. The agent has to scroll, hover, wait, or drag to reveal it, and then click it.</figcaption>
   </figure>
@@ -72,14 +72,15 @@
   <section>
     <h2>Benchmark</h2>
     <p>
-      IGG contains 601 tasks in 16 controllable web environments modeled on familiar applications, covering seven visibility-constraint sub-types under three constraint types.
-      The agent observes only screenshots, the instruction, and its action history, and has a budget of eight actions.
+      IGG has 601 tasks in 16 controllable web environments modeled on everyday apps such as Google Docs, Discord, YouTube, Figma, and Google Maps.
+      Each task belongs to one of seven sub-types under three constraint types.
+      The agent sees only screenshots and its action history, and has eight actions to find and click the target.
     </p>
-    <figure>
-      <img src="static/fig/overview.png" alt="Key capabilities and action space (left); three constraint types and seven sub-types (right)." width="1800" height="904" loading="lazy">
-      <figcaption>Left: capabilities a reveal can require, and the five actions. Right: three constraint types and seven sub-types.</figcaption>
-    </figure>
   </section>
+  <figure class="wide">
+    <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137" loading="lazy">
+    <figcaption>The seven sub-types, each shown before and after the reveal action. Center: the capabilities a reveal can require.</figcaption>
+  </figure>
 
   <section>
     <h2>Results</h2>

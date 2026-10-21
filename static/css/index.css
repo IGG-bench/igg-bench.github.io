@@ -119,3 +119,11 @@ pre {
   section { margin-top: 60px; }
   h2 { font-size: 1.45rem; }
 }
+
+/* Large figures break out of the text column, all to the same width. */
+figure.wide {
+  width: min(1120px, calc(100vw - 40px));
+  max-width: none;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
