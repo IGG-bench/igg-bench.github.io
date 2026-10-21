@@ -127,3 +127,4 @@ figure.wide {
   margin-left: 50%;
   transform: translateX(-50%);
 }
+p.after-fig { margin-top: 28px; }
