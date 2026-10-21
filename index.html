@@ -1,175 +1,184 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>IGG: Interactive GUI Grounding under Visibility Constraints</title>
-  <meta name="description" content="IGG is a benchmark in which a GUI agent must first make the target visible through interaction and then click it. 601 tasks, 16 environments, 7 visibility-constraint sub-types.">
+  <meta name="description" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints (EMNLP 2026).">
+  <meta name="keywords" content="GUI grounding, GUI agents, VLM, benchmark, interactive grounding">
   <meta property="og:title" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints">
-  <meta property="og:description" content="601 tasks, 16 controllable GUI environments, 7 visibility-constraint sub-types. EMNLP 2026.">
   <meta property="og:image" content="https://igg-bench.github.io/static/fig/examples.png">
-  <meta property="og:type" content="website">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <title>IGG: Interactive GUI Grounding under Visibility Constraints</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
 </head>
 <body>
 
-<header class="hero">
-  <div class="container">
-    <h1>
-      <span class="c-i">I</span><span class="c-g1">G</span><span class="c-g2">G</span>: A Benchmark for
-      <span class="c-i">I</span>nteractive <span class="c-g1">G</span>UI <span class="c-g2">G</span>rounding<br class="br-wide">
-      under Visibility Constraints
-    </h1>
-    <p class="authors">
-      <span>Kyeongseon Kim<sup>*</sup></span>
-      <span>Jiyeon Son<sup>*</sup></span>
-      <span>Tae-Hyun Oh</span>
-    </p>
-    <p class="affil">KAIST</p>
-    <p class="note"><sup>*</sup>Equal contribution</p>
-    <p class="venue">EMNLP 2026</p>
-    <div class="links">
-      <span class="btn off" title="Available after the camera-ready release">Paper (coming soon)</span>
-      <span class="btn off" title="Available after the camera-ready release">Code (coming soon)</span>
-      <span class="btn off" title="Available after the camera-ready release">Dataset (coming soon)</span>
-      <a class="btn" href="#bibtex">BibTeX</a>
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">
+            <span class="igg-i">I</span><span class="igg-g1">G</span><span class="igg-g2">G</span>: A Benchmark for
+            <span class="igg-i">I</span>nteractive <span class="igg-g1">G</span>UI <span class="igg-g2">G</span>rounding
+            under Visibility Constraints
+          </h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">Kyeongseon Kim<sup>*</sup>,</span>
+            <span class="author-block">Jiyeon Son<sup>*</sup>,</span>
+            <span class="author-block">Tae-Hyun Oh</span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">KAIST</span>
+          </div>
+          <div class="is-size-6 publication-authors">
+            <span class="author-block"><sup>*</sup>Equal contribution</span>
+          </div>
+          <div class="is-size-5 publication-venue">EMNLP 2026</div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="fas fa-file-pdf"></i></span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="ai ai-arxiv"></i></span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="fab fa-github"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-dark" disabled title="Coming soon">
+                  <span class="icon"><i class="far fa-images"></i></span>
+                  <span>Dataset</span>
+                </a>
+              </span>
+            </div>
+            <p class="is-size-7 has-text-grey">Paper, code, and data will be released soon.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-</header>
-
-<main>
-
-<section class="container wide first">
-  <figure>
-    <img src="static/fig/examples.png" alt="Three IGG tasks, before (top) and after (bottom) the reveal interaction: scroll to find a document in Document Editor, hover to reveal a server name in Community Chat, wait for the Skip Ad button in Video Platform." width="2400" height="1111">
-    <figcaption><b>Figure 1.</b> The target is often not visible when the instruction arrives. Top: the initial screen. Bottom: after the agent scrolls, hovers, or waits, the target can be clicked.</figcaption>
-  </figure>
 </section>
 
-<section class="container">
-  <h2>Abstract</h2>
-  <p class="abstract">
-    GUI grounding benchmarks ask whether an agent can localize a target that is already visible in a static screenshot.
-    Real interfaces often violate this assumption: a target may be off-screen, appear only after a state change or hover, remain occluded, or become actionable after a delay.
-    This leaves the ability to recover target visibility unevaluated.
-    To measure this reveal step, we introduce <b><i>Interactive GUI Grounding (IGG)</i></b>, a benchmark in which an agent must first make the target visible through interaction and then click it.
-    IGG contains 601 tasks across 16 controllable GUI environments and seven visibility-constraint sub-types, with a compact action space of scrolling, moving, dragging, waiting, and clicking.
-    In our human study, participants achieve 94.6% accuracy, while GPT-5.5 reaches 79.4% and the strongest evaluated open-source VLM reaches only 31.6%.
-    To identify the source of this gap, we conduct two controlled interventions.
-    Telling Qwen3-VL which interaction to perform raises its accuracy only from 30.8% to 33.9%, whereas performing the interaction for the model raises it to 81.9%.
-    The bottleneck is executing the reveal interaction, not recognizing the target once it is exposed.
-    We further show that this capability is learnable, demonstrating that visibility recovery can be strengthened consistently across model families.
-  </p>
-</section>
-
-<section class="container">
-  <h2>Static vs. interactive grounding</h2>
-  <p>
-    Static grounding benchmarks hand the model a screenshot in which the target is already on screen.
-    In IGG the target starts out hidden or inactive, so the agent first has to reveal it and only then localize it.
-    Like static grounding, IGG scores a single final click.
-  </p>
-  <table class="vs">
-    <thead>
-      <tr><th></th><th>Static grounding</th><th><span class="c-i">I</span><span class="c-g1">G</span><span class="c-g2">G</span></th></tr>
-    </thead>
-    <tbody>
-      <tr>
-        <th>Target</th>
-        <td>
-          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12Z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/></svg>
-          Visible
-        </td>
-        <td>
-          <svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M1.5 12S5.5 4.5 12 4.5 22.5 12 22.5 12 18.5 19.5 12 19.5 1.5 12 1.5 12Z" fill="none" stroke="currentColor" stroke-width="2.2"/><circle cx="12" cy="12" r="3.4" fill="currentColor"/><path d="M3 21 21 3" stroke="#fff" stroke-width="5"/><path d="M3 21 21 3" stroke="currentColor" stroke-width="2.4"/></svg>
-          Hidden or inactive
-        </td>
-      </tr>
-      <tr>
-        <th>Goal</th>
-        <td>Localize</td>
-        <td>Reveal &rarr; Localize</td>
-      </tr>
-      <tr>
-        <th>Actions</th>
-        <td><span class="act click">CLICK</span></td>
-        <td class="acts"><span class="act scroll">SCROLL</span><span class="act move">MOVE</span><span class="act wait">WAIT</span><span class="act drag">DRAG</span><span class="act click">CLICK</span></td>
-      </tr>
-    </tbody>
-  </table>
-</section>
-
-<section class="container">
-  <h2>Benchmark</h2>
-  <p>
-    IGG has 601 tasks in 16 controllable environments modeled on familiar applications.
-    Tasks fall into seven sub-types under three constraint types.
-    The agent sees only screenshots, the instruction, and its own action history; the DOM and accessibility tree stay hidden.
-    An episode succeeds on the first click that hits the target, within a budget of eight actions.
-  </p>
-  <figure class="spaced">
-    <img src="static/fig/overview.png" alt="Left: key capabilities needed to reveal a target, and the five-action space. Right: the three visibility constraint types and their seven sub-types." width="1800" height="904" loading="lazy">
-    <figcaption><b>Figure 2.</b> Left: the capabilities a reveal can require, and the five actions. Right: three constraint types and seven sub-types.</figcaption>
-  </figure>
-</section>
-
-<section class="container">
-  <h2>Results</h2>
-
-  <h3>Humans vs. models</h3>
-  <p>
-    Humans solve 94.6% of tasks. GPT-5.5 reaches 79.4%, and no open model solves a third.
-    Movable occlusion and dynamic targets stay hard even for GPT-5.5.
-  </p>
-  <figure class="chart-fig">
-    <div class="legend">
-      <span><i class="mk human"></i>Human</span>
-      <span><i class="mk gpt"></i>GPT-5.5</span>
-      <span><i class="mk qwen"></i>Qwen3-VL-8B</span>
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="static/fig/examples.png" alt="Three IGG tasks, before (top) and after (bottom) the reveal interaction: scroll to find a document, hover to reveal a server name, wait for the Skip Ad button." width="2400" height="1111">
+      <h2 class="subtitle has-text-centered">
+        In <b>IGG</b>, the target is not visible when the instruction arrives.
+        The agent has to scroll, hover, wait, or drag to reveal it, and then click it.
+      </h2>
     </div>
-    <div class="chart" id="gap"></div>
-    <figcaption><b>Figure 3.</b> Grounding accuracy (%) by sub-type. Humans are scored in a separate solvability study (21 tasks, 15 participants).</figcaption>
-  </figure>
-
-  <h3>Where does interactive grounding fail?</h3>
-  <p>
-    Telling Qwen3-VL which interaction is needed barely helps.
-    Performing the interaction for it brings accuracy to 81.9%, above GPT-5.5 on the full task.
-    In failed runs, the model usually never tries the action the task needs.
-  </p>
-  <figure class="chart-fig">
-    <div class="chart" id="intervene"></div>
-    <figcaption><b>Figure 4.</b> Qwen3-VL accuracy (%) on the full task, when told the required interaction, and when the reveal is done for it.</figcaption>
-  </figure>
-  <figure class="chart-fig">
-    <div class="chart" id="omit"></div>
-    <figcaption><b>Figure 5.</b> Failed Qwen3-VL runs in which the action the task requires never appears.</figcaption>
-  </figure>
-
-  <h3>Learning missing interaction priors</h3>
-  <p>
-    Base models never emit <span class="act drag inline">DRAG</span>, so reinforcement learning alone has nothing to reinforce.
-    Frequency-balanced SFT first brings rare reveal actions into the policy, and online GRPO then improves them.
-    The same recipe works across three 8B models.
-  </p>
-  <figure class="chart-fig">
-    <div class="legend">
-      <span><i class="mk base"></i>Base</span>
-      <span><i class="mk trained"></i>SFT + GRPO</span>
-    </div>
-    <div class="chart" id="train"></div>
-    <figcaption><b>Figure 6.</b> Accuracy (%) on 120 held-out tasks before and after training.</figcaption>
-  </figure>
+  </div>
 </section>
 
-<section class="container" id="bibtex">
-  <h2>BibTeX</h2>
-  <div class="bib">
-    <button type="button" id="copy">Copy</button>
-<pre><code>@inproceedings{kim2026igg,
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            GUI grounding benchmarks ask whether an agent can localize a target that is already visible in a static screenshot.
+            Real interfaces often violate this assumption: a target may be off-screen, appear only after a state change or hover, remain occluded, or become actionable after a delay.
+            This leaves the ability to recover target visibility unevaluated.
+          </p>
+          <p>
+            To measure this reveal step, we introduce <b><i>Interactive GUI Grounding (IGG)</i></b>, a benchmark in which an agent must first make the target visible through interaction and then click it.
+            IGG contains 601 tasks across 16 controllable GUI environments and seven visibility-constraint sub-types, with a compact action space of scrolling, moving, dragging, waiting, and clicking.
+          </p>
+          <p>
+            In our human study, participants achieve 94.6% accuracy, while GPT-5.5 reaches 79.4% and the strongest evaluated open-source VLM reaches only 31.6%.
+            To identify the source of this gap, we conduct two controlled interventions.
+            Telling Qwen3-VL which interaction to perform raises its accuracy only from 30.8% to 33.9%, whereas performing the interaction for the model raises it to 81.9%.
+            The bottleneck is executing the reveal interaction, not recognizing the target once it is exposed.
+            We further show that this capability is learnable, demonstrating that visibility recovery can be strengthened consistently across model families.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Interactive GUI Grounding</h2>
+        <div class="content has-text-justified">
+          <p>
+            Static grounding benchmarks give the model a screenshot in which the target is already on screen.
+            In IGG the target starts out hidden or inactive, so the agent must first reveal it with a small set of actions and then localize it.
+            Like static grounding, IGG scores a single final click.
+          </p>
+        </div>
+        <img class="figure narrow" src="static/fig/static_vs_igg.png" alt="Static grounding: target visible, goal localize, action CLICK. IGG: target hidden or inactive, goal reveal then localize, actions SCROLL, MOVE, WAIT, DRAG, CLICK." width="1600" height="376">
+
+        <h3 class="title is-4">Benchmark</h3>
+        <div class="content has-text-justified">
+          <p>
+            IGG contains 601 tasks in 16 controllable web environments modeled on familiar applications, covering seven visibility-constraint sub-types under three constraint types.
+            The agent observes only screenshots, the instruction, and its action history, and has a budget of eight actions.
+          </p>
+        </div>
+        <img class="figure" src="static/fig/overview.png" alt="Key capabilities and action space (left); three constraint types and seven sub-types (right)." width="1800" height="904" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Results</h2>
+
+    <div class="columns is-vcentered result-row">
+      <div class="column is-half">
+        <img src="static/fig/radar_subtype.png" alt="Grounding accuracy by sub-type for Human (94.6%), GPT-5.5 (79.4%), and Qwen3-VL (30.8%)." width="1268" height="950" loading="lazy">
+      </div>
+      <div class="column is-half">
+        <h3 class="title is-5">A large human&ndash;model gap</h3>
+        <div class="content">
+          <p>Humans solve 94.6% of tasks. GPT-5.5 reaches 79.4%, and no open model solves a third. Movable occlusion and dynamic targets remain hard even for GPT-5.5.</p>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="title is-5">The bottleneck is the reveal, and it is learnable</h3>
+    <div class="content">
+      <p>
+        Telling Qwen3-VL which interaction is required barely helps (30.8&rarr;33.9), while performing the interaction for it raises accuracy to 81.9.
+        SFT followed by online GRPO improves three 8B models by 17&ndash;19 points.
+      </p>
+    </div>
+    <img class="figure narrow" src="static/fig/bottleneck.png" alt="(a) Qwen3-VL: full task 30.8, interaction specified 33.9, reveal performed 81.9. (b) SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1690" height="529" loading="lazy">
+
+    <h3 class="title is-5 spaced">Base models never drag</h3>
+    <div class="content">
+      <p>Base VLMs mostly click, as if the target were already visible, and none of them emits a drag. Training brings the missing reveal actions into the policy.</p>
+    </div>
+    <img class="figure narrow" src="static/fig/action_share.png" alt="Action share: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1400" height="435" loading="lazy">
+  </div>
+</section>
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{kim2026igg,
   title     = {{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints},
   author    = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},
   booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing (EMNLP)},
@@ -178,16 +187,16 @@
   </div>
 </section>
 
-</main>
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <p>
+        This website is adapted from <a href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>,
+        licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0 License</a>.
+      </p>
+    </div>
+  </div>
+</footer>
 
-<script>
-  document.getElementById('copy').addEventListener('click', async (e) => {
-    const text = document.querySelector('.bib code').textContent;
-    try { await navigator.clipboard.writeText(text); e.target.textContent = 'Copied'; }
-    catch { e.target.textContent = 'Select & copy'; }
-    setTimeout(() => { e.target.textContent = 'Copy'; }, 1500);
-  });
-</script>
-<script src="charts.js"></script>
 </body>
 </html>

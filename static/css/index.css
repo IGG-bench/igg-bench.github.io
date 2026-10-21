@@ -1,0 +1,32 @@
+body { font-family: 'Noto Sans', sans-serif; }
+
+.publication-title, .title { font-family: 'Google Sans', sans-serif; }
+.publication-title { color: #0d3762; line-height: 1.25 !important; }
+.igg-i { color: #95c5ec; }
+.igg-g1 { color: #7ecdae; }
+.igg-g2 { color: #ec9778; }
+
+.publication-authors { font-family: 'Google Sans', sans-serif; }
+.publication-authors a { color: hsl(204, 86%, 53%) !important; }
+.author-block { display: inline-block; margin: 0 2px; }
+.publication-venue { font-family: 'Google Sans', sans-serif; font-weight: 600; color: #0d3762; margin-top: 8px; }
+
+.publication-links { margin-top: 4px; }
+.link-block { display: inline-block; margin: 4px 2px; }
+.link-block a[disabled] { opacity: 0.55; pointer-events: none; }
+
+.teaser .hero-body { padding-top: 0; padding-bottom: 3rem; }
+.teaser img { width: 100%; }
+.teaser .subtitle { margin-top: 1rem; font-family: 'Google Sans', sans-serif; font-size: 1.15rem; }
+
+img.figure { display: block; width: 100%; margin: 0.5rem auto 2rem; }
+img.figure.narrow { max-width: 720px; }
+.title.spaced { margin-top: 1rem; }
+.result-row { margin-bottom: 1.5rem !important; }
+
+.footer { padding: 2rem 1.5rem 3rem; font-size: 0.9rem; }
+
+@media screen and (max-width: 768px) {
+  .publication-title { font-size: 1.9rem !important; }
+  .has-text-justified { text-align: left !important; }
+}
