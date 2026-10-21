@@ -128,3 +128,34 @@ figure.wide {
   transform: translateX(-50%);
 }
 p.after-fig { margin-top: 28px; }
+
+/* ---------- task distribution + environments ---------- */
+.dist {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  margin-top: 28px;
+}
+.dist figure { margin: 0; }
+.dist img { max-width: 380px; margin: 0 auto; }
+.apps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.apps li {
+  padding: 7px 10px;
+  background: #e4e6fb;
+  color: var(--navy);
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: 4px;
+}
+@media (max-width: 700px) {
+  .dist { grid-template-columns: 1fr; gap: 32px; }
+}

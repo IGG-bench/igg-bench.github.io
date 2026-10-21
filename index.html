@@ -68,10 +68,37 @@
       <img src="static/fig/static_vs_igg.png" alt="Static grounding: target visible, goal localize, action CLICK. IGG: target hidden or inactive, goal reveal then localize, actions SCROLL, MOVE, WAIT, DRAG, CLICK." width="1600" height="376">
     </figure>
     <p class="after-fig">
-      IGG has 601 tasks in 16 controllable web environments modeled on everyday apps such as Google Docs, Discord, YouTube, Figma, and Google Maps.
-      Each task belongs to one of seven sub-types under three constraint types (figure above).
+      IGG has 601 tasks in 16 controllable web environments, each modeled on an everyday application.
+      Every task belongs to one of seven sub-types under three constraint types.
       The agent sees only screenshots and its action history, and has eight actions to find and click the target.
     </p>
+    <div class="dist">
+      <figure>
+        <img src="static/fig/donut.png" alt="Task distribution: Viewport 167 scroll-based exploration; Multi-State 89 visual disambiguation, 104 hidden state activation, 53 removable occlusion; Temporal and Manipulation 70 delayed state activation, 58 dynamic target interaction, 60 movable occlusion." width="1000" height="1000" loading="lazy">
+        <figcaption>601 tasks by constraint type and sub-type.</figcaption>
+      </figure>
+      <figure>
+        <ul class="apps">
+          <li>Google Calendar</li>
+          <li>Google Docs</li>
+          <li>Google Sheets</li>
+          <li>Notion</li>
+          <li>Gmail</li>
+          <li>VS Code Web</li>
+          <li>Figma</li>
+          <li>GitHub</li>
+          <li>Discord</li>
+          <li>Twitter / X</li>
+          <li>Spotify</li>
+          <li>Netflix</li>
+          <li>YouTube</li>
+          <li>Google</li>
+          <li>Walmart</li>
+          <li>Google Maps</li>
+        </ul>
+        <figcaption>The 16 environments are modeled on these applications.</figcaption>
+      </figure>
+    </div>
   </section>
 
   <section>
