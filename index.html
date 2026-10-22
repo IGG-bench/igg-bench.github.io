@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints (EMNLP 2026).">
   <meta property="og:title" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints">
-  <meta property="og:image" content="https://igg-bench.github.io/static/fig/subtypes.png">
+  <meta property="og:image" content="https://igg-bench.github.io/static/fig/overview.png">
   <title>IGG: Interactive GUI Grounding under Visibility Constraints</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -37,8 +37,8 @@
 <main>
 
   <figure class="teaser wide">
-    <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137">
-    <figcaption>In IGG, the target is not visible when the instruction arrives. Each of the seven sub-types is shown before and after the reveal action the agent must take. Center: the capabilities a reveal can require.</figcaption>
+    <img src="static/fig/overview.png" alt="Left: a screenshot-only agent must reveal hidden targets using SCROLL, MOVE, CLICK, WAIT and DRAG, which requires observability, disambiguation, state control and temporal control. Center: IGG extends static GUI grounding with three visibility constraint types (viewport, multi-state, temporal and manipulation) and seven sub-types. Right: grounding accuracy by constraint type for humans (90.0, 94.4, 94.4), GPT-5.5 (86.2, 89.4, 60.1) and Qwen3-VL (15.0, 31.3, 44.1)." width="2600" height="886">
+    <figcaption>IGG extends static GUI grounding with three visibility constraint types. The agent sees only screenshots and must reveal the target with scroll, move, click, wait and drag before clicking it. Right: humans stay above 90% on every constraint type, while models fall behind as the reveal gets harder.</figcaption>
   </figure>
 
   <section>
@@ -72,6 +72,10 @@
       Every task belongs to one of seven sub-types under three constraint types.
       The agent sees only screenshots and its action history, and has eight actions to find and click the target.
     </p>
+    <figure class="wide">
+      <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137" loading="lazy">
+      <figcaption>In IGG, the target is not visible when the instruction arrives. Each of the seven sub-types is shown before and after the reveal action the agent must take. Center: the capabilities a reveal can require.</figcaption>
+    </figure>
     <div class="dist">
       <figure>
         <img src="static/fig/donut.png" alt="Task distribution: Viewport 167 scroll-based exploration; Multi-State 89 visual disambiguation, 104 hidden state activation, 53 removable occlusion; Temporal and Manipulation 70 delayed state activation, 58 dynamic target interaction, 60 movable occlusion." width="1000" height="1000" loading="lazy">
