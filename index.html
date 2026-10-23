@@ -14,7 +14,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css?v=8">
   <link rel="stylesheet" href="static/css/playground.css?v=7">
-  <script src="static/js/playground.js?v=7" defer></script>
+  <script src="static/js/playground.js?v=9" defer></script>
 </head>
 <body>
 
@@ -91,38 +91,37 @@
 
   <section id="human-leaderboard" aria-labelledby="human-title">
     <div class="human-heading"><h2 id="human-title">Human Leaderboard</h2><div class="human-board-controls"><label for="board-version" class="sr-only">Challenge version</label><select id="board-version"><option value="igg-fun-v2">Current (Mailo)</option><option value="igg-fun-v1">Previous (Pagely)</option></select><button type="button" id="refresh-board">Refresh</button></div></div>
-    <p class="human-explainer"><strong>GA:</strong> tasks solved out of 4. <strong>TT:</strong> average time across all 4.</p>
+    <p class="human-explainer"><strong>GA:</strong> tasks solved (%) · <strong>TT:</strong> average time across all 4 tasks.</p>
     <p id="board-status" role="status">Loading records…</p>
     <div class="human-table-wrap"><table class="human-table"><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">GA ↑</th><th scope="col">TT ↓</th><th scope="col">Date</th><th scope="col"><span class="sr-only">Your record</span></th></tr></thead><tbody id="human-rows"></tbody></table></div>
-    <p class="human-play-link"><a href="#just-for-fun">Take a turn ↑</a></p>
-    <p class="human-own-actions"><button type="button" id="remove-my-records" hidden>Remove my saved records</button><span id="remove-status" role="status"></span></p>
+    <p class="human-play-link"><a href="#just-for-fun">Try it yourself ↑</a></p>
+    <p class="human-own-actions"><button type="button" id="remove-my-records" hidden>Remove my runs</button><span id="remove-status" role="status"></span></p>
   </section>
 
   <section id="benchmark" aria-labelledby="benchmark-title">
     <h2 id="benchmark-title">What is IGG?</h2>
-    <p class="benchmark-intro">IGG tests whether agents can reveal hidden targets and click them.</p>
+    <p class="benchmark-intro">IGG evaluates GUI grounding when targets must first be revealed through interaction.</p>
     <figure class="teaser wide">
-      <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137">
-      <figcaption>Seven types of visibility constraints, before and after the reveal action.</figcaption>
+      <img src="static/fig/subtypes.png" alt="Seven visibility constraints before and after interaction: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: capabilities needed to reveal the target." width="2600" height="1137">
+      <figcaption>Seven visibility constraints and the interactions that reveal the target.</figcaption>
     </figure>
 
-    <h3>The task</h3>
+    <h3>Task</h3>
     <p>
-      The agent sees screenshots and its action history.
-      The agent can take up to eight actions per task.
+      Agents use screenshots and action history to reveal and click the target in up to eight actions.
     </p>
     <figure class="table-fig">
       <img src="static/fig/static_vs_igg.png" alt="Static grounding: target visible, goal localize, action CLICK. IGG: target hidden or inactive, goal reveal then localize, actions SCROLL, MOVE, WAIT, DRAG, CLICK." width="1600" height="376">
     </figure>
-    <h3>The benchmark</h3>
-    <p>601 tasks across 16 web environments, with seven types of visibility constraints.</p>
+    <h3>Benchmark</h3>
+    <p>601 tasks across 16 web environments modeled on familiar applications.</p>
     <div class="dist">
       <figure>
         <img src="static/fig/donut.png" alt="Task distribution: Viewport 167 scroll-based exploration; Multi-State 89 visual disambiguation, 104 hidden state activation, 53 removable occlusion; Temporal and Manipulation 70 delayed state activation, 58 dynamic target interaction, 60 movable occlusion." width="1000" height="1000" loading="lazy">
         <ul class="caps">
           <li><img src="static/fig/icons/observability.png" alt="" width="96" height="96"><b>Observability</b><span>bring the target into view</span></li>
-          <li><img src="static/fig/icons/disambiguation.png" alt="" width="96" height="96"><b>Disambiguation</b><span>show cues on hover</span></li>
-          <li><img src="static/fig/icons/state.png" alt="" width="96" height="96"><b>State control</b><span>open or clear the UI</span></li>
+          <li><img src="static/fig/icons/disambiguation.png" alt="" width="96" height="96"><b>Disambiguation</b><span>reveal cues on hover</span></li>
+          <li><img src="static/fig/icons/state.png" alt="" width="96" height="96"><b>State control</b><span>expand controls or dismiss overlays</span></li>
           <li><img src="static/fig/icons/temporal.png" alt="" width="96" height="96"><b>Temporal control</b><span>wait for the right state</span></li>
         </ul>
       </figure>
@@ -152,49 +151,49 @@
   <section>
     <h2>Results</h2>
 
-    <h3>Humans and models</h3>
+    <h3>Human and model performance</h3>
     <p>
-      Humans solve 94.6% of tasks. GPT-5.5 solves 79.4%.
-      All tested open models remain below one third.
+      Human participants achieve 94.6% accuracy in our study.
+      On the full benchmark, GPT-5.5 reaches 79.4% and the strongest evaluated open model reaches 31.6%.
     </p>
     <figure class="small">
-      <img src="static/fig/radar_subtype.png" alt="Grounding accuracy by sub-type for Human (94.6%), GPT-5.5 (79.4%), and Qwen3-VL (30.8%)." width="1268" height="950" loading="lazy">
-      <figcaption>Grounding accuracy (%) by sub-type.</figcaption>
+      <img src="static/fig/radar_subtype.png" alt="Accuracy by constraint subtype. Overall accuracy is 94.6% in the human study, and 79.4% for GPT-5.5 and 30.8% for Qwen3-VL on the full benchmark." width="1268" height="950" loading="lazy">
+      <figcaption>Grounding accuracy (%) by constraint subtype.</figcaption>
     </figure>
 
-    <h3>Revealing the target is hard</h3>
+    <h3>Revealing the target</h3>
     <p>
-      For Qwen3-VL, naming the reveal action raises accuracy from 30.8% to 33.9%.
-      Revealing the target for it raises accuracy to 81.9%.
+      Specifying the reveal action raises Qwen3-VL’s accuracy from 30.8% to 33.9%.
+      Revealing the target for the model raises it to 81.9%.
     </p>
     <figure class="table-fig">
       <img src="static/fig/res_bars.png" alt="Qwen3-VL accuracy: unassisted 30.8, reveal action specified 33.9, target revealed 81.9. GPT-5.5 unassisted: 79.4." width="1600" height="362" loading="lazy">
     </figure>
-    <p class="after-fig">
-      On 120 held-out tasks, the base models mostly click. None uses drag.
+    <h3>Learning to reveal targets</h3>
+    <p>
+      Base models rely mostly on clicks and never use drag.
     </p>
     <figure class="mid">
-      <img src="static/fig/res_share.png" alt="Action share on held-out tasks: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1600" height="493" loading="lazy">
-      <figcaption>Action use on 120 held-out tasks: reference traces, base models, and trained Qwen3-VL.</figcaption>
+      <img src="static/fig/res_share.png" alt="Action distribution on the validation set: base models mostly click and never drag; trained Qwen3-VL uses drag for 10% of its actions." width="1600" height="493" loading="lazy">
+      <figcaption>Action distribution on the validation set (120 tasks).</figcaption>
     </figure>
 
-    <h3>Training helps</h3>
-    <p>
-      Frequency-balanced SFT and online GRPO improve all three 8B models by 17&ndash;19 points on 120 held-out tasks.
-      Qwen3-VL’s movable-occlusion accuracy rises from 0% to 62.5%.
+    <p class="after-fig">
+      SFT followed by GRPO improves accuracy by 17.5&ndash;19.2 percentage points across three 8B models.
+      Qwen3-VL’s accuracy on movable occlusions rises from 0% to 62.5%.
     </p>
     <figure class="mid">
-      <img src="static/fig/res_learn1.png" alt="Base to SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL 3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1600" height="275" loading="lazy">
-      <figcaption>Accuracy (%) before and after training, on 120 held-out tasks.</figcaption>
+      <img src="static/fig/res_learn1.png" alt="Validation accuracy before and after SFT+GRPO: Qwen3-VL 40.0% to 59.2%, InternVL3.5 28.3% to 47.5%, GUI-Owl-1.5 35.0% to 52.5%." width="1600" height="275" loading="lazy">
+      <figcaption>Validation accuracy (%) before and after training.</figcaption>
     </figure>
     <figure class="mid">
-      <img src="static/fig/res_learn2.png" alt="Qwen3-VL per sub-type before and after training; movable occlusion goes from 0.0 to 62.5." width="1600" height="510" loading="lazy">
-      <figcaption>Qwen3-VL accuracy (%) by sub-type, before and after training.</figcaption>
+      <img src="static/fig/res_learn2.png" alt="Qwen3-VL validation accuracy by constraint subtype before and after training. Accuracy on movable occlusions rises from 0% to 62.5%." width="1600" height="510" loading="lazy">
+      <figcaption>Qwen3-VL validation accuracy (%) by constraint subtype.</figcaption>
     </figure>
   </section>
 
   <section id="bibtex">
-    <h2>BibTeX</h2>
+    <h2>Citation</h2>
 <pre><code>@inproceedings{kim2026igg,
   title     = {{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints},
   author    = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},

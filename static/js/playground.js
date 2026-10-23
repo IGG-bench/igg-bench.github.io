@@ -12,9 +12,9 @@
   const picker = [...document.querySelectorAll('[data-challenge]')];
   const solved = new Set();
   const descriptions = {
-    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Customer Interviews.' },
-    hover: { hint: 'Move over the Half Awake row in Wavr. Its heart control appears on the right.' },
-    drag: { hint: 'In the Figma canvas, move the notes covering Key Insight, then click Key Insight. Keep all notes on the canvas.' },
+    scroll: { hint: 'Scroll to Linked resources, then open Customer Interviews.' },
+    hover: { hint: 'Hover over Half Awake to reveal the heart on the right.' },
+    drag: { hint: 'Move the notes covering Key Insight, then click it. Keep all notes on the canvas.' },
     wait: { hint: 'Wait for Alice Kim’s email notification, then click Reply.' }
   };
   let tasks, practiceTasks, current, frame, canvas, handshake, deadline, timer, startedAt;
@@ -35,8 +35,8 @@
         headers: { ...(options.body ? {'Content-Type': 'application/json'} : {}), ...(credentials ? {Authorization: `Bearer ${credentials.token}`} : {}) },
       });
       let data;
-      try { data = await response.json(); } catch { throw new Error('The score service is unavailable. Please try again.'); }
-      if (!response.ok) { const error = new Error(data.error || 'Unable to reach the score service.'); error.status = response.status; throw error; }
+      try { data = await response.json(); } catch { throw new Error('Could not connect to the leaderboard. Try again.'); }
+      if (!response.ok) { const error = new Error(data.error || 'Could not connect to the leaderboard.'); error.status = response.status; throw error; }
       return data;
     } catch (error) {
       if (error.name === 'AbortError') throw new Error('The connection timed out. Try again.');
@@ -80,31 +80,31 @@
         tr.append(actions); $('human-rows').append(tr);
       });
       $('board-status').textContent = data.total > data.entries.length ? `Showing ${data.entries.length} of ${data.total} runs` : data.total ? '' : 'Be the first to play.';
-    } catch (error) { if (requestId === boardRequest) $('board-status').textContent = `${error.message} Use Refresh to try again.`; }
+    } catch (error) { if (requestId === boardRequest) $('board-status').textContent = error.message; }
     finally { if (requestId === boardRequest) $('refresh-board').disabled = false; }
   }
   $('remove-my-records').addEventListener('click', async () => {
     if (run) return;
-    $('remove-my-records').disabled = true; $('remove-status').textContent = 'Removing your saved records…';
+    $('remove-my-records').disabled = true; $('remove-status').textContent = 'Removing your runs…';
     let failed = 0;
     for (const owner of [...owned]) {
       try { await api(`/api/runs/${owner.id}`, {method: 'DELETE'}, owner); }
       catch (error) { if (error.status !== 404) { failed++; continue; } }
       owned = owned.filter(item => item.id !== owner.id); saveOwned();
     }
-    $('remove-status').textContent = failed ? 'Some records could not be removed. Please try again.' : 'Your saved records have been removed.';
+    $('remove-status').textContent = failed ? 'Some runs could not be removed. Try again.' : 'Your runs were removed.';
     await refreshBoard();
   });
   $('refresh-board').addEventListener('click', refreshBoard);
   $('board-version').addEventListener('change', refreshBoard);
   refreshBoard();
   root.hidden = false;
-  stage.innerHTML = '<p class="play-loading">Loading the IGG examples…</p>';
+  stage.innerHTML = '<p class="play-loading">Loading tasks…</p>';
   try {
     const responses = await Promise.all([fetch('static/ranked-tasks-v2.json?v=6'), fetch('static/practice-tasks.json?v=6')]);
     if (responses.some(response => !response.ok)) throw new Error();
     [tasks, practiceTasks] = await Promise.all(responses.map(response => response.json()));
-  } catch { stage.textContent = 'The examples could not load. Please refresh to try again.'; return; }
+  } catch { stage.textContent = 'Tasks did not load. Refresh to try again.'; return; }
   $('ranked-start').hidden = false;
 
   function resize() {
@@ -125,7 +125,7 @@
     nextButton.hidden = !resultPanel.hidden;
     $('play-exit').hidden = !recorded; $('play-clock').hidden = !recorded;
     $('start-ranked').disabled = recorded; $('player-name').disabled = recorded;
-    $('play-mode').textContent = recorded ? `Recorded run · ${run.nickname}` : finishedRun ? 'Run complete' : 'Practice';
+    $('play-mode').textContent = recorded ? `Leaderboard run · ${run.nickname}` : finishedRun ? 'Run complete' : 'Practice';
     $('play-progress').textContent = recorded || finishedRun ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
     picker.forEach(button => button.classList.toggle('solved', recorded || finishedRun ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
     nextButton.textContent = recorded ? 'Skip task' : 'Next task →';
@@ -165,7 +165,7 @@
     showResult('Success!', elapsed());
     if (solved.size === practiceTasks.length) {
       $('result-detail').textContent = 'All four solved.';
-      resultButton('Play for a score →', () => {
+      resultButton('Join the leaderboard →', () => {
         $('player-name').focus(); $('ranked-start').scrollIntoView({block: 'center'});
       });
     } else resultButton('Next task →', nextPractice);
@@ -236,7 +236,7 @@
     current = (run ? tasks : practiceTasks).find(task => task.kind === kind); complete = false; startedAt = null;
     resultPanel.hidden = true; resultAction = null; $('play-retry-save').hidden = true;
     initialNoteCount = null; invalidDrag = false;
-    feedback.dataset.loading = 'true'; feedback.textContent = 'Loading the mockup…';
+    feedback.dataset.loading = 'true'; feedback.textContent = 'Loading task…';
     stage.classList.add('is-loading'); stage.classList.remove('is-finished');
     nextButton.disabled = true;
     $('play-clock').textContent = '0.0 / 60s';
@@ -257,13 +257,13 @@
       enable(); handshake = setInterval(enable, 100);
       deadline = setTimeout(() => {
         clearInterval(handshake);
-        feedback.textContent = run ? 'The mockup could not load. End this run and try again; no score will be published.' : 'The mockup is taking longer to load. Choose Try again.';
+        feedback.textContent = run ? 'Task did not load. End the run and try again. No score will be posted.' : 'Task did not load. Select Restart to try again.';
       }, 15000);
     });
   }
   async function startTask() {
     if (!run || pending) return;
-    nextButton.disabled = true; feedback.textContent = 'Preparing your next task…';
+    nextButton.disabled = true; feedback.textContent = 'Loading next task…';
     resultNext.disabled = true; resultNext.textContent = 'Loading…';
     const thisGeneration = generation;
     try {
@@ -282,10 +282,10 @@
   }
   $('ranked-start').addEventListener('submit', async event => {
     event.preventDefault(); if (run) return;
-    $('start-ranked').disabled = true; $('ranked-status').textContent = 'Preparing your recorded run…';
+    $('start-ranked').disabled = true; $('ranked-status').textContent = 'Starting run…';
     try {
       const created = await api('/api/runs', {method: 'POST', body: JSON.stringify({nickname: $('player-name').value, protocol: PROTOCOL})}, null);
-      if (created.protocol !== PROTOCOL) throw new Error('The challenge has changed. Please refresh.');
+      if (created.protocol !== PROTOCOL) throw new Error('This challenge has changed. Refresh the page.');
       run = created; finishedRun = false; results = []; pending = null; generation++;
       owned.push({id: run.id, token: run.token}); saveOwned();
       updateMode(); $('ranked-status').textContent = '';
@@ -296,7 +296,7 @@
     if (saving) return;
     const abandoned = run; run = null; generation++; pending = null; pendingStorage(null);
     clearInterval(timer); $('play-retry-save').hidden = true;
-    $('ranked-status').textContent = 'Run ended. No leaderboard score was published.';
+    $('ranked-status').textContent = 'Run ended. No score was posted.';
     updateMode(); select('scroll');
     if (abandoned) try { await api(`/api/runs/${abandoned.id}`, {method: 'DELETE'}, abandoned); owned = owned.filter(item => item.id !== abandoned.id); saveOwned(); } catch {}
   });
@@ -332,9 +332,9 @@
     if (saved?.run && saved?.pending) {
       const data = await api(`/api/runs/${saved.run.id}/result`, {method: 'POST', body: JSON.stringify(saved.pending)}, saved.run);
       pendingStorage(null);
-      $('ranked-status').textContent = data.complete ? `Your previous run was saved: GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s.` : 'Your last task was saved, but the interrupted run was not published. Start a new recorded run.';
+      $('ranked-status').textContent = data.complete ? `Previous run saved: GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s.` : 'Your last task was saved, but the run was incomplete. Start a new run.';
       if (data.complete) $('board-version').value = saved.run.protocol;
       refreshBoard();
     }
-  } catch { $('ranked-status').textContent = 'A previous result is waiting to be saved. Refresh when your connection returns.'; }
+  } catch { $('ranked-status').textContent = 'A result is still unsaved. Reconnect and refresh to save it.'; }
 })();
