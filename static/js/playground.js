@@ -124,7 +124,7 @@
     nextButton.hidden = !resultPanel.hidden;
     $('play-exit').hidden = !recorded; $('play-clock').hidden = !recorded;
     $('start-ranked').disabled = recorded; $('player-name').disabled = recorded;
-    $('play-mode').textContent = recorded ? `Leaderboard run · ${run.nickname}` : finishedRun ? 'Run complete' : 'Practice';
+    $('play-mode').textContent = recorded ? `Leaderboard mode · ${run.nickname}` : finishedRun ? 'Leaderboard mode · Complete' : 'Practice mode';
     $('play-progress').textContent = recorded || finishedRun ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
     picker.forEach(button => button.classList.toggle('solved', recorded || finishedRun ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
     nextButton.textContent = recorded ? 'Skip task' : 'Next task →';
