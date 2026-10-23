@@ -14,6 +14,12 @@ only from its active same-origin frame. Practice stays browser-local. Recorded
 runs save to a shared D1-backed service and appear in the inline Human Leaderboard;
 they are separate from the paper's study and official benchmark results.
 
+The compact play area scales the same 1440 × 900 mockup to the screen height.
+Each completion dims the mockup and shows elapsed time with an in-frame next
+button. Practice time is uncapped and starts at mockup readiness. Recorded runs
+keep the existing 60-second limit and protocol; their next button waits for the
+save response. Network failures offer an in-frame retry without losing the result.
+
 ## Human challenge (`igg-fun-v2`)
 
 The current set ends with Mailo’s PPTX upload task. The previous `igg-fun-v1`

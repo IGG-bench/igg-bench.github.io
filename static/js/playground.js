@@ -8,17 +8,19 @@
   const PROTOCOL = 'igg-fun-v2';
   const stage = $('play-stage'), feedback = $('play-feedback'), hint = $('play-hint-text');
   const hintButton = $('play-hint'), enlargeButton = $('play-enlarge'), nextButton = $('play-next');
+  const resultPanel = $('play-result'), resultNext = $('result-next'), resultSecondary = $('result-secondary');
   const picker = [...document.querySelectorAll('[data-challenge]')];
   const solved = new Set();
   const descriptions = {
-    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Customer Interviews.', success: 'Page found!' },
-    hover: { hint: 'Move over the Half Awake row in Wavr. Its heart control appears on the right.', success: 'Heart clicked!' },
-    drag: { hint: 'In the Figma canvas, move the notes covering Key Insight, then click Key Insight. Keep all notes on the canvas.', success: 'Key Insight found!' },
-    wait: { hint: 'Wait for Alice Kim’s email notification, then click Reply.', success: 'Reply found!' }
+    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Customer Interviews.' },
+    hover: { hint: 'Move over the Half Awake row in Wavr. Its heart control appears on the right.' },
+    drag: { hint: 'In the Figma canvas, move the notes covering Key Insight, then click Key Insight. Keep all notes on the canvas.' },
+    wait: { hint: 'Wait for Alice Kim’s email notification, then click Reply.' }
   };
   let tasks, practiceTasks, current, frame, canvas, handshake, deadline, timer, startedAt;
   let round = 0, complete = false, initialNoteCount = null, invalidDrag = false, enlarged = false;
   let run = null, results = [], pending = null, saving = false, generation = 0, finishedRun = false;
+  let resultAction = null;
   let owned = [];
   try { owned = JSON.parse(localStorage.getItem('igg-human-owned') || '[]'); if (!Array.isArray(owned)) owned = []; } catch {}
   const saveOwned = () => { try { localStorage.setItem('igg-human-owned', JSON.stringify(owned)); } catch {} };
@@ -36,6 +38,10 @@
       try { data = await response.json(); } catch { throw new Error('The score service is unavailable. Please try again.'); }
       if (!response.ok) { const error = new Error(data.error || 'Unable to reach the score service.'); error.status = response.status; throw error; }
       return data;
+    } catch (error) {
+      if (error.name === 'AbortError') throw new Error('The connection timed out. Try again.');
+      if (error instanceof TypeError) throw new Error('Check your connection and try again.');
+      throw error;
     } finally { clearTimeout(timeout); }
   }
 
@@ -110,57 +116,97 @@
   new ResizeObserver(resize).observe(stage);
   function updateMode() {
     const recorded = Boolean(run);
+    root.classList.toggle('is-recorded', recorded || finishedRun);
+    $('ranked-start').hidden = recorded || finishedRun;
     $('remove-my-records').disabled = recorded;
     picker.forEach(button => { button.disabled = recorded; });
-    hintButton.hidden = recorded || finishedRun; $('play-reset').hidden = recorded || finishedRun;
+    hintButton.hidden = recorded || finishedRun || complete; $('play-reset').hidden = recorded || finishedRun || complete;
+    enlargeButton.disabled = complete;
+    nextButton.hidden = !resultPanel.hidden;
     $('play-exit').hidden = !recorded; $('play-clock').hidden = !recorded;
     $('start-ranked').disabled = recorded; $('player-name').disabled = recorded;
     $('play-mode').textContent = recorded ? `Recorded run · ${run.nickname}` : finishedRun ? 'Run complete' : 'Practice';
-    picker.find(button => button.dataset.challenge === 'wait').lastChild.textContent = recorded || finishedRun ? ' Wait for upload' : ' Wait for mail';
     $('play-progress').textContent = recorded || finishedRun ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
     picker.forEach(button => button.classList.toggle('solved', recorded || finishedRun ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
-    nextButton.textContent = recorded ? 'Skip task →' : 'Next challenge →';
+    nextButton.textContent = recorded ? 'Skip task' : 'Next task →';
   }
-  function elapsed() { return Math.max(0, Math.min(LIMIT, Math.round(performance.now() - startedAt))); }
+  function elapsed() { return Math.max(0, Math.round(performance.now() - startedAt)); }
   function tick() {
     if (!run || complete || startedAt === null) return;
-    $('play-clock').textContent = `${(elapsed() / 1000).toFixed(1)} / 60s`;
+    $('play-clock').textContent = `${(Math.min(LIMIT, elapsed()) / 1000).toFixed(1)} / 60s`;
     if (elapsed() >= LIMIT) finishRecorded('timeout');
   }
+  function showResult(title, time, neutral = false) {
+    frame.setAttribute('inert', ''); stage.classList.add('is-finished');
+    resultPanel.hidden = false; resultPanel.classList.toggle('is-neutral', neutral);
+    $('result-title').textContent = title;
+    $('result-time').textContent = `${(time / 1000).toFixed(2)}s`;
+    $('result-detail').textContent = '';
+    $('play-retry-save').hidden = true; resultSecondary.hidden = true;
+    resultNext.hidden = false; resultNext.disabled = true; resultNext.textContent = 'Saving…'; resultAction = null;
+    hint.hidden = true; feedback.textContent = '';
+    updateMode();
+    $('result-title').focus({preventScroll: true});
+    resultPanel.querySelector('.result-card').scrollIntoView({block: 'nearest'});
+  }
+  function resultButton(label, action) {
+    resultAction = action; resultNext.textContent = label; resultNext.disabled = false;
+    resultNext.focus({preventScroll: true});
+  }
+  function nextPractice() {
+    const index = practiceTasks.findIndex(task => task.kind === current.kind);
+    const ordered = [...practiceTasks.slice(index + 1), ...practiceTasks.slice(0, index + 1)];
+    select((ordered.find(task => !solved.has(task.kind)) || ordered[0]).kind);
+    root.scrollIntoView({block: 'start'});
+  }
   function practiceFinish() {
-    if (complete) return;
+    if (complete || startedAt === null) return;
     complete = true; solved.add(current.kind);
-    feedback.textContent = descriptions[current.kind].success; feedback.classList.add('success');
-    updateMode(); $('play-complete').hidden = solved.size !== tasks.length;
+    showResult('Success!', elapsed());
+    if (solved.size === practiceTasks.length) {
+      $('result-detail').textContent = 'All four solved.';
+      resultButton('Play for a score →', () => {
+        $('player-name').focus(); $('ranked-start').scrollIntoView({block: 'center'});
+      });
+    } else resultButton('Next task →', nextPractice);
+    resultSecondary.textContent = 'Try again'; resultSecondary.hidden = false;
   }
   async function saveResult() {
     if (!pending || !run || saving) return;
     saving = true; nextButton.disabled = true; $('play-retry-save').hidden = true; $('play-exit').disabled = true;
-    feedback.textContent = 'Saving your task result…';
+    resultNext.hidden = false; resultNext.disabled = true; resultNext.textContent = 'Saving…';
+    $('result-detail').textContent = '';
     const thisGeneration = generation;
     try {
       const data = await api(`/api/runs/${run.id}/result`, {method: 'POST', body: JSON.stringify(pending)});
       if (thisGeneration !== generation) return;
       pending = null; pendingStorage(null); results = data.results; updateMode();
       const last = results[results.length - 1];
-      feedback.textContent = `${last.passed ? 'Target found!' : last.outcome === 'timeout' ? 'Time is up.' : 'Task skipped.'} ${(last.elapsed_ms / 1000).toFixed(2)}s · saved.`;
-      feedback.classList.toggle('success', last.passed);
+      $('result-title').textContent = last.passed ? 'Success!' : last.outcome === 'timeout' ? "Time’s up" : last.outcome === 'skip' ? 'Skipped' : 'Not counted';
+      resultPanel.classList.toggle('is-neutral', !last.passed);
       if (data.complete) {
-        const text = `Saved to the Human Leaderboard! GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s per task.`;
-        $('ranked-status').textContent = text; feedback.textContent = text;
-        run = null; finishedRun = true; updateMode(); nextButton.textContent = 'Back to practice →';
+        $('result-detail').textContent = `GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s · Saved`;
+        run = null; finishedRun = true; updateMode();
+        resultButton('View leaderboard →', () => $('human-leaderboard').scrollIntoView({block: 'start', behavior: 'smooth'}));
+        resultSecondary.textContent = 'Back to practice'; resultSecondary.hidden = false;
         $('board-version').value = PROTOCOL;
-        await refreshBoard();
-      } else nextButton.textContent = 'Next task →';
+        refreshBoard();
+      } else resultButton('Next task →', startTask);
       nextButton.disabled = false;
-    } catch (error) { feedback.textContent = `Your result is waiting to be saved. ${error.message}`; $('play-retry-save').hidden = false; }
+    } catch (error) {
+      $('result-detail').textContent = `Not saved yet. ${error.message}`;
+      resultNext.hidden = true; $('play-retry-save').hidden = false;
+      $('play-retry-save').focus({preventScroll: true});
+    }
     finally { saving = false; $('play-exit').disabled = false; }
   }
   function finishRecorded(outcome, detail = {}) {
     if (!run || complete || startedAt === null) return;
-    const time = elapsed();
+    const time = Math.min(LIMIT, elapsed());
     if (time >= LIMIT) outcome = 'timeout';
-    complete = true; clearInterval(timer); stage.classList.add('is-finished'); frame.setAttribute('inert', '');
+    complete = true; clearInterval(timer);
+    $('play-clock').textContent = `${(time / 1000).toFixed(1)} / 60s`;
+    showResult(outcome === 'target' ? 'Success!' : outcome === 'timeout' ? 'Time’s up' : 'Skipped', time, outcome !== 'target');
     pending = {task_id: current.id, elapsed_ms: time, outcome, observed_target_id: detail.observedTargetId || null, target_actionable: detail.targetActionable === true, constraint_valid: !invalidDrag};
     pendingStorage({run, pending}); saveResult();
   }
@@ -172,14 +218,15 @@
       feedback.dataset.loading = 'false'; stage.classList.remove('is-loading');
       feedback.textContent = '';
       nextButton.disabled = false;
-      if (run) { startedAt = performance.now(); timer = setInterval(tick, 100); tick(); }
+      startedAt = performance.now();
+      if (run) { timer = setInterval(tick, 100); tick(); }
     }
     if (current.kind === 'drag') {
       const count = event.data.runtimeState?.noteCount;
       if (Number.isInteger(count)) { if (initialNoteCount === null) initialNoteCount = count; if (count < initialNoteCount) invalidDrag = true; }
     }
     if (complete || detail.type !== 'click' || detail.observedTargetId !== current.target_id || detail.targetActionable !== true) return;
-    if (invalidDrag) { feedback.textContent = run ? 'A note was deleted, so this task cannot count as solved. Skip to continue.' : 'A note was deleted. Choose Try again, then move the covering note without deleting it.'; return; }
+    if (invalidDrag) { feedback.textContent = run ? 'A note was deleted. Skip this task to continue.' : 'A note was deleted. Restart and move it instead.'; return; }
     if (run) finishRecorded('target', detail); else practiceFinish();
   });
 
@@ -187,21 +234,22 @@
     if (!run && finishedRun) { finishedRun = false; updateMode(); }
     clearInterval(handshake); clearTimeout(deadline); clearInterval(timer);
     current = (run ? tasks : practiceTasks).find(task => task.kind === kind); complete = false; startedAt = null;
+    resultPanel.hidden = true; resultAction = null; $('play-retry-save').hidden = true;
     initialNoteCount = null; invalidDrag = false;
-    feedback.dataset.loading = 'true'; feedback.textContent = 'Loading the mockup…'; feedback.classList.remove('success');
+    feedback.dataset.loading = 'true'; feedback.textContent = 'Loading the mockup…';
     stage.classList.add('is-loading'); stage.classList.remove('is-finished');
-    nextButton.disabled = true; nextButton.textContent = run ? 'Skip task →' : 'Next challenge →';
-    $('play-clock').textContent = '0.0 / 60s'; $('play-complete').hidden = true;
-    hint.hidden = true; hintButton.textContent = 'Need a hint?'; hintButton.setAttribute('aria-expanded', 'false');
+    nextButton.disabled = true;
+    $('play-clock').textContent = '0.0 / 60s';
+    hint.hidden = true; hintButton.textContent = 'Hint'; hintButton.setAttribute('aria-expanded', 'false');
     $('play-instruction').textContent = current.instruction;
-    $('play-app-name').textContent = current.appName;
     picker.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.challenge === kind)));
     frame = document.createElement('iframe'); frame.title = `${current.appName}: ${current.instruction}`;
     frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
     frame.src = `static/mockups/${current.app}/?stateId=${encodeURIComponent(current.state_id)}&round=${++round}`;
     canvas = document.createElement('div'); canvas.className = 'mockup-canvas'; canvas.append(frame); stage.replaceChildren(canvas);
+    updateMode();
     stage.scrollTop = 0; stage.scrollLeft = 0; resize();
-    if (run) $('play-instruction').scrollIntoView({block: 'start'});
+    if (run) root.scrollIntoView({block: 'start'});
     const thisFrame = frame;
     frame.addEventListener('load', () => {
       if (thisFrame !== frame) return;
@@ -214,14 +262,22 @@
     });
   }
   async function startTask() {
+    if (!run || pending) return;
     nextButton.disabled = true; feedback.textContent = 'Preparing your next task…';
+    resultNext.disabled = true; resultNext.textContent = 'Loading…';
     const thisGeneration = generation;
     try {
       await api(`/api/runs/${run.id}/start`, {method: 'POST', body: JSON.stringify({task_id: tasks[results.length].id})});
       if (thisGeneration !== generation) return;
       select(tasks[results.length].kind);
     } catch (error) {
-      feedback.textContent = error.message; nextButton.textContent = 'Retry loading task →'; nextButton.disabled = false; complete = true;
+      complete = true;
+      if (!resultPanel.hidden) {
+        feedback.textContent = ''; $('result-detail').textContent = error.message;
+        resultButton('Retry next task →', startTask);
+      } else {
+        feedback.textContent = error.message; nextButton.textContent = 'Retry loading task →'; nextButton.disabled = false;
+      }
     }
   }
   $('ranked-start').addEventListener('submit', async event => {
@@ -245,9 +301,15 @@
     if (abandoned) try { await api(`/api/runs/${abandoned.id}`, {method: 'DELETE'}, abandoned); owned = owned.filter(item => item.id !== abandoned.id); saveOwned(); } catch {}
   });
   nextButton.addEventListener('click', () => {
-    if (!run) select(practiceTasks[(practiceTasks.findIndex(task => task.kind === current.kind) + 1) % practiceTasks.length].kind);
+    if (!run) nextPractice();
     else if (complete && !pending) startTask();
     else if (!complete) finishRecorded('skip');
+  });
+  resultNext.addEventListener('click', () => { if (!resultNext.disabled && resultAction) resultAction(); });
+  resultSecondary.addEventListener('click', () => {
+    if (run || saving) return;
+    select(finishedRun ? 'scroll' : current.kind);
+    root.scrollIntoView({block: 'start'});
   });
   $('play-retry-save').addEventListener('click', saveResult);
   picker.forEach(button => button.addEventListener('click', () => { if (!run) select(button.dataset.challenge); }));
@@ -255,11 +317,12 @@
   hintButton.setAttribute('aria-controls', 'play-hint-text');
   hintButton.addEventListener('click', () => {
     hint.hidden = !hint.hidden; hint.textContent = descriptions[current.kind].hint;
-    hintButton.textContent = hint.hidden ? 'Need a hint?' : 'Hide hint'; hintButton.setAttribute('aria-expanded', String(!hint.hidden));
+    hintButton.textContent = hint.hidden ? 'Hint' : 'Hide hint'; hintButton.setAttribute('aria-expanded', String(!hint.hidden));
   });
   enlargeButton.addEventListener('click', () => {
     enlarged = !enlarged; stage.classList.toggle('is-enlarged', enlarged); enlargeButton.setAttribute('aria-pressed', String(enlarged));
-    enlargeButton.textContent = enlarged ? 'Fit to page' : 'Enlarge view'; resize();
+    stage.parentElement.classList.toggle('is-enlarged', enlarged);
+    enlargeButton.textContent = enlarged ? 'Fit' : 'Enlarge'; resize();
   });
   window.addEventListener('beforeunload', event => { if (run) { event.preventDefault(); event.returnValue = ''; } });
   updateMode(); select('scroll');

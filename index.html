@@ -12,9 +12,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=6">
-  <link rel="stylesheet" href="static/css/playground.css?v=6">
-  <script src="static/js/playground.js?v=6" defer></script>
+  <link rel="stylesheet" href="static/css/index.css?v=7">
+  <link rel="stylesheet" href="static/css/playground.css?v=7">
+  <script src="static/js/playground.js?v=7" defer></script>
 </head>
 <body>
 
@@ -47,38 +47,45 @@
 
   <section id="just-for-fun" aria-labelledby="play-title">
     <h2 id="play-title">Your turn: Just for fun!</h2>
-    <p class="play-intro">Try four practice tasks. Then take on four new ones for the leaderboard.</p>
     <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
     <form id="ranked-start" class="ranked-start" hidden>
-      <div><strong>Join the leaderboard</strong><p>4 tasks · 60 seconds each · no hints or restarts</p></div>
-      <div class="ranked-entry"><label for="player-name">Public nickname</label><div><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Your nickname"><button type="submit" id="start-ranked">Start recorded run →</button></div></div>
-      <p class="ranked-consent">Your nickname and results will be public.</p>
-      <p id="ranked-status" role="status"></p>
+      <div class="ranked-label"><strong>Leaderboard run</strong><span>4 new tasks · 60s each</span></div>
+      <div class="ranked-entry"><label for="player-name" class="sr-only">Public nickname</label><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Public nickname"><button type="submit" id="start-ranked">Start run →</button></div>
     </form>
+    <p id="ranked-status" role="status"></p>
     <div class="playground" hidden>
       <div class="play-topline">
         <span id="play-mode">Practice</span>
         <span><span id="play-clock" hidden>0.0 / 60s</span> <span id="play-progress" aria-live="polite">0 / 4 solved</span></span>
       </div>
       <div class="play-picker" role="group" aria-label="Choose a benchmark example">
-        <button type="button" data-challenge="scroll" aria-pressed="true"><span>01 · Pagely</span> Find a page</button>
-        <button type="button" data-challenge="hover" aria-pressed="false"><span>02 · Wavr</span> Hidden controls</button>
-        <button type="button" data-challenge="drag" aria-pressed="false"><span>03 · Figma</span> Under cover</button>
-        <button type="button" data-challenge="wait" aria-pressed="false"><span>04 · Mailo</span> Wait for mail</button>
+        <button type="button" data-challenge="scroll" aria-pressed="true"><span>1 · Pagely</span></button>
+        <button type="button" data-challenge="hover" aria-pressed="false"><span>2 · Wavr</span></button>
+        <button type="button" data-challenge="drag" aria-pressed="false"><span>3 · Figma</span></button>
+        <button type="button" data-challenge="wait" aria-pressed="false"><span>4 · Mailo</span></button>
       </div>
-      <div class="play-task"><span>Your task</span><p id="play-instruction"></p></div>
-      <div class="mockup-toolbar"><span id="play-app-name">IGG mockup</span><button type="button" id="play-enlarge" aria-pressed="false">Enlarge view</button></div>
-      <div id="play-stage" class="play-stage" aria-label="Interactive benchmark mockup"></div>
-      <div class="play-feedback" id="play-feedback" role="status">The target is hiding somewhere.</div>
+      <div class="play-task"><p id="play-instruction"></p><button type="button" id="play-enlarge" aria-pressed="false">Enlarge</button></div>
+      <div class="play-viewport">
+        <div id="play-stage" class="play-stage" aria-label="Interactive benchmark mockup"></div>
+        <div id="play-result" class="play-result" role="dialog" aria-labelledby="result-title" aria-describedby="result-time result-detail" hidden>
+          <div class="result-card">
+            <h3 id="result-title" tabindex="-1">Success!</h3>
+            <p id="result-time"></p>
+            <p id="result-detail" role="status"></p>
+            <button type="button" id="result-next">Next task →</button>
+            <button type="button" id="play-retry-save" hidden>Retry saving</button>
+            <button type="button" id="result-secondary" hidden>Practice again</button>
+          </div>
+        </div>
+      </div>
+      <div class="play-feedback" id="play-feedback" role="status"></div>
       <div class="play-actions">
-        <button type="button" id="play-hint">Need a hint?</button>
-        <button type="button" id="play-reset">Try again</button>
+        <button type="button" id="play-hint">Hint</button>
+        <button type="button" id="play-reset">Restart</button>
         <button type="button" id="play-exit" hidden>End run</button>
-        <button type="button" id="play-retry-save" hidden>Retry saving</button>
-        <button type="button" id="play-next">Next challenge <span aria-hidden="true">&rarr;</span></button>
+        <button type="button" id="play-next">Next task →</button>
       </div>
       <p id="play-hint-text" class="play-hint" hidden></p>
-      <p id="play-complete" class="play-complete" hidden>All four solved!</p>
     </div>
   </section>
 
