@@ -24,6 +24,9 @@ save response. Network failures offer an in-frame retry without losing the resul
 
 The public leaderboard shows only the current set, which ends with Mailo’s PPTX
 upload task. Records from the previous `igg-fun-v1` set remain stored separately.
+The board refreshes when the page becomes active or reconnects, and every 30
+seconds while visible outside a recorded run. Failed reads retry automatically
+without clearing scores already on screen.
 The original
 `static/mockup-tasks.json` stays unchanged for cached v1 clients.
 

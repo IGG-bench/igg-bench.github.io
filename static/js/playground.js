@@ -45,43 +45,69 @@
     } finally { clearTimeout(timeout); }
   }
 
-  let boardRequest = 0;
-  async function refreshBoard() {
+  const BOARD_REFRESH_MS = 30000, BOARD_RETRY_DELAYS = [2000, 5000, 10000];
+  let boardRequest = 0, boardLoading = false, boardLastAttempt = -Infinity, boardRetry = 0, boardRetryTimer, boardRowsKey;
+  const canRefreshBoard = () => document.visibilityState === 'visible' && navigator.onLine !== false && !run;
+  function refreshBoardAutomatically(minInterval = 5000) {
+    if (!canRefreshBoard() || boardLoading || Date.now() - boardLastAttempt < minInterval) return;
+    refreshBoard({automatic: true});
+  }
+  async function refreshBoard({automatic = false} = {}) {
+    if (automatic && (!canRefreshBoard() || boardLoading)) return;
+    clearTimeout(boardRetryTimer);
+    if (!automatic) boardRetry = 0;
+    boardLoading = true; boardLastAttempt = Date.now();
     const requestId = ++boardRequest;
     const protocol = PROTOCOL;
     $('refresh-board').disabled = true;
     $('remove-my-records').hidden = !owned.length;
     $('remove-my-records').disabled = Boolean(run);
-    $('board-status').textContent = 'Loading records…';
+    if (!automatic) $('board-status').textContent = 'Loading records…';
     try {
       const data = await api(`/api/leaderboard?protocol=${encodeURIComponent(protocol)}`, {}, null);
       if (requestId !== boardRequest) return;
-      if (data.protocol !== protocol) throw new Error('This challenge has changed. Refresh the page.');
-      $('human-rows').replaceChildren();
-      data.entries.forEach((entry, index) => {
-        const tr = document.createElement('tr');
-        const owner = owned.find(item => item.id === entry.id);
-        tr.classList.toggle('is-own', Boolean(owner));
-        for (const value of [index + 1, entry.nickname, `${Math.round(entry.ga * 100)}%`, `${(entry.tt_ms / 1000).toFixed(2)}s`, new Date(entry.published_at).toLocaleDateString()]) {
-          const td = document.createElement('td'); td.textContent = value; tr.append(td);
-        }
-        const actions = document.createElement('td');
-        if (owner) {
-          const remove = document.createElement('button'); remove.textContent = 'Remove'; remove.setAttribute('aria-label', `Remove your run by ${entry.nickname}`);
-          remove.addEventListener('click', async () => {
-            remove.disabled = true;
-            try {
-              await api(`/api/runs/${owner.id}`, {method: 'DELETE'}, owner);
-              owned = owned.filter(item => item.id !== owner.id); saveOwned(); await refreshBoard();
-            } catch (error) { $('board-status').textContent = error.message; remove.disabled = false; }
-          });
-          actions.append(remove);
-        }
-        tr.append(actions); $('human-rows').append(tr);
-      });
+      if (data.protocol !== protocol) {
+        const error = new Error('This challenge has changed. Refresh the page.'); error.status = 409; throw error;
+      }
+      const rowsKey = JSON.stringify([data.entries, owned.map(item => item.id)]);
+      // Keep existing row controls (and their focus) when the board is unchanged.
+      if (rowsKey !== boardRowsKey) {
+        $('human-rows').replaceChildren();
+        data.entries.forEach((entry, index) => {
+          const tr = document.createElement('tr');
+          const owner = owned.find(item => item.id === entry.id);
+          tr.classList.toggle('is-own', Boolean(owner));
+          for (const value of [index + 1, entry.nickname, `${Math.round(entry.ga * 100)}%`, `${(entry.tt_ms / 1000).toFixed(2)}s`, new Date(entry.published_at).toLocaleDateString()]) {
+            const td = document.createElement('td'); td.textContent = value; tr.append(td);
+          }
+          const actions = document.createElement('td');
+          if (owner) {
+            const remove = document.createElement('button'); remove.textContent = 'Remove'; remove.setAttribute('aria-label', `Remove your run by ${entry.nickname}`);
+            remove.addEventListener('click', async () => {
+              remove.disabled = true;
+              try {
+                await api(`/api/runs/${owner.id}`, {method: 'DELETE'}, owner);
+                owned = owned.filter(item => item.id !== owner.id); saveOwned(); await refreshBoard();
+              } catch (error) { $('board-status').textContent = error.message; remove.disabled = false; }
+            });
+            actions.append(remove);
+          }
+          tr.append(actions); $('human-rows').append(tr);
+        });
+        boardRowsKey = rowsKey;
+      }
       $('board-status').textContent = data.total > data.entries.length ? `Showing ${data.entries.length} of ${data.total} runs` : data.total ? '' : 'Be the first to play.';
-    } catch (error) { if (requestId === boardRequest) $('board-status').textContent = error.message; }
-    finally { if (requestId === boardRequest) $('refresh-board').disabled = false; }
+      boardRetry = 0;
+    } catch (error) {
+      if (requestId !== boardRequest) return;
+      $('board-status').textContent = error.message;
+      const transient = !error.status || error.status === 408 || error.status === 429 || error.status >= 500;
+      if (transient && boardRetry < BOARD_RETRY_DELAYS.length) {
+        boardRetryTimer = setTimeout(() => refreshBoardAutomatically(0), BOARD_RETRY_DELAYS[boardRetry++]);
+      }
+    } finally {
+      if (requestId === boardRequest) { boardLoading = false; $('refresh-board').disabled = false; }
+    }
   }
   $('remove-my-records').addEventListener('click', async () => {
     if (run) return;
@@ -95,7 +121,12 @@
     $('remove-status').textContent = failed ? 'Some runs could not be removed. Try again.' : 'Your runs were removed.';
     await refreshBoard();
   });
-  $('refresh-board').addEventListener('click', refreshBoard);
+  $('refresh-board').addEventListener('click', () => refreshBoard());
+  // A tab can remain open while other visitors finish runs. Keep its board current.
+  document.addEventListener('visibilitychange', () => refreshBoardAutomatically());
+  window.addEventListener('focus', () => refreshBoardAutomatically());
+  window.addEventListener('online', () => refreshBoardAutomatically(0));
+  setInterval(() => refreshBoardAutomatically(BOARD_REFRESH_MS), BOARD_REFRESH_MS);
   refreshBoard();
   root.hidden = false;
   stage.innerHTML = '<p class="play-loading">Loading tasks…</p>';
