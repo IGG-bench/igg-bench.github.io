@@ -48,7 +48,7 @@
   let boardRequest = 0;
   async function refreshBoard() {
     const requestId = ++boardRequest;
-    const protocol = $('board-version').value;
+    const protocol = PROTOCOL;
     $('refresh-board').disabled = true;
     $('remove-my-records').hidden = !owned.length;
     $('remove-my-records').disabled = Boolean(run);
@@ -96,7 +96,6 @@
     await refreshBoard();
   });
   $('refresh-board').addEventListener('click', refreshBoard);
-  $('board-version').addEventListener('change', refreshBoard);
   refreshBoard();
   root.hidden = false;
   stage.innerHTML = '<p class="play-loading">Loading tasks…</p>';
@@ -189,7 +188,6 @@
         run = null; finishedRun = true; updateMode();
         resultButton('View leaderboard →', () => $('human-leaderboard').scrollIntoView({block: 'start', behavior: 'smooth'}));
         resultSecondary.textContent = 'Back to practice'; resultSecondary.hidden = false;
-        $('board-version').value = PROTOCOL;
         refreshBoard();
       } else resultButton('Next task →', startTask);
       nextButton.disabled = false;
@@ -333,7 +331,6 @@
       const data = await api(`/api/runs/${saved.run.id}/result`, {method: 'POST', body: JSON.stringify(saved.pending)}, saved.run);
       pendingStorage(null);
       $('ranked-status').textContent = data.complete ? `Previous run saved: GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s.` : 'Your last task was saved, but the run was incomplete. Start a new run.';
-      if (data.complete) $('board-version').value = saved.run.protocol;
       refreshBoard();
     }
   } catch { $('ranked-status').textContent = 'A result is still unsaved. Reconnect and refresh to save it.'; }

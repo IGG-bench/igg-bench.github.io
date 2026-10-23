@@ -76,7 +76,7 @@ button:disabled { cursor: default; opacity: .55; }
 #human-leaderboard { width: min(980px, calc(100vw - 40px)); margin: 36px 0 0 50%; transform: translateX(-50%); scroll-margin-top: 28px; }
 .human-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; }
 .human-heading h2 { text-align: left; margin: 0; }
-.human-heading button, .human-heading select, .human-table button { background: #fff; border: 1px solid #d9e2e9; border-radius: 6px; padding: 7px 10px; color: var(--navy); font: inherit; font-size: .72rem; cursor: pointer; }
+.human-heading button, .human-table button { background: #fff; border: 1px solid #d9e2e9; border-radius: 6px; padding: 7px 10px; color: var(--navy); font: inherit; font-size: .72rem; cursor: pointer; }
 .human-explainer { color: var(--muted); font-size: .8rem; line-height: 1.7; margin: 12px 0; }
 #board-status { font-size: .8rem; color: var(--muted); }
 .human-table-wrap { overflow-x: auto; border: 1px solid #d9e2e9; border-radius: 12px; }
@@ -91,7 +91,5 @@ button:disabled { cursor: default; opacity: .55; }
 
 .human-own-actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 10px; font-size: .72rem; color: var(--muted); }
 .human-own-actions button { font: inherit; color: var(--muted); border: 1px solid #d9e2e9; border-radius: 6px; padding: 7px 10px; background: #fff; cursor: pointer; }
-
-.human-board-controls { display: flex; align-items: center; gap: 8px; }
 
 #ranked-status:empty, #board-status:empty, .play-feedback:empty, #result-detail:empty { display: none; }

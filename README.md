@@ -22,9 +22,9 @@ save response. Network failures offer an in-frame retry without losing the resul
 
 ## Human challenge (`igg-fun-v2`)
 
-The current set ends with Mailo’s PPTX upload task. The previous `igg-fun-v1`
-set ended with Pagely sync; its records remain available in the version selector.
-Scores from the two sets are stored and ranked separately. The original
+The public leaderboard shows only the current set, which ends with Mailo’s PPTX
+upload task. Records from the previous `igg-fun-v1` set remain stored separately.
+The original
 `static/mockup-tasks.json` stays unchanged for cached v1 clients.
 
 Four fixed tasks, in catalog order, with 60 seconds each. No hints, switching,
