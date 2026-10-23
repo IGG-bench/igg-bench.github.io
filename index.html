@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-  <link rel="stylesheet" href="static/css/playground.css?v=3">
-  <script src="static/js/playground.js?v=3" defer></script>
+  <link rel="stylesheet" href="static/css/playground.css?v=4">
+  <script src="static/js/playground.js?v=4" defer></script>
 </head>
 <body>
 
@@ -31,9 +31,9 @@
     <a class="btn off" title="Coming soon"><i class="fas fa-file-pdf"></i>Paper</a>
     <a class="btn off" title="Coming soon"><i class="ai ai-arxiv"></i>arXiv</a>
     <a class="btn" href="https://github.com/kaist-ami/IGG"><i class="fab fa-github"></i>Code</a>
-    <a class="btn off" title="Coming soon" aria-disabled="true"><i class="fas fa-chart-column"></i>Leaderboard</a>
+    <a class="btn" href="#human-leaderboard"><i class="fas fa-chart-column"></i>Leaderboard</a>
   </nav>
-  <p class="soon">Paper and leaderboard coming soon.</p>
+  <p class="soon">Paper and model leaderboard coming soon. Try the human challenge below.</p>
 </header>
 
 <main>
@@ -51,10 +51,16 @@
     <h2 id="play-title">Just for fun!</h2>
     <p class="play-intro">Can you find the hidden target?<br>Try four tasks in the actual IGG mockups, right here on the page.</p>
     <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
+    <form id="ranked-start" class="ranked-start" hidden>
+      <div><strong>Put your name on the board.</strong><p>4 tasks · 60 seconds each · no hints or restarts</p></div>
+      <div class="ranked-entry"><label for="player-name">Public nickname</label><div><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Your nickname"><button type="submit" id="start-ranked">Start recorded run →</button></div></div>
+      <p class="ranked-consent">Finishing publishes your nickname, GA, average TT and date. Practice below stays unrecorded. You can remove your saved scores from this browser.</p>
+      <p id="ranked-status" role="status"></p>
+    </form>
     <div class="playground" hidden>
       <div class="play-topline">
-        <span>Explore a challenge</span>
-        <span id="play-progress" aria-live="polite">0 / 4 solved</span>
+        <span id="play-mode">Practice · explore a challenge</span>
+        <span><span id="play-clock" hidden>0.0 / 60s</span> <span id="play-progress" aria-live="polite">0 / 4 solved</span></span>
       </div>
       <div class="play-picker" role="group" aria-label="Choose a benchmark example">
         <button type="button" data-challenge="scroll" aria-pressed="true"><span>01 · PAGELY</span> Find a page</button>
@@ -70,12 +76,24 @@
       <div class="play-actions">
         <button type="button" id="play-hint">Need a hint?</button>
         <button type="button" id="play-reset">Try again</button>
+        <button type="button" id="play-exit" hidden>End run</button>
+        <button type="button" id="play-retry-save" hidden>Retry saving</button>
         <button type="button" id="play-next">Next challenge <span aria-hidden="true">&rarr;</span></button>
       </div>
       <p id="play-hint-text" class="play-hint" hidden></p>
       <p id="play-complete" class="play-complete" hidden>All four revealed! You just tried the visibility-recovery step in real IGG environments.</p>
     </div>
-    <p class="play-note">Four tasks from IGG, running in the original mockup interfaces. This is a casual preview; no leaderboard scores are submitted.</p>
+    <p class="play-note">Four original IGG tasks. Recorded runs allow interaction until success, skip, or timeout; this is a casual challenge, separate from the full benchmark and paper’s human study.</p>
+  </section>
+
+  <section id="human-leaderboard" aria-labelledby="human-title">
+    <div class="human-heading"><div><p class="play-eyebrow">THE FOUR-TASK CHALLENGE</p><h2 id="human-title">Human Leaderboard</h2></div><button type="button" id="refresh-board">Refresh</button></div>
+    <p class="human-explainer"><strong>GA</strong> = tasks solved ÷ 4. <strong>TT</strong> = average time across all four tasks, including skips and timeouts. Higher GA ranks first; lower TT breaks ties.</p>
+    <p id="board-status" role="status">Loading records…</p>
+    <div class="human-table-wrap"><table class="human-table"><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">GA ↑</th><th scope="col">TT ↓</th><th scope="col">Date</th><th scope="col"><span class="sr-only">Your record</span></th></tr></thead><tbody id="human-rows"></tbody></table></div>
+    <p class="play-note">Top 50 completed runs · each run is a separate entry · browser-measured, unverified scores · mouse/trackpad recommended</p>
+    <p class="human-play-link"><a href="#just-for-fun">Try it and join the board ↑</a></p>
+    <p class="human-own-actions"><button type="button" id="remove-my-records" hidden>Remove my saved records</button><span id="remove-status" role="status"></span></p>
   </section>
 
   <figure class="teaser wide">
