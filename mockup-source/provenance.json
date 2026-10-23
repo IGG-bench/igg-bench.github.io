@@ -1,0 +1,25 @@
+{
+  "source_repository": "https://github.com/kaist-ami/IGG",
+  "local_checkout_base_commit": "a6154915c08ade3bdf93aff0fdef566cafa5b637",
+  "note": "Snapshot of the existing local mockups. The shared review runtime includes existing local changes. Original components and states are preserved; the build only adapts Figma query parameters for static export.",
+  "files": {
+    "apps/pagely/app/layout.tsx": "2aca30cc8b192525a2d386255779e564c3e1fbea6e18b91ec2b47e49f163991a",
+    "apps/pagely/app/page.tsx": "5d90c944643195d9c649291db954e452bf0a4a71fb700f528b6bde70e4189296",
+    "apps/pagely/app/pagely-states.ts": "3d6389ede5061d9921cd8d29aea64186051abd54475f7e9f3c1c19791941d2b6",
+    "apps/pagely/app/globals.css": "64255b65de8b5f250ed0d5ff468fcac25327dcf451e329ac685cfeda86c56487",
+    "apps/pagely/postcss.config.mjs": "b783348d5618047d0f37e12acd15c5a2c5f02809d8711e0764c9cea52750346c",
+    "apps/pagely/tsconfig.json": "6e3e1fba1547e5d6ffe754598bdda409e008dd043476ac82513eb778c12ccdd0",
+    "apps/wavr/app/layout.tsx": "721616ac3478bf3fea595a61dc871343f5af6382a3142cfeb9ffcc1c540167a5",
+    "apps/wavr/app/wavr-states.ts": "579cdf05e4d0aa651d9b0ff44dd12816717c8530dae169b3064cd86e7e265c85",
+    "apps/wavr/app/page.tsx": "e9defb1ee0171abb719ef3404f64d3c71caea6c97139b6d23b25678cb9e76695",
+    "apps/wavr/app/globals.css": "f59208828509fa1ffddc727f6c552f6aba23f8fac0e48141149bac611a1544ec",
+    "apps/wavr/postcss.config.mjs": "b783348d5618047d0f37e12acd15c5a2c5f02809d8711e0764c9cea52750346c",
+    "apps/wavr/tsconfig.json": "6e3e1fba1547e5d6ffe754598bdda409e008dd043476ac82513eb778c12ccdd0",
+    "apps/figma/app/layout.tsx": "3ea6530bdcbfc2029f353205ddbea0a626c8fb2a5cd7074ade816c11292a48c0",
+    "apps/figma/app/page.tsx": "f76d0a2d14a3213b5ba28d737f663dc4f1e1ca43ef53138763c81cc2e19404e2",
+    "apps/figma/app/globals.css": "4af29c99030dcfa58841b1a021b49fae11891e7ed415edfd1fcfa75514785ea8",
+    "apps/figma/postcss.config.mjs": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+    "apps/figma/tsconfig.json": "13e618fe1cdf24edc70f4df42d5eb1474ff57d805a0bfca3f81187de07b9ec02",
+    "lib/review-runtime.ts": "0a78f704a749e94d7aa297ee67245bf289dbfa346d72cbf5e5ee2d55d8db1f26"
+  }
+}

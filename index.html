@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css">
-  <link rel="stylesheet" href="static/css/playground.css">
-  <script src="static/js/playground.js" defer></script>
+  <link rel="stylesheet" href="static/css/playground.css?v=3">
+  <script src="static/js/playground.js?v=3" defer></script>
 </head>
 <body>
 
@@ -32,7 +32,6 @@
     <a class="btn off" title="Coming soon"><i class="ai ai-arxiv"></i>arXiv</a>
     <a class="btn" href="https://github.com/kaist-ami/IGG"><i class="fab fa-github"></i>Code</a>
     <a class="btn off" title="Coming soon" aria-disabled="true"><i class="fas fa-chart-column"></i>Leaderboard</a>
-    <a class="btn play-link" href="#just-for-fun"><i class="fas fa-arrow-pointer" aria-hidden="true"></i>Just for fun!</a>
   </nav>
   <p class="soon">Paper and leaderboard coming soon.</p>
 </header>
@@ -46,6 +45,38 @@
     </video>
     <figcaption>Watch the EMNLP 2026 presentation.</figcaption>
   </figure>
+
+  <section id="just-for-fun" aria-labelledby="play-title">
+    <p class="play-eyebrow">TRY IT RIGHT HERE</p>
+    <h2 id="play-title">Just for fun!</h2>
+    <p class="play-intro">Can you find the hidden target?<br>Try four tasks in the actual IGG mockups, right here on the page.</p>
+    <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
+    <div class="playground" hidden>
+      <div class="play-topline">
+        <span>Explore a challenge</span>
+        <span id="play-progress" aria-live="polite">0 / 4 solved</span>
+      </div>
+      <div class="play-picker" role="group" aria-label="Choose a benchmark example">
+        <button type="button" data-challenge="scroll" aria-pressed="true"><span>01 · PAGELY</span> Find a page</button>
+        <button type="button" data-challenge="hover" aria-pressed="false"><span>02 · WAVR</span> Hidden controls</button>
+        <button type="button" data-challenge="drag" aria-pressed="false"><span>03 · FIGMA</span> Under cover</button>
+        <button type="button" data-challenge="wait" aria-pressed="false"><span>04 · PAGELY</span> Almost ready</button>
+      </div>
+      <div class="play-task"><span>YOUR TASK</span><p id="play-instruction"></p></div>
+      <div class="mockup-toolbar"><span id="play-app-name">Actual IGG mockup</span><button type="button" id="play-enlarge" aria-pressed="false">Enlarge view</button></div>
+      <div id="play-stage" class="play-stage" aria-label="Interactive benchmark mockup"></div>
+      <p class="play-device-note">Use a mouse or trackpad for hover and drag. On small screens, enlarge the view and pan across it.</p>
+      <div class="play-feedback" id="play-feedback" role="status">The target is hiding somewhere.</div>
+      <div class="play-actions">
+        <button type="button" id="play-hint">Need a hint?</button>
+        <button type="button" id="play-reset">Try again</button>
+        <button type="button" id="play-next">Next challenge <span aria-hidden="true">&rarr;</span></button>
+      </div>
+      <p id="play-hint-text" class="play-hint" hidden></p>
+      <p id="play-complete" class="play-complete" hidden>All four revealed! You just tried the visibility-recovery step in real IGG environments.</p>
+    </div>
+    <p class="play-note">Four tasks from IGG, running in the original mockup interfaces. This is a casual preview; no leaderboard scores are submitted.</p>
+  </section>
 
   <figure class="teaser wide">
     <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137">
@@ -116,36 +147,6 @@
         <figcaption>The 16 environments are modeled on these applications.</figcaption>
       </figure>
     </div>
-  </section>
-
-  <section id="just-for-fun" aria-labelledby="play-title">
-    <p class="play-eyebrow">YOUR TURN</p>
-    <h2 id="play-title">Just for fun!</h2>
-    <p class="play-intro">Looks easy? Try revealing the target yourself.<br>Four tiny challenges. One rule: reveal it, then click it.</p>
-    <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
-    <div class="playground" hidden>
-      <div class="play-topline">
-        <span>Explore a challenge</span>
-        <span id="play-progress" aria-live="polite">0 / 4 solved</span>
-      </div>
-      <div class="play-picker" role="group" aria-label="Choose a toy example">
-        <button type="button" data-challenge="scroll" aria-pressed="true"><span>01</span> Find the file</button>
-        <button type="button" data-challenge="hover" aria-pressed="false"><span>02</span> Hidden controls</button>
-        <button type="button" data-challenge="drag" aria-pressed="false"><span>03</span> Under cover</button>
-        <button type="button" data-challenge="wait" aria-pressed="false"><span>04</span> Almost ready</button>
-      </div>
-      <div class="play-task"><span>YOUR TASK</span><p id="play-instruction"></p></div>
-      <div id="play-stage" class="play-stage" aria-label="Interactive toy interface"></div>
-      <div class="play-feedback" id="play-feedback" role="status">The target is hiding somewhere.</div>
-      <div class="play-actions">
-        <button type="button" id="play-hint">Need a hint?</button>
-        <button type="button" id="play-reset">Try again</button>
-        <button type="button" id="play-next">Next challenge <span aria-hidden="true">&rarr;</span></button>
-      </div>
-      <p id="play-hint-text" class="play-hint" hidden></p>
-      <p id="play-complete" class="play-complete" hidden>All four revealed! That little step before the click is what IGG evaluates.</p>
-    </div>
-    <p class="play-note">Simplified toy examples inspired by IGG, not benchmark tasks. No scores are submitted.</p>
   </section>
 
   <section>
