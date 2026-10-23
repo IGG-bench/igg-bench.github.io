@@ -5,20 +5,20 @@
   if (!root) return;
   const API = ['localhost', '127.0.0.1'].includes(location.hostname) ? 'http://127.0.0.1:8789' : 'https://igg-human-leaderboard.kaist-ami-lab.chatgpt.site';
   const LIMIT = 60000;
-  const PROTOCOL = 'igg-fun-v1';
+  const PROTOCOL = 'igg-fun-v2';
   const stage = $('play-stage'), feedback = $('play-feedback'), hint = $('play-hint-text');
   const hintButton = $('play-hint'), enlargeButton = $('play-enlarge'), nextButton = $('play-next');
   const picker = [...document.querySelectorAll('[data-challenge]')];
   const solved = new Set();
   const descriptions = {
-    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Sprint Retrospective.', success: 'Page found!' },
-    hover: { hint: 'Move over the Midnight Pulse row in Wavr. Its heart control appears on the right.', success: 'Heart clicked!' },
-    drag: { hint: 'In the Figma canvas, drag the sticky note covering QA Checklist out of the way, then click QA Checklist. Keep all notes on the canvas.', success: 'QA Checklist found!' },
-    wait: { hint: 'Wait a few seconds for syncing to finish, then click Sync complete in the top bar of Pagely.', success: 'Sync complete!' }
+    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Customer Interviews.', success: 'Page found!' },
+    hover: { hint: 'Move over the Half Awake row in Wavr. Its heart control appears on the right.', success: 'Heart clicked!' },
+    drag: { hint: 'In the Figma canvas, move the notes covering Key Insight, then click Key Insight. Keep all notes on the canvas.', success: 'Key Insight found!' },
+    wait: { hint: 'Wait for Alice Kim’s email notification, then click Reply.', success: 'Reply found!' }
   };
-  let tasks, current, frame, canvas, handshake, deadline, timer, startedAt;
+  let tasks, practiceTasks, current, frame, canvas, handshake, deadline, timer, startedAt;
   let round = 0, complete = false, initialNoteCount = null, invalidDrag = false, enlarged = false;
-  let run = null, results = [], pending = null, saving = false, generation = 0;
+  let run = null, results = [], pending = null, saving = false, generation = 0, finishedRun = false;
   let owned = [];
   try { owned = JSON.parse(localStorage.getItem('igg-human-owned') || '[]'); if (!Array.isArray(owned)) owned = []; } catch {}
   const saveOwned = () => { try { localStorage.setItem('igg-human-owned', JSON.stringify(owned)); } catch {} };
@@ -39,14 +39,18 @@
     } finally { clearTimeout(timeout); }
   }
 
+  let boardRequest = 0;
   async function refreshBoard() {
+    const requestId = ++boardRequest;
+    const protocol = $('board-version').value;
     $('refresh-board').disabled = true;
     $('remove-my-records').hidden = !owned.length;
     $('remove-my-records').disabled = Boolean(run);
     $('board-status').textContent = 'Loading records…';
     try {
-      const data = await api('/api/leaderboard', {}, null);
-      if (data.protocol !== PROTOCOL) throw new Error('This challenge has changed. Refresh the page.');
+      const data = await api(`/api/leaderboard?protocol=${encodeURIComponent(protocol)}`, {}, null);
+      if (requestId !== boardRequest) return;
+      if (data.protocol !== protocol) throw new Error('This challenge has changed. Refresh the page.');
       $('human-rows').replaceChildren();
       data.entries.forEach((entry, index) => {
         const tr = document.createElement('tr');
@@ -69,9 +73,9 @@
         }
         tr.append(actions); $('human-rows').append(tr);
       });
-      $('board-status').textContent = data.total ? `${data.total} completed ${data.total === 1 ? 'run' : 'runs'} · showing ${data.entries.length}` : 'No runs yet. Take the first turn.';
-    } catch (error) { $('board-status').textContent = `${error.message} Use Refresh to try again.`; }
-    finally { $('refresh-board').disabled = false; }
+      $('board-status').textContent = data.total > data.entries.length ? `Showing ${data.entries.length} of ${data.total} runs` : data.total ? '' : 'Be the first to play.';
+    } catch (error) { if (requestId === boardRequest) $('board-status').textContent = `${error.message} Use Refresh to try again.`; }
+    finally { if (requestId === boardRequest) $('refresh-board').disabled = false; }
   }
   $('remove-my-records').addEventListener('click', async () => {
     if (run) return;
@@ -86,13 +90,14 @@
     await refreshBoard();
   });
   $('refresh-board').addEventListener('click', refreshBoard);
+  $('board-version').addEventListener('change', refreshBoard);
   refreshBoard();
   root.hidden = false;
   stage.innerHTML = '<p class="play-loading">Loading the IGG examples…</p>';
   try {
-    const response = await fetch('static/mockup-tasks.json');
-    if (!response.ok) throw new Error();
-    tasks = await response.json();
+    const responses = await Promise.all([fetch('static/ranked-tasks-v2.json?v=6'), fetch('static/practice-tasks.json?v=6')]);
+    if (responses.some(response => !response.ok)) throw new Error();
+    [tasks, practiceTasks] = await Promise.all(responses.map(response => response.json()));
   } catch { stage.textContent = 'The examples could not load. Please refresh to try again.'; return; }
   $('ranked-start').hidden = false;
 
@@ -107,12 +112,13 @@
     const recorded = Boolean(run);
     $('remove-my-records').disabled = recorded;
     picker.forEach(button => { button.disabled = recorded; });
-    hintButton.hidden = recorded; $('play-reset').hidden = recorded;
+    hintButton.hidden = recorded || finishedRun; $('play-reset').hidden = recorded || finishedRun;
     $('play-exit').hidden = !recorded; $('play-clock').hidden = !recorded;
     $('start-ranked').disabled = recorded; $('player-name').disabled = recorded;
-    $('play-mode').textContent = recorded ? `Recorded run · ${run.nickname}` : 'Practice';
-    $('play-progress').textContent = recorded ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
-    picker.forEach(button => button.classList.toggle('solved', recorded ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
+    $('play-mode').textContent = recorded ? `Recorded run · ${run.nickname}` : finishedRun ? 'Run complete' : 'Practice';
+    picker.find(button => button.dataset.challenge === 'wait').lastChild.textContent = recorded || finishedRun ? ' Wait for upload' : ' Wait for mail';
+    $('play-progress').textContent = recorded || finishedRun ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
+    picker.forEach(button => button.classList.toggle('solved', recorded || finishedRun ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
     nextButton.textContent = recorded ? 'Skip task →' : 'Next challenge →';
   }
   function elapsed() { return Math.max(0, Math.min(LIMIT, Math.round(performance.now() - startedAt))); }
@@ -142,7 +148,8 @@
       if (data.complete) {
         const text = `Saved to the Human Leaderboard! GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s per task.`;
         $('ranked-status').textContent = text; feedback.textContent = text;
-        run = null; updateMode(); nextButton.textContent = 'Back to practice →';
+        run = null; finishedRun = true; updateMode(); nextButton.textContent = 'Back to practice →';
+        $('board-version').value = PROTOCOL;
         await refreshBoard();
       } else nextButton.textContent = 'Next task →';
       nextButton.disabled = false;
@@ -163,7 +170,7 @@
     clearInterval(handshake); clearTimeout(deadline);
     if (feedback.dataset.loading === 'true') {
       feedback.dataset.loading = 'false'; stage.classList.remove('is-loading');
-      feedback.textContent = run ? 'Find the target before time runs out.' : 'Find the target.';
+      feedback.textContent = '';
       nextButton.disabled = false;
       if (run) { startedAt = performance.now(); timer = setInterval(tick, 100); tick(); }
     }
@@ -177,8 +184,9 @@
   });
 
   function select(kind) {
+    if (!run && finishedRun) { finishedRun = false; updateMode(); }
     clearInterval(handshake); clearTimeout(deadline); clearInterval(timer);
-    current = tasks.find(task => task.kind === kind); complete = false; startedAt = null;
+    current = (run ? tasks : practiceTasks).find(task => task.kind === kind); complete = false; startedAt = null;
     initialNoteCount = null; invalidDrag = false;
     feedback.dataset.loading = 'true'; feedback.textContent = 'Loading the mockup…'; feedback.classList.remove('success');
     stage.classList.add('is-loading'); stage.classList.remove('is-finished');
@@ -186,7 +194,7 @@
     $('play-clock').textContent = '0.0 / 60s'; $('play-complete').hidden = true;
     hint.hidden = true; hintButton.textContent = 'Need a hint?'; hintButton.setAttribute('aria-expanded', 'false');
     $('play-instruction').textContent = current.instruction;
-    $('play-app-name').textContent = `${current.appName} · IGG mockup`;
+    $('play-app-name').textContent = current.appName;
     picker.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.challenge === kind)));
     frame = document.createElement('iframe'); frame.title = `${current.appName}: ${current.instruction}`;
     frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
@@ -220,11 +228,11 @@
     event.preventDefault(); if (run) return;
     $('start-ranked').disabled = true; $('ranked-status').textContent = 'Preparing your recorded run…';
     try {
-      const created = await api('/api/runs', {method: 'POST', body: JSON.stringify({nickname: $('player-name').value})}, null);
+      const created = await api('/api/runs', {method: 'POST', body: JSON.stringify({nickname: $('player-name').value, protocol: PROTOCOL})}, null);
       if (created.protocol !== PROTOCOL) throw new Error('The challenge has changed. Please refresh.');
-      run = created; results = []; pending = null; generation++;
+      run = created; finishedRun = false; results = []; pending = null; generation++;
       owned.push({id: run.id, token: run.token}); saveOwned();
-      updateMode(); $('ranked-status').textContent = 'The timer starts when the task is ready. Loading and breaks do not count.';
+      updateMode(); $('ranked-status').textContent = '';
       await startTask();
     } catch (error) { $('ranked-status').textContent = error.message; $('start-ranked').disabled = false; }
   });
@@ -237,7 +245,7 @@
     if (abandoned) try { await api(`/api/runs/${abandoned.id}`, {method: 'DELETE'}, abandoned); owned = owned.filter(item => item.id !== abandoned.id); saveOwned(); } catch {}
   });
   nextButton.addEventListener('click', () => {
-    if (!run) select(tasks[(tasks.indexOf(current) + 1) % tasks.length].kind);
+    if (!run) select(practiceTasks[(practiceTasks.findIndex(task => task.kind === current.kind) + 1) % practiceTasks.length].kind);
     else if (complete && !pending) startTask();
     else if (!complete) finishRecorded('skip');
   });
@@ -262,6 +270,7 @@
       const data = await api(`/api/runs/${saved.run.id}/result`, {method: 'POST', body: JSON.stringify(saved.pending)}, saved.run);
       pendingStorage(null);
       $('ranked-status').textContent = data.complete ? `Your previous run was saved: GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s.` : 'Your last task was saved, but the interrupted run was not published. Start a new recorded run.';
+      if (data.complete) $('board-version').value = saved.run.protocol;
       refreshBoard();
     }
   } catch { $('ranked-status').textContent = 'A previous result is waiting to be saved. Refresh when your connection returns.'; }

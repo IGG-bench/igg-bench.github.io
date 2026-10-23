@@ -5,9 +5,9 @@ import { spawn } from 'node:child_process';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const build = path.join(root, '.mockup-build');
-const apps = process.argv.slice(2).length ? process.argv.slice(2) : ['pagely', 'wavr', 'figma'];
+const apps = process.argv.slice(2).length ? process.argv.slice(2) : ['pagely', 'wavr', 'figma', 'mailo'];
 for (const app of apps) {
-  if (!['pagely', 'wavr', 'figma'].includes(app)) throw new Error(`Unknown mockup: ${app}`);
+  if (!['pagely', 'wavr', 'figma', 'mailo'].includes(app)) throw new Error(`Unknown mockup: ${app}`);
 }
 await mkdir(build, { recursive: true });
 await cp(path.join(root, 'mockup-source/lib'), path.join(build, 'lib'), { recursive: true });

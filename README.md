@@ -5,14 +5,21 @@ Project page for **IGG: A Benchmark for Interactive GUI Grounding under Visibili
 Plain static HTML: `index.html` and `static/css/index.css`. Font: Inter (same as the poster).
 Figures in `static/fig/` come from the EMNLP and Humantech papers and the EMNLP poster.
 
-The inline **Just for fun!** section runs four existing IGG tasks in the original
-Pagely, Wavr, and Figma mockups. `static/mockup-tasks.json` records the task IDs,
-initial states, instructions, and target IDs. The parent accepts click feedback
+The inline **Just for fun!** section runs separate sets of four practice and
+four recorded IGG tasks in the original
+Pagely, Wavr, Figma, and Mailo mockups. `static/ranked-tasks-v2.json` records the task IDs,
+initial states, instructions, and target IDs for recorded runs;
+`static/practice-tasks.json` pins a different practice set from the same catalog. The parent accepts click feedback
 only from its active same-origin frame. Practice stays browser-local. Recorded
 runs save to a shared D1-backed service and appear in the inline Human Leaderboard;
 they are separate from the paper's study and official benchmark results.
 
-## Human challenge (`igg-fun-v1`)
+## Human challenge (`igg-fun-v2`)
+
+The current set ends with Mailo’s PPTX upload task. The previous `igg-fun-v1`
+set ended with Pagely sync; its records remain available in the version selector.
+Scores from the two sets are stored and ranked separately. The original
+`static/mockup-tasks.json` stays unchanged for cached v1 clients.
 
 Four fixed tasks, in catalog order, with 60 seconds each. No hints, switching,
 or restarting within a recorded run. Interactions continue until the correct

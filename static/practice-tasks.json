@@ -1,0 +1,136 @@
+[
+  {
+    "kind": "scroll",
+    "app": "pagely",
+    "appName": "Pagely",
+    "reference": "Notion",
+    "id": "pagely-02-open-customer-interviews",
+    "level": "1-1",
+    "constraint_type": "off_screen",
+    "state_id": "1",
+    "instruction": "Click 'Open page' for Customer Interviews.",
+    "target_id": "pagely.linked.customer-interviews.open",
+    "gold_trace": [
+      {
+        "type": "scroll",
+        "dy": 2550
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='pagely.linked.customer-interviews.open']"
+      }
+    ],
+    "ordinal": 2,
+    "gold_trace_executable": true
+  },
+  {
+    "kind": "hover",
+    "app": "wavr",
+    "appName": "Wavr",
+    "reference": "Spotify",
+    "id": "wavr-16-hover-12-like-half-awake",
+    "level": "2-1",
+    "constraint_type": "hover_reveal",
+    "state_id": "1",
+    "instruction": "Click the heart for 'Half Awake'.",
+    "target_id": "wavr.track.half-awake.like",
+    "gold_trace": [
+      {
+        "type": "move",
+        "selector": "[data-igg-id='wavr.track.half-awake.row']"
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='wavr.track.half-awake.like']"
+      }
+    ],
+    "ordinal": 16,
+    "gold_trace_executable": true
+  },
+  {
+    "kind": "drag",
+    "app": "figma",
+    "appName": "Figma Canvas",
+    "reference": "Figma",
+    "id": "figma-42-without-deleting-any-notes-find-click-key-insight-note",
+    "level": "3-3",
+    "constraint_type": "drag_occlusion",
+    "state_id": "9",
+    "instruction": "Without deleting any notes, click the 'Key Insight' note.",
+    "target_id": "figma.canvas.note-insight",
+    "gold_trace": [
+      {
+        "type": "drag",
+        "startX": 964,
+        "startY": 588,
+        "endX": 828,
+        "endY": 761,
+        "label": "drag"
+      },
+      {
+        "type": "drag",
+        "startX": 1093,
+        "startY": 600,
+        "endX": 1268,
+        "endY": 736,
+        "label": "drag"
+      },
+      {
+        "type": "drag",
+        "startX": 1044,
+        "startY": 489,
+        "endX": 1139,
+        "endY": 525,
+        "label": "drag"
+      },
+      {
+        "type": "drag",
+        "startX": 954,
+        "startY": 495,
+        "endX": 790,
+        "endY": 561,
+        "label": "drag"
+      },
+      {
+        "type": "drag",
+        "startX": 989,
+        "startY": 469,
+        "endX": 1150,
+        "endY": 461,
+        "label": "drag"
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='figma.canvas.note-insight']",
+        "label": "click observed"
+      }
+    ],
+    "ordinal": 42,
+    "gold_trace_executable": true
+  },
+  {
+    "kind": "wait",
+    "app": "mailo",
+    "appName": "Mailo",
+    "reference": "Gmail",
+    "id": "mailo-21-reply-alice-kim-q3-budget-review",
+    "level": "3-1",
+    "constraint_type": "async_wait",
+    "state_id": "6",
+    "instruction": "Click the Reply button on Alice Kim's Q3 Budget Review notification.",
+    "target_id": "mailo.notification.reply",
+    "gold_trace": [
+      {
+        "type": "wait",
+        "ms": 4800
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='mailo.notification.reply']",
+        "label": "click observed"
+      }
+    ],
+    "ordinal": 21,
+    "gold_trace_executable": true
+  }
+]

@@ -20,6 +20,12 @@
     "apps/figma/app/globals.css": "4af29c99030dcfa58841b1a021b49fae11891e7ed415edfd1fcfa75514785ea8",
     "apps/figma/postcss.config.mjs": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
     "apps/figma/tsconfig.json": "13e618fe1cdf24edc70f4df42d5eb1474ff57d805a0bfca3f81187de07b9ec02",
-    "lib/review-runtime.ts": "0a78f704a749e94d7aa297ee67245bf289dbfa346d72cbf5e5ee2d55d8db1f26"
+    "lib/review-runtime.ts": "0a78f704a749e94d7aa297ee67245bf289dbfa346d72cbf5e5ee2d55d8db1f26",
+    "apps/mailo/app/globals.css": "ca2e0b32dc910c3bc2ebdc9c286cd635b52d4e55f474eb0ec301e604724f06c5",
+    "apps/mailo/app/layout.tsx": "4a7202890ad51c1bc774d4dbd9806dfdc4adab79b60644feab6d726a8f1d0471",
+    "apps/mailo/app/mailo-states.ts": "92dec0cda9a38aa270ab0a8363878c746289bd9afaff88508ac646ac22d687ed",
+    "apps/mailo/app/page.tsx": "f47364d712b486ec501c6f8db9340906f501672dd29405fd418aa999009b53d0",
+    "apps/mailo/postcss.config.mjs": "dfac7ac2d86d326a0e5adb024e7943c181393ed17a5fcb8f0315b24c7da6ddde",
+    "apps/mailo/tsconfig.json": "e5638c87b8177e40ef6d4842fb1d146ce06cbe9705128cf68b9481d1769d395c"
   }
 }

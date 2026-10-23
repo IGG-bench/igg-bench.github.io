@@ -12,9 +12,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=5">
-  <link rel="stylesheet" href="static/css/playground.css?v=5">
-  <script src="static/js/playground.js?v=5" defer></script>
+  <link rel="stylesheet" href="static/css/index.css?v=6">
+  <link rel="stylesheet" href="static/css/playground.css?v=6">
+  <script src="static/js/playground.js?v=6" defer></script>
 </head>
 <body>
 
@@ -33,7 +33,6 @@
     <a class="btn" href="https://github.com/kaist-ami/IGG"><i class="fab fa-github"></i>Code</a>
     <a class="btn" href="#human-leaderboard"><i class="fas fa-chart-column"></i>Leaderboard</a>
   </nav>
-  <p class="soon">Paper and model leaderboard coming soon.</p>
 </header>
 
 <main>
@@ -48,12 +47,12 @@
 
   <section id="just-for-fun" aria-labelledby="play-title">
     <h2 id="play-title">Your turn: Just for fun!</h2>
-    <p class="play-intro">Try revealing the target yourself in four short challenges.</p>
+    <p class="play-intro">Try four practice tasks. Then take on four new ones for the leaderboard.</p>
     <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
     <form id="ranked-start" class="ranked-start" hidden>
       <div><strong>Join the leaderboard</strong><p>4 tasks · 60 seconds each · no hints or restarts</p></div>
       <div class="ranked-entry"><label for="player-name">Public nickname</label><div><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Your nickname"><button type="submit" id="start-ranked">Start recorded run →</button></div></div>
-      <p class="ranked-consent">Completed runs publish your nickname, GA, TT and date. Remove your records from this browser.</p>
+      <p class="ranked-consent">Your nickname and results will be public.</p>
       <p id="ranked-status" role="status"></p>
     </form>
     <div class="playground" hidden>
@@ -65,12 +64,11 @@
         <button type="button" data-challenge="scroll" aria-pressed="true"><span>01 · Pagely</span> Find a page</button>
         <button type="button" data-challenge="hover" aria-pressed="false"><span>02 · Wavr</span> Hidden controls</button>
         <button type="button" data-challenge="drag" aria-pressed="false"><span>03 · Figma</span> Under cover</button>
-        <button type="button" data-challenge="wait" aria-pressed="false"><span>04 · Pagely</span> Almost ready</button>
+        <button type="button" data-challenge="wait" aria-pressed="false"><span>04 · Mailo</span> Wait for mail</button>
       </div>
       <div class="play-task"><span>Your task</span><p id="play-instruction"></p></div>
       <div class="mockup-toolbar"><span id="play-app-name">IGG mockup</span><button type="button" id="play-enlarge" aria-pressed="false">Enlarge view</button></div>
       <div id="play-stage" class="play-stage" aria-label="Interactive benchmark mockup"></div>
-      <p class="play-device-note">Use a mouse or trackpad. On small screens, enlarge and pan.</p>
       <div class="play-feedback" id="play-feedback" role="status">The target is hiding somewhere.</div>
       <div class="play-actions">
         <button type="button" id="play-hint">Need a hint?</button>
@@ -85,11 +83,10 @@
   </section>
 
   <section id="human-leaderboard" aria-labelledby="human-title">
-    <div class="human-heading"><h2 id="human-title">Human Leaderboard</h2><button type="button" id="refresh-board">Refresh</button></div>
-    <p class="human-explainer"><strong>GA:</strong> tasks solved ÷ 4. <strong>TT:</strong> mean time for all four tasks, including skips and timeouts. Ranked by GA, then by speed.</p>
+    <div class="human-heading"><h2 id="human-title">Human Leaderboard</h2><div class="human-board-controls"><label for="board-version" class="sr-only">Challenge version</label><select id="board-version"><option value="igg-fun-v2">Current (Mailo)</option><option value="igg-fun-v1">Previous (Pagely)</option></select><button type="button" id="refresh-board">Refresh</button></div></div>
+    <p class="human-explainer"><strong>GA:</strong> tasks solved out of 4. <strong>TT:</strong> average time across all 4.</p>
     <p id="board-status" role="status">Loading records…</p>
     <div class="human-table-wrap"><table class="human-table"><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">GA ↑</th><th scope="col">TT ↓</th><th scope="col">Date</th><th scope="col"><span class="sr-only">Your record</span></th></tr></thead><tbody id="human-rows"></tbody></table></div>
-    <p class="play-note">Top 50 runs. Scores are browser-measured and unverified, separate from the paper’s human study.</p>
     <p class="human-play-link"><a href="#just-for-fun">Take a turn ↑</a></p>
     <p class="human-own-actions"><button type="button" id="remove-my-records" hidden>Remove my saved records</button><span id="remove-status" role="status"></span></p>
   </section>
@@ -105,7 +102,7 @@
     <h3>The task</h3>
     <p>
       The agent sees screenshots and its action history.
-      It has eight actions to reveal the target and make one final click.
+      The agent can take up to eight actions per task.
     </p>
     <figure class="table-fig">
       <img src="static/fig/static_vs_igg.png" alt="Static grounding: target visible, goal localize, action CLICK. IGG: target hidden or inactive, goal reveal then localize, actions SCROLL, MOVE, WAIT, DRAG, CLICK." width="1600" height="376">
@@ -115,7 +112,6 @@
     <div class="dist">
       <figure>
         <img src="static/fig/donut.png" alt="Task distribution: Viewport 167 scroll-based exploration; Multi-State 89 visual disambiguation, 104 hidden state activation, 53 removable occlusion; Temporal and Manipulation 70 delayed state activation, 58 dynamic target interaction, 60 movable occlusion." width="1000" height="1000" loading="lazy">
-        <figcaption>601 tasks by constraint type and sub-type.</figcaption>
         <ul class="caps">
           <li><img src="static/fig/icons/observability.png" alt="" width="96" height="96"><b>Observability</b><span>bring the target into view</span></li>
           <li><img src="static/fig/icons/disambiguation.png" alt="" width="96" height="96"><b>Disambiguation</b><span>show cues on hover</span></li>
@@ -142,7 +138,6 @@
           <li>Walmart</li>
           <li>Google Maps</li>
         </ul>
-        <figcaption>16 environments based on everyday apps.</figcaption>
       </figure>
     </div>
   </section>
@@ -167,7 +162,6 @@
     </p>
     <figure class="table-fig">
       <img src="static/fig/res_bars.png" alt="Qwen3-VL accuracy: unassisted 30.8, reveal action specified 33.9, target revealed 81.9. GPT-5.5 unassisted: 79.4." width="1600" height="362" loading="lazy">
-      <figcaption>Qwen3-VL accuracy (%): unassisted, given the action, and given the revealed target. GPT-5.5 is unassisted.</figcaption>
     </figure>
     <p class="after-fig">
       On 120 held-out tasks, the base models mostly click. None uses drag.
@@ -194,7 +188,6 @@
 
   <section id="bibtex">
     <h2>BibTeX</h2>
-    <p>Full citation details will be added after publication.</p>
 <pre><code>@inproceedings{kim2026igg,
   title     = {{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints},
   author    = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},

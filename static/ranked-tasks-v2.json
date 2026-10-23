@@ -1,0 +1,104 @@
+[
+  {
+    "kind": "scroll",
+    "app": "pagely",
+    "appName": "Pagely",
+    "reference": "Notion",
+    "id": "pagely-01-open-sprint-retro",
+    "level": "1-1",
+    "constraint_type": "off_screen",
+    "state_id": "1",
+    "instruction": "Click 'Open page' for Sprint Retrospective.",
+    "target_id": "pagely.linked.sprint-retro.open",
+    "gold_trace": [
+      {
+        "type": "scroll",
+        "dy": 2400
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='pagely.linked.sprint-retro.open']"
+      }
+    ],
+    "ordinal": 1,
+    "gold_trace_executable": true
+  },
+  {
+    "kind": "hover",
+    "app": "wavr",
+    "appName": "Wavr",
+    "reference": "Spotify",
+    "id": "wavr-15-hover-11-like-midnight-pulse",
+    "level": "2-1",
+    "constraint_type": "hover_reveal",
+    "state_id": "1",
+    "instruction": "Click the heart for 'Midnight Pulse'.",
+    "target_id": "wavr.track.midnight-pulse.like",
+    "gold_trace": [
+      {
+        "type": "move",
+        "selector": "[data-igg-id='wavr.track.midnight-pulse.row']"
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='wavr.track.midnight-pulse.like']"
+      }
+    ],
+    "ordinal": 15,
+    "gold_trace_executable": true
+  },
+  {
+    "kind": "drag",
+    "app": "figma",
+    "appName": "Figma Canvas",
+    "reference": "Figma",
+    "id": "figma-43-without-deleting-any-notes-find-click-qa-checklist-note",
+    "level": "3-3",
+    "constraint_type": "drag_occlusion",
+    "state_id": "8",
+    "instruction": "Without deleting any notes, click the 'QA Checklist' note.",
+    "target_id": "figma.canvas.note-qa-checklist",
+    "gold_trace": [
+      {
+        "type": "drag",
+        "startX": 1050,
+        "startY": 570,
+        "endX": 1056,
+        "endY": 730,
+        "label": "drag"
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='figma.canvas.note-qa-checklist']",
+        "label": "click observed"
+      }
+    ],
+    "ordinal": 43,
+    "gold_trace_executable": true
+  },
+  {
+    "kind": "wait",
+    "app": "mailo",
+    "appName": "Mailo",
+    "reference": "Gmail",
+    "id": "mailo-33-send-email-with-attachment",
+    "level": "3-1",
+    "constraint_type": "async_wait",
+    "state_id": "10",
+    "instruction": "Click the 'Send' button for the pptx upload to Jisu.",
+    "target_id": "mailo.compose.send",
+    "gold_trace": [
+      {
+        "type": "wait",
+        "ms": 4800
+      },
+      {
+        "type": "click",
+        "selector": "[data-igg-id='mailo.compose.send']",
+        "label": "click observed"
+      }
+    ],
+    "ordinal": 33,
+    "gold_trace_executable": true
+  }
+]

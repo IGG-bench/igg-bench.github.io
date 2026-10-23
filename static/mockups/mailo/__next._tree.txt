@@ -1,0 +1,2 @@
+:HL["/static/mockups/mailo/_next/static/css/22bc24c6ed6f18db.css","style"]
+0:{"tree":{"name":"","param":null,"prefetchHints":16,"slots":{"children":{"name":"__PAGE__","param":null,"prefetchHints":0,"slots":null}}},"staleTime":300,"buildId":"C29IQ1U8nLVicrr9LsVPy"}
