@@ -35,7 +35,6 @@ h1 {
   font-size: 2.6rem;
   font-weight: 800;
   line-height: 1.22;
-  letter-spacing: -0.02em;
 }
 .igg-i { color: #95c5ec; }
 .igg-g1 { color: #7ecdae; }
@@ -75,7 +74,6 @@ h2 {
   color: var(--navy);
   font-size: 1.75rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
   text-align: center;
 }
 h3 {
@@ -97,7 +95,8 @@ figcaption {
   color: var(--muted);
   text-align: center;
 }
-.teaser { margin-top: 48px; }
+.teaser { margin-top: 28px; }
+.benchmark-intro { text-align: center; }
 
 pre {
   margin: 0;

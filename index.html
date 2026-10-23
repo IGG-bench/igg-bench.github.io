@@ -12,9 +12,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css">
-  <link rel="stylesheet" href="static/css/playground.css?v=4">
-  <script src="static/js/playground.js?v=4" defer></script>
+  <link rel="stylesheet" href="static/css/index.css?v=5">
+  <link rel="stylesheet" href="static/css/playground.css?v=5">
+  <script src="static/js/playground.js?v=5" defer></script>
 </head>
 <body>
 
@@ -33,7 +33,7 @@
     <a class="btn" href="https://github.com/kaist-ami/IGG"><i class="fab fa-github"></i>Code</a>
     <a class="btn" href="#human-leaderboard"><i class="fas fa-chart-column"></i>Leaderboard</a>
   </nav>
-  <p class="soon">Paper and model leaderboard coming soon. Try the human challenge below.</p>
+  <p class="soon">Paper and model leaderboard coming soon.</p>
 </header>
 
 <main>
@@ -43,35 +43,34 @@
       <source src="static/video/EMNLP26_igg_video.mp4" type="video/mp4">
       Your browser does not support embedded video. <a href="static/video/EMNLP26_igg_video.mp4">Watch the presentation.</a>
     </video>
-    <figcaption>Watch the EMNLP 2026 presentation.</figcaption>
+    <figcaption>EMNLP 2026 Presentation</figcaption>
   </figure>
 
   <section id="just-for-fun" aria-labelledby="play-title">
-    <p class="play-eyebrow">TRY IT RIGHT HERE</p>
-    <h2 id="play-title">Just for fun!</h2>
-    <p class="play-intro">Can you find the hidden target?<br>Try four tasks in the actual IGG mockups, right here on the page.</p>
+    <h2 id="play-title">Your turn: Just for fun!</h2>
+    <p class="play-intro">Try revealing the target yourself in four short challenges.</p>
     <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
     <form id="ranked-start" class="ranked-start" hidden>
-      <div><strong>Put your name on the board.</strong><p>4 tasks · 60 seconds each · no hints or restarts</p></div>
+      <div><strong>Join the leaderboard</strong><p>4 tasks · 60 seconds each · no hints or restarts</p></div>
       <div class="ranked-entry"><label for="player-name">Public nickname</label><div><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Your nickname"><button type="submit" id="start-ranked">Start recorded run →</button></div></div>
-      <p class="ranked-consent">Finishing publishes your nickname, GA, average TT and date. Practice below stays unrecorded. You can remove your saved scores from this browser.</p>
+      <p class="ranked-consent">Completed runs publish your nickname, GA, TT and date. Remove your records from this browser.</p>
       <p id="ranked-status" role="status"></p>
     </form>
     <div class="playground" hidden>
       <div class="play-topline">
-        <span id="play-mode">Practice · explore a challenge</span>
+        <span id="play-mode">Practice</span>
         <span><span id="play-clock" hidden>0.0 / 60s</span> <span id="play-progress" aria-live="polite">0 / 4 solved</span></span>
       </div>
       <div class="play-picker" role="group" aria-label="Choose a benchmark example">
-        <button type="button" data-challenge="scroll" aria-pressed="true"><span>01 · PAGELY</span> Find a page</button>
-        <button type="button" data-challenge="hover" aria-pressed="false"><span>02 · WAVR</span> Hidden controls</button>
-        <button type="button" data-challenge="drag" aria-pressed="false"><span>03 · FIGMA</span> Under cover</button>
-        <button type="button" data-challenge="wait" aria-pressed="false"><span>04 · PAGELY</span> Almost ready</button>
+        <button type="button" data-challenge="scroll" aria-pressed="true"><span>01 · Pagely</span> Find a page</button>
+        <button type="button" data-challenge="hover" aria-pressed="false"><span>02 · Wavr</span> Hidden controls</button>
+        <button type="button" data-challenge="drag" aria-pressed="false"><span>03 · Figma</span> Under cover</button>
+        <button type="button" data-challenge="wait" aria-pressed="false"><span>04 · Pagely</span> Almost ready</button>
       </div>
-      <div class="play-task"><span>YOUR TASK</span><p id="play-instruction"></p></div>
-      <div class="mockup-toolbar"><span id="play-app-name">Actual IGG mockup</span><button type="button" id="play-enlarge" aria-pressed="false">Enlarge view</button></div>
+      <div class="play-task"><span>Your task</span><p id="play-instruction"></p></div>
+      <div class="mockup-toolbar"><span id="play-app-name">IGG mockup</span><button type="button" id="play-enlarge" aria-pressed="false">Enlarge view</button></div>
       <div id="play-stage" class="play-stage" aria-label="Interactive benchmark mockup"></div>
-      <p class="play-device-note">Use a mouse or trackpad for hover and drag. On small screens, enlarge the view and pan across it.</p>
+      <p class="play-device-note">Use a mouse or trackpad. On small screens, enlarge and pan.</p>
       <div class="play-feedback" id="play-feedback" role="status">The target is hiding somewhere.</div>
       <div class="play-actions">
         <button type="button" id="play-hint">Need a hint?</button>
@@ -81,57 +80,38 @@
         <button type="button" id="play-next">Next challenge <span aria-hidden="true">&rarr;</span></button>
       </div>
       <p id="play-hint-text" class="play-hint" hidden></p>
-      <p id="play-complete" class="play-complete" hidden>All four revealed! You just tried the visibility-recovery step in real IGG environments.</p>
+      <p id="play-complete" class="play-complete" hidden>All four solved!</p>
     </div>
-    <p class="play-note">Four original IGG tasks. Recorded runs allow interaction until success, skip, or timeout; this is a casual challenge, separate from the full benchmark and paper’s human study.</p>
   </section>
 
   <section id="human-leaderboard" aria-labelledby="human-title">
-    <div class="human-heading"><div><p class="play-eyebrow">THE FOUR-TASK CHALLENGE</p><h2 id="human-title">Human Leaderboard</h2></div><button type="button" id="refresh-board">Refresh</button></div>
-    <p class="human-explainer"><strong>GA</strong> = tasks solved ÷ 4. <strong>TT</strong> = average time across all four tasks, including skips and timeouts. Higher GA ranks first; lower TT breaks ties.</p>
+    <div class="human-heading"><h2 id="human-title">Human Leaderboard</h2><button type="button" id="refresh-board">Refresh</button></div>
+    <p class="human-explainer"><strong>GA:</strong> tasks solved ÷ 4. <strong>TT:</strong> mean time for all four tasks, including skips and timeouts. Ranked by GA, then by speed.</p>
     <p id="board-status" role="status">Loading records…</p>
     <div class="human-table-wrap"><table class="human-table"><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">GA ↑</th><th scope="col">TT ↓</th><th scope="col">Date</th><th scope="col"><span class="sr-only">Your record</span></th></tr></thead><tbody id="human-rows"></tbody></table></div>
-    <p class="play-note">Top 50 completed runs · each run is a separate entry · browser-measured, unverified scores · mouse/trackpad recommended</p>
-    <p class="human-play-link"><a href="#just-for-fun">Try it and join the board ↑</a></p>
+    <p class="play-note">Top 50 runs. Scores are browser-measured and unverified, separate from the paper’s human study.</p>
+    <p class="human-play-link"><a href="#just-for-fun">Take a turn ↑</a></p>
     <p class="human-own-actions"><button type="button" id="remove-my-records" hidden>Remove my saved records</button><span id="remove-status" role="status"></span></p>
   </section>
 
-  <figure class="teaser wide">
-    <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137">
-    <figcaption>In IGG, the target is not visible when the instruction arrives. Each of the seven sub-types is shown before and after the reveal action the agent must take. Center: the capabilities a reveal can require.</figcaption>
-  </figure>
+  <section id="benchmark" aria-labelledby="benchmark-title">
+    <h2 id="benchmark-title">What is IGG?</h2>
+    <p class="benchmark-intro">IGG tests whether agents can reveal hidden targets and click them.</p>
+    <figure class="teaser wide">
+      <img src="static/fig/subtypes.png" alt="The seven sub-types, each shown before and after the reveal action: delayed state activation (wait), dynamic target interaction (wait), movable occlusion (drag), scroll-based exploration (scroll), visual disambiguation (move), hidden state activation (click), removable occlusion (click). Center: the capabilities a reveal can require." width="2600" height="1137">
+      <figcaption>Seven types of visibility constraints, before and after the reveal action.</figcaption>
+    </figure>
 
-  <section>
-    <h2>Abstract</h2>
+    <h3>The task</h3>
     <p>
-      GUI grounding benchmarks ask whether an agent can localize a target that is already visible in a static screenshot.
-      Real interfaces often violate this assumption: a target may be off-screen, appear only after a state change or hover, remain occluded, or become actionable after a delay.
-      This leaves the ability to recover target visibility unevaluated.
-      To measure this reveal step, we introduce <b><i>Interactive GUI Grounding (IGG)</i></b>, a benchmark in which an agent must first make the target visible through interaction and then click it.
-      IGG contains 601 tasks across 16 controllable GUI environments and seven visibility-constraint sub-types, with a compact action space of scrolling, moving, dragging, waiting, and clicking.
-      In our human study, participants achieve 94.6% accuracy, while GPT-5.5 reaches 79.4% and the strongest evaluated open-source VLM reaches only 31.6%.
-      To identify the source of this gap, we conduct two controlled interventions.
-      Telling Qwen3-VL which interaction to perform raises its accuracy only from 30.8% to 33.9%, whereas performing the interaction for the model raises it to 81.9%.
-      The bottleneck is executing the reveal interaction, not recognizing the target once it is exposed.
-      We further show that this capability is learnable, demonstrating that visibility recovery can be strengthened consistently across model families.
-    </p>
-  </section>
-
-  <section>
-    <h2>Interactive GUI Grounding</h2>
-    <p>
-      Static grounding benchmarks give the model a screenshot in which the target is already on screen.
-      In IGG the target starts out hidden or inactive, so the agent must first reveal it and then localize it.
-      Like static grounding, IGG scores a single final click.
+      The agent sees screenshots and its action history.
+      It has eight actions to reveal the target and make one final click.
     </p>
     <figure class="table-fig">
       <img src="static/fig/static_vs_igg.png" alt="Static grounding: target visible, goal localize, action CLICK. IGG: target hidden or inactive, goal reveal then localize, actions SCROLL, MOVE, WAIT, DRAG, CLICK." width="1600" height="376">
     </figure>
-    <p class="after-fig">
-      IGG has 601 tasks in 16 controllable web environments, each modeled on an everyday application.
-      Every task belongs to one of seven sub-types under three constraint types.
-      The agent sees only screenshots and its action history, and has eight actions to find and click the target.
-    </p>
+    <h3>The benchmark</h3>
+    <p>601 tasks across 16 web environments, with seven types of visibility constraints.</p>
     <div class="dist">
       <figure>
         <img src="static/fig/donut.png" alt="Task distribution: Viewport 167 scroll-based exploration; Multi-State 89 visual disambiguation, 104 hidden state activation, 53 removable occlusion; Temporal and Manipulation 70 delayed state activation, 58 dynamic target interaction, 60 movable occlusion." width="1000" height="1000" loading="lazy">
@@ -162,7 +142,7 @@
           <li>Walmart</li>
           <li>Google Maps</li>
         </ul>
-        <figcaption>The 16 environments are modeled on these applications.</figcaption>
+        <figcaption>16 environments based on everyday apps.</figcaption>
       </figure>
     </div>
   </section>
@@ -170,39 +150,37 @@
   <section>
     <h2>Results</h2>
 
-    <h3>A large human&ndash;model gap</h3>
+    <h3>Humans and models</h3>
     <p>
-      Humans solve 94.6% of tasks. GPT-5.5 reaches 79.4%, and no open model solves a third.
-      Movable occlusion and dynamic targets remain hard even for GPT-5.5.
+      Humans solve 94.6% of tasks. GPT-5.5 solves 79.4%.
+      All tested open models remain below one third.
     </p>
     <figure class="small">
       <img src="static/fig/radar_subtype.png" alt="Grounding accuracy by sub-type for Human (94.6%), GPT-5.5 (79.4%), and Qwen3-VL (30.8%)." width="1268" height="950" loading="lazy">
       <figcaption>Grounding accuracy (%) by sub-type.</figcaption>
     </figure>
 
-    <h3>The bottleneck is the reveal</h3>
+    <h3>Revealing the target is hard</h3>
     <p>
-      Telling Qwen3-VL which interaction is required barely helps (30.8 &rarr; 33.9).
-      Performing the interaction for it raises accuracy to 81.9, above GPT-5.5 on the full task.
-      Once the target is visible, an 8B model can find it; the hard part is making it visible.
+      For Qwen3-VL, naming the reveal action raises accuracy from 30.8% to 33.9%.
+      Revealing the target for it raises accuracy to 81.9%.
     </p>
     <figure class="table-fig">
       <img src="static/fig/res_bars.png" alt="Qwen3-VL accuracy: unassisted 30.8, reveal action specified 33.9, target revealed 81.9. GPT-5.5 unassisted: 79.4." width="1600" height="362" loading="lazy">
-      <figcaption>Qwen3-VL accuracy (%) on the full benchmark: unassisted, told which reveal action to use, and with the target already revealed.</figcaption>
+      <figcaption>Qwen3-VL accuracy (%): unassisted, given the action, and given the revealed target. GPT-5.5 is unassisted.</figcaption>
     </figure>
     <p class="after-fig">
-      Base models mostly click, as if the target were already visible.
-      On the 120 held-out tasks, none of them ever emits a drag.
+      On 120 held-out tasks, the base models mostly click. None uses drag.
     </p>
     <figure class="mid">
       <img src="static/fig/res_share.png" alt="Action share on held-out tasks: base VLMs mostly CLICK and never DRAG; Qwen3-VL after SFT and GRPO uses DRAG 10% of the time." width="1600" height="493" loading="lazy">
-      <figcaption>Share of each action on the 120 held-out tasks: ground-truth trajectories, base models, and Qwen3-VL after training.</figcaption>
+      <figcaption>Action use on 120 held-out tasks: reference traces, base models, and trained Qwen3-VL.</figcaption>
     </figure>
 
-    <h3>Reveal interactions are learnable</h3>
+    <h3>Training helps</h3>
     <p>
-      Frequency-balanced SFT followed by online GRPO improves all three 8B models by 17&ndash;19 points on the held-out tasks.
-      For Qwen3-VL, the largest gain is on movable occlusion (0.0 &rarr; 62.5), where the trained model learns to drag.
+      Frequency-balanced SFT and online GRPO improve all three 8B models by 17&ndash;19 points on 120 held-out tasks.
+      Qwen3-VL’s movable-occlusion accuracy rises from 0% to 62.5%.
     </p>
     <figure class="mid">
       <img src="static/fig/res_learn1.png" alt="Base to SFT+GRPO: Qwen3-VL 40.0 to 59.2, InternVL 3.5 28.3 to 47.5, GUI-Owl-1.5 35.0 to 52.5." width="1600" height="275" loading="lazy">
@@ -216,7 +194,7 @@
 
   <section id="bibtex">
     <h2>BibTeX</h2>
-    <p>The official proceedings citation (including its identifier, pages, and DOI) will be added after publication.</p>
+    <p>Full citation details will be added after publication.</p>
 <pre><code>@inproceedings{kim2026igg,
   title     = {{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints},
   author    = {Kim, Kyeongseon and Son, Jiyeon and Oh, Tae-Hyun},

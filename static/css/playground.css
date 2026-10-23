@@ -1,9 +1,8 @@
-/* Presentation and browser-local toy examples. */
+/* Presentation and inline IGG challenges. */
 [hidden] { display: none !important; }
 .talk { margin: 44px auto 0; }
 .talk video { display: block; width: 100%; aspect-ratio: 16 / 9; background: #f2f6fa; border: 1px solid var(--line); border-radius: 12px; }
 #just-for-fun { width: min(1120px, calc(100vw - 40px)); margin: 52px 0 0 50%; transform: translateX(-50%); scroll-margin-top: 28px; }
-.play-eyebrow { width: fit-content; margin: 0 auto 10px; padding: 4px 12px; border-radius: 999px; background: #eaf5ef; color: #377e6b; font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-align: center; }
 #play-title { margin-bottom: 10px; }
 .play-intro { text-align: center; color: var(--muted); }
 .playground { margin-top: 26px; border: 1px solid #d9e2e9; border-radius: 16px; overflow: hidden; background: #fff; }
@@ -17,7 +16,7 @@
 .play-picker button[aria-pressed="true"] { background: #eaf3fa; border-color: #a8cbe5; color: var(--navy); }
 .play-picker button.solved span::after { content: ' ✓'; color: #27745b; }
 .play-task { border-top: 1px solid var(--line); background: #f8fafc; padding: 17px 22px; }
-.play-task > span { font-size: .65rem; letter-spacing: .1em; font-weight: 700; color: var(--muted); }
+.play-task > span { font-size: .75rem; letter-spacing: normal; font-weight: 700; color: var(--muted); }
 .play-task p { margin: 3px 0 0; font-size: 1rem; font-weight: 600; color: var(--navy); }
 .mockup-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 20px 0; font-size: .75rem; color: var(--muted); }
 .mockup-toolbar button { padding: 5px 10px; border: 1px solid #d9e2e9; border-radius: 6px; color: var(--navy); background: #f4f8fb; font-size: .75rem; }
@@ -61,7 +60,6 @@ button:disabled { cursor: default; opacity: .55; }
 .play-stage.is-finished::after { content: 'Task complete'; position: absolute; right: 12px; top: 12px; border-radius: 8px; padding: 8px 12px; background: #243b53; color: white; font-size: .75rem; pointer-events: none; }
 #human-leaderboard { width: min(980px, calc(100vw - 40px)); margin: 52px 0 0 50%; transform: translateX(-50%); scroll-margin-top: 28px; }
 .human-heading { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-.human-heading .play-eyebrow { margin: 0 0 10px; }
 .human-heading h2 { text-align: left; margin: 0; }
 .human-heading button, .human-table button { background: #fff; border: 1px solid #d9e2e9; border-radius: 6px; padding: 7px 10px; color: var(--navy); font: inherit; font-size: .72rem; cursor: pointer; }
 .human-explainer { color: var(--muted); font-size: .8rem; line-height: 1.7; margin: 18px 0; }

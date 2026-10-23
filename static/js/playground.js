@@ -11,10 +11,10 @@
   const picker = [...document.querySelectorAll('[data-challenge]')];
   const solved = new Set();
   const descriptions = {
-    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Sprint Retrospective.', success: 'Found it! Scrolling brought the linked page into view.' },
-    hover: { hint: 'Move over the Midnight Pulse row in Wavr. Its heart control appears on the right.', success: 'Saved! Hovering revealed the heart control.' },
-    drag: { hint: 'In the Figma canvas, drag the sticky note covering QA Checklist out of the way, then click QA Checklist. Keep all notes on the canvas.', success: 'Found it! Moving the covering note revealed QA Checklist.' },
-    wait: { hint: 'Wait a few seconds for syncing to finish, then click Sync complete in the top bar of Pagely.', success: 'Done! Waiting made Sync complete available.' }
+    scroll: { hint: 'Scroll down inside the Pagely page to the Linked resources section, then open Sprint Retrospective.', success: 'Page found!' },
+    hover: { hint: 'Move over the Midnight Pulse row in Wavr. Its heart control appears on the right.', success: 'Heart clicked!' },
+    drag: { hint: 'In the Figma canvas, drag the sticky note covering QA Checklist out of the way, then click QA Checklist. Keep all notes on the canvas.', success: 'QA Checklist found!' },
+    wait: { hint: 'Wait a few seconds for syncing to finish, then click Sync complete in the top bar of Pagely.', success: 'Sync complete!' }
   };
   let tasks, current, frame, canvas, handshake, deadline, timer, startedAt;
   let round = 0, complete = false, initialNoteCount = null, invalidDrag = false, enlarged = false;
@@ -69,7 +69,7 @@
         }
         tr.append(actions); $('human-rows').append(tr);
       });
-      $('board-status').textContent = data.total ? `${data.total} completed ${data.total === 1 ? 'run' : 'runs'} · showing ${data.entries.length}` : 'No recorded runs yet. Be the first to set a score!';
+      $('board-status').textContent = data.total ? `${data.total} completed ${data.total === 1 ? 'run' : 'runs'} · showing ${data.entries.length}` : 'No runs yet. Take the first turn.';
     } catch (error) { $('board-status').textContent = `${error.message} Use Refresh to try again.`; }
     finally { $('refresh-board').disabled = false; }
   }
@@ -110,7 +110,7 @@
     hintButton.hidden = recorded; $('play-reset').hidden = recorded;
     $('play-exit').hidden = !recorded; $('play-clock').hidden = !recorded;
     $('start-ranked').disabled = recorded; $('player-name').disabled = recorded;
-    $('play-mode').textContent = recorded ? `Recorded run · ${run.nickname}` : 'Practice · explore a challenge';
+    $('play-mode').textContent = recorded ? `Recorded run · ${run.nickname}` : 'Practice';
     $('play-progress').textContent = recorded ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
     picker.forEach(button => button.classList.toggle('solved', recorded ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
     nextButton.textContent = recorded ? 'Skip task →' : 'Next challenge →';
@@ -163,7 +163,7 @@
     clearInterval(handshake); clearTimeout(deadline);
     if (feedback.dataset.loading === 'true') {
       feedback.dataset.loading = 'false'; stage.classList.remove('is-loading');
-      feedback.textContent = run ? 'Timer started. Find the target, or skip this task.' : 'Ready. Find the target in the interface above.';
+      feedback.textContent = run ? 'Find the target before time runs out.' : 'Find the target.';
       nextButton.disabled = false;
       if (run) { startedAt = performance.now(); timer = setInterval(tick, 100); tick(); }
     }
@@ -180,13 +180,13 @@
     clearInterval(handshake); clearTimeout(deadline); clearInterval(timer);
     current = tasks.find(task => task.kind === kind); complete = false; startedAt = null;
     initialNoteCount = null; invalidDrag = false;
-    feedback.dataset.loading = 'true'; feedback.textContent = 'Loading the original mockup…'; feedback.classList.remove('success');
+    feedback.dataset.loading = 'true'; feedback.textContent = 'Loading the mockup…'; feedback.classList.remove('success');
     stage.classList.add('is-loading'); stage.classList.remove('is-finished');
     nextButton.disabled = true; nextButton.textContent = run ? 'Skip task →' : 'Next challenge →';
     $('play-clock').textContent = '0.0 / 60s'; $('play-complete').hidden = true;
     hint.hidden = true; hintButton.textContent = 'Need a hint?'; hintButton.setAttribute('aria-expanded', 'false');
     $('play-instruction').textContent = current.instruction;
-    $('play-app-name').textContent = `${current.appName} · ${current.reference}-inspired IGG environment`;
+    $('play-app-name').textContent = `${current.appName} · IGG mockup`;
     picker.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.challenge === kind)));
     frame = document.createElement('iframe'); frame.title = `${current.appName}: ${current.instruction}`;
     frame.setAttribute('sandbox', 'allow-scripts allow-same-origin');
@@ -224,7 +224,7 @@
       if (created.protocol !== PROTOCOL) throw new Error('The challenge has changed. Please refresh.');
       run = created; results = []; pending = null; generation++;
       owned.push({id: run.id, token: run.token}); saveOwned();
-      updateMode(); $('ranked-status').textContent = 'Your time starts when each mockup is ready. Loading and time between tasks are excluded.';
+      updateMode(); $('ranked-status').textContent = 'The timer starts when the task is ready. Loading and breaks do not count.';
       await startTask();
     } catch (error) { $('ranked-status').textContent = error.message; $('start-ranked').disabled = false; }
   });
