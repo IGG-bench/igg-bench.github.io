@@ -44,7 +44,10 @@ h1 {
 .igg-g1 { color: #7ecdae; }
 .igg-g2 { color: #ec9778; }
 
-.authors { margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--navy); }
+.authors { display: flex; flex-wrap: wrap; justify-content: center; gap: 2px 1.4em; margin: 0; font-size: 1.2rem; font-weight: 600; color: var(--navy); }
+.authors span { white-space: nowrap; }
+.authors a { color: inherit; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.authors a:hover { color: #2a6fb8; }
 .affil { margin: 2px 0 0; font-size: 1.05rem; color: var(--navy); }
 .affil .eq { font-size: 0.9rem; color: var(--muted); }
 .venue { margin: 10px 0 24px; font-size: 1.05rem; font-weight: 700; color: var(--navy); }
@@ -101,6 +104,25 @@ figcaption {
 }
 .teaser { margin-top: 28px; }
 .benchmark-intro { text-align: center; }
+
+/* ---------- research conversations ---------- */
+.contact {
+  padding: 28px 24px;
+  border: 1px solid #cfe4dc;
+  border-radius: 12px;
+  background: #edf7f3;
+  text-align: center;
+  scroll-margin-top: 24px;
+}
+.contact h2 { margin-bottom: 10px; }
+.contact p { margin-bottom: 8px; }
+.contact-email {
+  display: inline-block;
+  margin-top: 8px;
+  color: #24654f;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
 
 pre {
   margin: 0;

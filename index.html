@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints (EMNLP Main).">
+  <meta name="description" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints (EMNLP 2026 Main).">
   <meta property="og:title" content="IGG: A Benchmark for Interactive GUI Grounding under Visibility Constraints">
   <meta property="og:image" content="https://igg-bench.github.io/static/fig/subtypes.png">
   <title>IGG: Interactive GUI Grounding under Visibility Constraints</title>
@@ -12,7 +12,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Nunito:wght@700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
-  <link rel="stylesheet" href="static/css/index.css?v=13">
+  <link rel="stylesheet" href="static/css/index.css?v=15">
   <link rel="stylesheet" href="static/css/playground.css?v=13">
   <script src="static/js/playground.js?v=12" defer></script>
 </head>
@@ -24,25 +24,26 @@
     <span class="igg-i">I</span>nteractive <span class="igg-g1">G</span>UI <span class="igg-g2">G</span>rounding<br class="wide-only">
     under Visibility Constraints
   </h1>
-  <p class="authors">Kyeongseon Kim<sup>*</sup>&emsp;Jiyeon Son<sup>*</sup>&emsp;Tae-Hyun Oh</p>
+  <p class="authors"><span><a href="https://scene-the-ella.github.io/">Kyeongseon Kim</a><sup>*</sup></span><span><a href="https://fooooty.github.io/">Jiyeon Son</a><sup>*</sup></span><span>Tae-Hyun Oh</span></p>
   <p class="affil">KAIST&emsp;<span class="eq"><sup>*</sup>Equal contribution</span></p>
-  <p class="venue">EMNLP Main</p>
+  <p class="venue">EMNLP 2026 Main</p>
   <nav class="links">
     <a class="btn off" title="Coming soon"><i class="fas fa-file-pdf"></i>Paper</a>
     <a class="btn off" title="Coming soon"><i class="ai ai-arxiv"></i>arXiv</a>
     <a class="btn" href="https://github.com/kaist-ami/IGG"><i class="fab fa-github"></i>Code</a>
     <a class="btn" href="#human-leaderboard"><i class="fas fa-chart-column"></i>Leaderboard</a>
+    <a class="btn" href="#lets-talk"><i class="fas fa-mug-hot" aria-hidden="true"></i>Coffee chat</a>
   </nav>
 </header>
 
 <main>
 
   <figure class="talk" id="presentation">
-    <video controls playsinline preload="none" poster="static/video/presentation-poster.jpg" aria-label="IGG presentation at EMNLP Main">
+    <video controls playsinline preload="none" poster="static/video/presentation-poster.jpg" aria-label="IGG presentation at EMNLP 2026 Main">
       <source src="static/video/EMNLP26_igg_video.mp4" type="video/mp4">
       Your browser does not support embedded video. <a href="static/video/EMNLP26_igg_video.mp4">Watch the presentation.</a>
     </video>
-    <figcaption>EMNLP Main Presentation</figcaption>
+    <figcaption>EMNLP 2026 Main Presentation</figcaption>
   </figure>
 
   <section id="just-for-fun" aria-labelledby="play-title">
@@ -190,6 +191,18 @@
       <img src="static/fig/res_learn2.png" alt="Qwen3-VL validation accuracy by constraint subtype before and after training. Accuracy on movable occlusions rises from 0% to 62.5%." width="1600" height="510" loading="lazy">
       <figcaption>Qwen3-VL validation accuracy (%) by constraint subtype.</figcaption>
     </figure>
+  </section>
+
+  <section id="why-it-matters" aria-labelledby="why-title">
+    <h2 id="why-title">Why it matters</h2>
+    <p>GUI automation can fail before the target is ready to click. Controls may be hidden, covered, or still loading. IGG isolates this step so we can measure where agents struggle and train them to recover.</p>
+  </section>
+
+  <section id="lets-talk" class="contact" aria-labelledby="contact-title">
+    <h2 id="contact-title">Coffee at EMNLP 2026?</h2>
+    <p>I’m always up for a coffee chat in Budapest.</p>
+    <p>Let’s talk about GUI agents, creative automation, and accessibility.</p>
+    <a class="contact-email" href="mailto:ella94.ai@gmail.com">ella94.ai@gmail.com</a>
   </section>
 
   <section id="bibtex">
