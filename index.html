@@ -13,8 +13,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.9.4/css/academicons.min.css">
   <link rel="stylesheet" href="static/css/index.css?v=8">
-  <link rel="stylesheet" href="static/css/playground.css?v=11">
-  <script src="static/js/playground.js?v=11" defer></script>
+  <link rel="stylesheet" href="static/css/playground.css?v=12">
+  <script src="static/js/playground.js?v=12" defer></script>
 </head>
 <body>
 
@@ -48,21 +48,21 @@
   <section id="just-for-fun" aria-labelledby="play-title">
     <h2 id="play-title">Your turn: Just for fun!</h2>
     <noscript><p>Enable JavaScript to try the interactive examples.</p></noscript>
-    <form id="ranked-start" class="ranked-start" hidden>
-      <div class="ranked-label"><strong>Leaderboard run</strong><span>4 new tasks · 60s each</span></div>
-      <div class="ranked-entry"><label for="player-name" class="sr-only">Public nickname</label><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Public nickname"><button type="submit" id="start-ranked">Start run →</button></div>
-    </form>
-    <p id="ranked-status" role="status"></p>
     <div class="playground" hidden>
       <div class="play-topline">
-        <span id="play-mode" aria-live="polite">Practice mode</span>
-        <span><span id="play-clock" hidden>0.0 / 60s</span> <span id="play-progress" aria-live="polite">0 / 4 solved</span></span>
+        <h3 id="play-mode" aria-live="polite">Practice mode</h3>
+        <div class="play-stats"><span id="play-clock" hidden>0.0 / 60s</span><span id="play-progress" aria-live="polite">0 / 4 solved</span></div>
       </div>
+      <form id="ranked-start" class="ranked-start" hidden>
+        <p>For the leaderboard: four new tasks, 60 seconds each.</p>
+        <div class="ranked-entry"><label for="player-name" class="sr-only">Public nickname</label><input id="player-name" name="nickname" maxlength="24" required autocomplete="off" placeholder="Public nickname"><button type="submit" id="start-ranked">Start leaderboard challenge →</button></div>
+      </form>
+      <p id="ranked-status" role="status"></p>
       <div class="play-picker" role="group" aria-label="Choose a benchmark example">
-        <button type="button" data-challenge="scroll" aria-pressed="true"><span>1 · Pagely</span></button>
-        <button type="button" data-challenge="hover" aria-pressed="false"><span>2 · Wavr</span></button>
-        <button type="button" data-challenge="drag" aria-pressed="false"><span>3 · Figma</span></button>
-        <button type="button" data-challenge="wait" aria-pressed="false"><span>4 · Mailo</span></button>
+        <button type="button" data-challenge="scroll" aria-pressed="true"><span>1. Pagely</span></button>
+        <button type="button" data-challenge="hover" aria-pressed="false"><span>2. Wavr</span></button>
+        <button type="button" data-challenge="drag" aria-pressed="false"><span>3. Figma</span></button>
+        <button type="button" data-challenge="wait" aria-pressed="false"><span>4. Mailo</span></button>
       </div>
       <div class="play-task"><p id="play-instruction"></p><button type="button" id="play-enlarge" aria-pressed="false">Enlarge</button></div>
       <div class="play-viewport">
@@ -91,7 +91,7 @@
 
   <section id="human-leaderboard" aria-labelledby="human-title">
     <div class="human-heading"><h2 id="human-title">Human Leaderboard</h2><button type="button" id="refresh-board">Refresh</button></div>
-    <p class="human-explainer"><strong>GA:</strong> tasks solved (%) · <strong>TT:</strong> average time across all 4 tasks.</p>
+    <p class="human-explainer"><strong>GA:</strong> tasks solved (%). <strong>TT:</strong> average time across all four tasks.</p>
     <p id="board-status" role="status">Loading records…</p>
     <div class="human-table-wrap"><table class="human-table"><thead><tr><th scope="col">Rank</th><th scope="col">Player</th><th scope="col">GA ↑</th><th scope="col">TT ↓</th><th scope="col">Date</th><th scope="col"><span class="sr-only">Your record</span></th></tr></thead><tbody id="human-rows"></tbody></table></div>
     <p class="human-play-link"><a href="#just-for-fun">Try it yourself ↑</a></p>

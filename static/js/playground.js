@@ -124,7 +124,7 @@
     nextButton.hidden = !resultPanel.hidden;
     $('play-exit').hidden = !recorded; $('play-clock').hidden = !recorded;
     $('start-ranked').disabled = recorded; $('player-name').disabled = recorded;
-    $('play-mode').textContent = recorded ? `Leaderboard mode · ${run.nickname}` : finishedRun ? 'Leaderboard mode · Complete' : 'Practice mode';
+    $('play-mode').textContent = recorded || finishedRun ? 'Leaderboard mode' : 'Practice mode';
     $('play-progress').textContent = recorded || finishedRun ? `${results.length} / 4 completed` : `${solved.size} / 4 solved`;
     picker.forEach(button => button.classList.toggle('solved', recorded || finishedRun ? results.some(r => r.task_id === tasks.find(t => t.kind === button.dataset.challenge).id && r.passed) : solved.has(button.dataset.challenge)));
     nextButton.textContent = recorded ? 'Skip task' : 'Next task →';
@@ -184,7 +184,7 @@
       $('result-title').textContent = last.passed ? 'Success!' : last.outcome === 'timeout' ? "Time’s up" : last.outcome === 'skip' ? 'Skipped' : 'Not counted';
       resultPanel.classList.toggle('is-neutral', !last.passed);
       if (data.complete) {
-        $('result-detail').textContent = `GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s · Saved`;
+        $('result-detail').textContent = `Score: ${Math.round(data.ga * 100)}%\nAverage time: ${(data.tt_ms / 1000).toFixed(2)}s\nSaved to the leaderboard.`;
         run = null; finishedRun = true; updateMode();
         resultButton('View leaderboard →', () => $('human-leaderboard').scrollIntoView({block: 'start', behavior: 'smooth'}));
         resultSecondary.textContent = 'Back to practice'; resultSecondary.hidden = false;
@@ -330,7 +330,7 @@
     if (saved?.run && saved?.pending) {
       const data = await api(`/api/runs/${saved.run.id}/result`, {method: 'POST', body: JSON.stringify(saved.pending)}, saved.run);
       pendingStorage(null);
-      $('ranked-status').textContent = data.complete ? `Previous run saved: GA ${Math.round(data.ga * 100)}% · TT ${(data.tt_ms / 1000).toFixed(2)}s.` : 'Your last task was saved, but the run was incomplete. Start a new run.';
+      $('ranked-status').textContent = data.complete ? `Previous run saved. Score: ${Math.round(data.ga * 100)}%. Average time: ${(data.tt_ms / 1000).toFixed(2)}s.` : 'Your last task was saved, but the run was incomplete. Start a new run.';
       refreshBoard();
     }
   } catch { $('ranked-status').textContent = 'A result is still unsaved. Reconnect and refresh to save it.'; }
