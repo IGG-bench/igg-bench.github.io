@@ -215,11 +215,25 @@
 
   <section id="bibtex">
     <h2>Citation</h2>
-<pre><code>@inproceedings{kim2026igg,
-  title     = {{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints},
-  author    = {Kim, Kyeong Seon and Son, Jiyeon and Oh, Tae-Hyun},
-  booktitle = {Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing},
-  year      = {2026}
+<pre><code>@inproceedings{kskim-etal-2026-igg,
+    title = "{IGG}: A Benchmark for Interactive {GUI} Grounding under Visibility Constraints",
+    author = "Kim, Kyeong Seon  and
+      Son, Jiyeon  and
+      Oh, Tae-Hyun",
+    editor = "Lee, Hung-Yi  and
+      Dev, Sunipa  and
+      Li, Junyi Jessy  and
+      Elliott, Desmond",
+    booktitle = "Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing",
+    month = oct,
+    year = "2026",
+    address = "Budapest, Hungary",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.emnlp-main.2703/",
+    doi = "10.18653/2026.emnlp-main.2703",
+    pages = "61475--61498",
+    ISBN = "979-8-89176-459-0",
+    abstract = "GUI grounding benchmarks ask whether agents can localize a target that is already visible in a static screenshot. Real interfaces often violate this assumption: a target may be off-screen, appear only after a state change or hover, remain occluded, or become actionable only after a delay. This leaves the ability to recover target visibility unevaluated. To measure this reveal step, we introduce Interactive GUI Grounding (IGG), a benchmark in which an agent must first make the target visible through interaction and then click it. IGG contains 601 tasks across 16 controllable GUI environments and seven visibility-constraint sub-types, with a compact action space of scrolling, moving, dragging, waiting, and clicking. In our human study, participants achieve 94.6{\%} accuracy, while GPT-5.5 reaches 79.4{\%} and the strongest evaluated open-source VLM reaches only 31.6{\%}. To identify the source of this gap, we conduct two controlled interventions. Telling Qwen3-VL which interaction to perform raises its accuracy only from 30.8{\%} to 33.9{\%}, whereas performing the interaction for the model raises it to 81.9{\%}. These results identify reveal-interaction execution, rather than target recognition after exposure, as the main bottleneck. We further show that this capability is learnable, demonstrating that visibility recovery can be strengthened consistently across model families."
 }</code></pre>
   </section>
 
